@@ -1,0 +1,154 @@
+<div class="login-page">
+  <!-- Decor 3D : purement visuel -->
+  <div class="auth-bg" aria-hidden="true">
+    <span class="auth-grid"></span>
+    <span class="auth-orb auth-orb--blue"></span>
+    <span class="auth-orb auth-orb--red"></span>
+    <span class="auth-shape auth-shape--1"></span>
+    <span class="auth-shape auth-shape--2"></span>
+    <span class="auth-shape auth-shape--3"></span>
+    <span class="auth-shape auth-shape--4"></span>
+    <img class="auth-mark auth-mark--a" src="icon-512.png?v=2" alt="">
+    <img class="auth-mark auth-mark--b" src="icon-512.png?v=2" alt="">
+  </div>
+  <!-- Language Toggle on Login Page -->
+  <div class="page-controls">
+    <button type="button"
+            class="theme-switch"
+            [class.is-dark]="theme.isDarkMode"
+            (click)="theme.toggle()"
+            role="switch"
+            [attr.aria-checked]="theme.isDarkMode"
+            [attr.title]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+            [attr.aria-label]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+      <span class="theme-switch-track" aria-hidden="true">
+        <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+        <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+        <span class="theme-switch-knob"></span>
+      </span>
+    </button>
+
+    <div class="lang-switch" [class.is-ar]="translation.currentLang === 'ar'" role="group" aria-label="Langue de l'interface">
+      <span class="lang-knob" aria-hidden="true"></span>
+      <button type="button"
+              (click)="translation.setLang('fr')"
+              [class.active]="translation.currentLang === 'fr'"
+              [attr.aria-pressed]="translation.currentLang === 'fr'">FR</button>
+      <button type="button"
+              (click)="translation.setLang('ar')"
+              [class.active]="translation.currentLang === 'ar'"
+              [attr.aria-pressed]="translation.currentLang === 'ar'">AR</button>
+    </div>
+  </div>
+
+  <div class="reset-modal-backdrop" *ngIf="showForgotPasswordModal" (click)="closeForgotPasswordModal()">
+    <section class="reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-title" (click)="$event.stopPropagation()">
+      <button type="button" class="modal-close" (click)="closeForgotPasswordModal()" [disabled]="isResetSubmitting" aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="reset-icon"><i class="fa-solid fa-key"></i></div>
+      <ng-container *ngIf="!resetMessage">
+        <span class="reset-kicker">ASSISTANCE COMPTE</span>
+        <h2 id="reset-title">Mot de passe oublié ?</h2>
+        <p>Indiquez l’adresse e-mail associée à votre compte. Nous vous enverrons les instructions de réinitialisation.</p>
+        <form (ngSubmit)="submitPasswordReset()" #resetForm="ngForm">
+          <label for="reset-email">Adresse e-mail</label>
+          <div class="reset-email-field">
+            <i class="fa-solid fa-envelope"></i>
+            <input id="reset-email" type="email" name="resetEmail" [(ngModel)]="resetEmail" placeholder="vous@exemple.com" required email autofocus>
+          </div>
+          <div class="reset-error" *ngIf="resetError"><i class="fa-solid fa-circle-exclamation"></i> {{ resetError }}</div>
+          <button type="submit" class="reset-submit" [disabled]="resetForm.invalid || isResetSubmitting">
+            <span *ngIf="!isResetSubmitting">Envoyer les instructions <i class="fa-solid fa-arrow-right"></i></span>
+            <span *ngIf="isResetSubmitting"><i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours…</span>
+          </button>
+        </form>
+      </ng-container>
+      <div class="reset-success" *ngIf="resetMessage">
+        <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <h2>Vérifiez votre boîte mail</h2>
+        <p>{{ resetMessage }}</p>
+        <button type="button" class="reset-submit" (click)="closeForgotPasswordModal()">Retour à la connexion</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="login-container">
+    <aside class="login-showcase">
+      <a routerLink="/home" class="showcase-home"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</a>
+      <div class="showcase-brand"><img src="logo.png" alt="Wifak Bank"><span>Portail Ressources Humaines</span></div>
+      <div class="showcase-copy">
+        <span class="showcase-kicker"><i class="fa-solid fa-sparkles"></i> Votre espace professionnel</span>
+        <h1>Faites grandir<br>votre <em>potentiel.</em></h1>
+        <p>Une expérience RH unifiée, pensée pour accompagner chaque étape de votre parcours chez Wifak Bank.</p>
+      </div>
+      <div class="showcase-insight">
+        <div class="insight-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div><strong>Votre carrière, en mouvement</strong><span>Formations, objectifs et opportunités à portée de main.</span></div>
+      </div>
+      <div class="showcase-orb orb-one"></div><div class="showcase-orb orb-two"></div>
+    </aside>
+    <div class="login-card">
+    <div class="login-header">
+      <div class="logo-wrapper">
+        <div class="mobile-home-link">
+          <a routerLink="/home">
+            <i class="fa-solid fa-home"></i> Accueil
+          </a>
+        </div>
+        <img src="logo.png" alt="Wifak Bank Logo" class="login-logo">
+      </div>
+      <h2>{{ t('loginTitle') }}</h2>
+      <p>{{ t('loginSubtitle') }}</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">{{ t('usernameLabel') }}</label>
+        <div class="input-icon">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" name="username" [(ngModel)]="credentials.username" [placeholder]="t('usernameLabel')" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ t('passwordLabel') }}</label>
+        <div class="input-icon">
+          <i class="fa-solid fa-lock"></i>
+          <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" [(ngModel)]="credentials.password" [placeholder]="t('passwordLabel')" required>
+          <span class="password-toggle" (click)="togglePasswordVisibility()">
+            <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox"> {{ t('rememberMe') }}
+        </label>
+        <a href="javascript:void(0)" class="forgot-link" (click)="forgotPassword()">{{ t('forgotPassword') }}</a>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary login-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">{{ t('loginBtn') }} <i class="fa-solid fa-arrow-right"></i></span>
+        <span *ngIf="isLoading"><i class="fa-solid fa-spinner fa-spin"></i> {{ t('connecting') }}</span>
+      </button>
+    </form>
+
+    <div class="signup-section" style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+      <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Vous n'avez pas de compte ?</p>
+      <button type="button" routerLink="/register" class="btn-secondary" style="width: 100%; padding: 12px; background: white; color: #E21E26; border: 2px solid #E21E26; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+        Créer un compte candidat
+      </button>
+    </div>
+
+    <div class="login-footer">
+      <p>&copy; 2026 Wifak Bank. Tous droits réservés.</p>
+    </div>
+    </div>
+  </div>
+</div>

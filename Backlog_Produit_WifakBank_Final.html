@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Backlog Produit & Sprints - Wifak Bank RH</title>
+    <style>
+        @media print { body { margin: 20px; } }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.5; color: #333; margin: 40px auto; max-width: 980px; }
+        h1 { color: #1e3a8a; text-align: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 10px; font-size: 20px; }
+        h2 { color: #2563eb; margin-top: 30px; font-size: 16px; border-left: 4px solid #2563eb; padding-left: 8px; }
+        p { text-align: justify; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 25px; font-size: 13px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 10px; vertical-align: top; }
+        th { background-color: #f1f5f9; color: #1e293b; font-weight: bold; text-align: left; }
+        .priority-high { color: #dc2626; font-weight: bold; }
+        .priority-med { color: #ca8a04; font-weight: bold; }
+        .sprint-badge { background-color: #e0e7ff; color: #3730a3; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; font-size: 11px; }
+        .role-badge { font-weight: bold; color: #1e3a8a; }
+    </style>
+</head>
+<body>
+
+    <h1>Backlog Produit & Planification des Sprints — Wifak Bank RH</h1>
+
+    <p>
+        Dans le cadre de la méthodologie agile Scrum adoptée pour le projet de gestion des ressources humaines de <b>Wifak Bank</b>, le backlog produit regroupe l'ensemble des besoins fonctionnels sous forme de <b>User Stories</b>. Chaque besoin est affecté à un rôle (Administrateur, Directeur RH, Employé, Candidat), priorisé et réparti dans son <b>Sprint</b> correspondant.
+    </p>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- 1. BACKLOG PRODUIT RÉPARTI PAR SPRINT          -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h2>1. Tableau du Backlog Produit Réparti</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 18%;">Épopée (Epic)</th>
+                <th style="width: 8%;">ID US</th>
+                <th style="width: 12%;">Acteur</th>
+                <th style="width: 44%;">User Story</th>
+                <th style="width: 9%;">Priorité</th>
+                <th style="width: 9%;">Sprint</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- SPRINT 1 -->
+            <tr>
+                <td rowspan="4"><b>1. Authentification &amp; Sécurité</b></td>
+                <td>US1.1</td>
+                <td><span class="role-badge">Tous</span></td>
+                <td>En tant qu’utilisateur, je veux m’authentifier et accéder à mon tableau de bord spécifique selon mon rôle (Admin, DRH, Employé, Candidat).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US1.2</td>
+                <td><span class="role-badge">Candidat</span></td>
+                <td>En tant que candidat, je veux créer mon compte directement via un formulaire d'inscription avec import de mon CV PDF.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US1.3</td>
+                <td><span class="role-badge">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux réinitialiser mon mot de passe par email en cas d'oubli.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US1.4</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux changer mon mot de passe temporaire dès ma première connexion.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="3"><b>2. Gouvernance Utilisateurs</b></td>
+                <td>US2.1</td>
+                <td><span class="role-badge">Admin</span></td>
+                <td>En tant qu’administrateur, je veux <b>créer, modifier et supprimer</b> les comptes utilisateurs (Admin, DRH, Employé, Candidat).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US2.2</td>
+                <td><span class="role-badge">Admin</span></td>
+                <td>En tant qu’administrateur, je veux ajouter un compte Directeur RH et lui envoyer ses identifiants par email.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US2.3</td>
+                <td><span class="role-badge">Admin</span></td>
+                <td>En tant qu’administrateur, je veux pouvoir activer, bloquer ou suspendre l'accès d'un compte utilisateur.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+
+            <tr>
+                <td><b>3. Gestion Départements</b></td>
+                <td>US3.1</td>
+                <td><span class="role-badge">Admin</span></td>
+                <td>En tant qu’administrateur, je veux <b>créer, modifier et supprimer</b> les départements de la banque et désigner leur chef.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="2"><b>4. Profils &amp; CV</b></td>
+                <td>US4.1</td>
+                <td><span class="role-badge">Tous</span></td>
+                <td>En tant qu’utilisateur, je veux modifier mes informations personnelles (nom, email, photo de profil).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+            <tr>
+                <td>US4.2</td>
+                <td><span class="role-badge">Candidat</span></td>
+                <td>En tant que candidat, je veux gérer mes compétences, formations, expériences et importer mon CV PDF.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 1</span></td>
+            </tr>
+
+            <!-- SPRINT 2 -->
+            <tr>
+                <td rowspan="3"><b>5. Gestion des Congés</b></td>
+                <td>US5.1</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux soumettre une demande de congé (dates, motif) et recevoir un accusé par email.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 2</span></td>
+            </tr>
+            <tr>
+                <td>US5.2</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter l'historique et le statut de mes demandes de congé.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 2</span></td>
+            </tr>
+            <tr>
+                <td>US5.3</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux consulter, <b>valider ou refuser</b> les demandes de congé des employés avec alerte email.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 2</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="2"><b>6. Événements Internes</b></td>
+                <td>US6.1</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux <b>créer, modifier et planifier des événements internes</b> (séminaires, team building).</td>
+                <td class="priority-med">Moyenne</td>
+                <td><span class="sprint-badge">Sprint 2</span></td>
+            </tr>
+            <tr>
+                <td>US6.2</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter les événements à venir et marquer ma participation.</td>
+                <td class="priority-med">Moyenne</td>
+                <td><span class="sprint-badge">Sprint 2</span></td>
+            </tr>
+
+            <!-- SPRINT 3 -->
+            <tr>
+                <td rowspan="4"><b>7. Recrutement &amp; Offres</b></td>
+                <td>US7.1</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux créer, modifier, publier et clôturer des offres d’emploi.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+            <tr>
+                <td>US7.2</td>
+                <td><span class="role-badge">Candidat</span></td>
+                <td>En tant que candidat, je veux rechercher et consulter les offres d’emploi disponibles chez Wifak Bank.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+            <tr>
+                <td>US7.3</td>
+                <td><span class="role-badge">Candidat</span></td>
+                <td>En tant que candidat, je veux postuler à une offre d'emploi en soumettant ma candidature et mon CV PDF.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+            <tr>
+                <td>US7.4</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux consulter les candidatures reçues, consulter les CVs via le lecteur PDF et gérer les statuts.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="3"><b>8. Formations</b></td>
+                <td>US8.1</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux planifier des sessions de formation et fixer les capacités.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+            <tr>
+                <td>US8.2</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter le catalogue des formations et effectuer une demande d'inscription.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+            <tr>
+                <td>US8.3</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux valider ou refuser les demandes d'inscription aux formations avec notification email.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 3</span></td>
+            </tr>
+
+            <!-- SPRINT 4 -->
+            <tr>
+                <td rowspan="2"><b>9. Performance &amp; Points</b></td>
+                <td>US9.1</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux attribuer des points de performance aux employés avec justification.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+            <tr>
+                <td>US9.2</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter mon solde de points et mon rang sur le classement (leaderboard).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="2"><b>10. Chatbot IA &amp; Alertes</b></td>
+                <td>US10.1</td>
+                <td><span class="role-badge">Employé/DRH</span></td>
+                <td>En tant qu'utilisateur, je veux échanger avec le Chatbot IA Wifak RH pour obtenir des réponses rapides sur les procédures.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+            <tr>
+                <td>US10.2</td>
+                <td><span class="role-badge">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux recevoir des notifications par email pour toutes les actions système importantes.</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+
+            <tr>
+                <td rowspan="4"><b>11. Tableaux de Bord</b></td>
+                <td>US11.1</td>
+                <td><span class="role-badge">Admin</span></td>
+                <td>En tant qu’administrateur, je veux consulter un tableau de bord de gouvernance (statistiques utilisateurs, départements, rôles).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+            <tr>
+                <td>US11.2</td>
+                <td><span class="role-badge">DRH</span></td>
+                <td>En tant que Directeur RH, je veux consulter un tableau de bord synthétique des KPI RH (congés, candidatures, formations).</td>
+                <td class="priority-high">Haute</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+            <tr>
+                <td>US11.3</td>
+                <td><span class="role-badge">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter mon tableau de bord personnel (congés, points, formations, événements).</td>
+                <td class="priority-med">Moyenne</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+            <tr>
+                <td>US11.4</td>
+                <td><span class="role-badge">Candidat</span></td>
+                <td>En tant que candidat, je veux consulter mon espace dédié avec le suivi de mes postulations.</td>
+                <td class="priority-med">Moyenne</td>
+                <td><span class="sprint-badge">Sprint 4</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- 2. RÉSUMÉ DE PLANIFICATION DES SPRINTS         -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h2>2. Synthèse de la Planification des Sprints</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 15%;">Sprint</th>
+                <th style="width: 20%;">User Stories Incluses</th>
+                <th style="width: 50%;">Fonctionnalités & Objectif Métier</th>
+                <th style="width: 15%;">Durée Estimée</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Sprint 1</b></td>
+                <td>US1.1 → US4.2</td>
+                <td>Mise en place du socle technique, Authentification JWT, Inscription directe Candidat, Gouvernance Admin (Créer, Modifier, Supprimer les comptes et départements), Profils.</td>
+                <td>3 semaines</td>
+            </tr>
+            <tr>
+                <td><b>Sprint 2</b></td>
+                <td>US5.1 → US6.2</td>
+                <td>Module de gestion des congés (soumission employé, validation DRH, notifications email) et Module des Événements internes (création par le DRH).</td>
+                <td>3 semaines</td>
+            </tr>
+            <tr>
+                <td><b>Sprint 3</b></td>
+                <td>US7.1 → US8.3</td>
+                <td>Module de Recrutement (offres d'emploi, candidatures, postulation, lecteur de CV PDF) et Module de gestion des formations.</td>
+                <td>4 semaines</td>
+            </tr>
+            <tr>
+                <td><b>Sprint 4</b></td>
+                <td>US9.1 → US11.4</td>
+                <td>Système de Gamification (points & classement), Intégration du Chatbot IA Wifak RH, Tableaux de bord analytiques par rôle et finalisation.</td>
+                <td>4 semaines</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

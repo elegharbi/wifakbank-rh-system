@@ -1,0 +1,35 @@
+<div class="dashboard-container">
+    <div class="header-banner candidate">
+      <h2 class="banner-title">Espace Carrière - Wifak Bank</h2>
+      <p class="banner-subtitle">Construisez votre futur au sein de notre institution</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card events">
+        <div class="stat-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="stat-info">
+          <h3>{{ counts.events }}</h3>
+          <p>Postes Ouverts</p>
+        </div>
+        <a routerLink="/jobs" class="stat-link">Explorer <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+
+      <div class="stat-card participations">
+        <div class="stat-icon"><i class="fa-solid fa-file-invoice"></i></div>
+        <div class="stat-info">
+          <h3>0</h3>
+          <p>Mes Dossiers</p>
+        </div>
+        <a routerLink="/profile" class="stat-link">Détails <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+
+    <div class="welcome-card card shadow-sm" style="background: white; border-top: 4px solid #E21E26; margin-top: 30px; text-align: center;">
+      <h3 style="color: #E21E26;">Prêt pour une nouvelle aventure ?</h3>
+      <p>Explorez nos opportunités de carrière au sein de Wifak Bank. Votre profil est votre meilleur atout.</p>
+      <div style="margin-top: 25px; display: flex; gap: 15px; justify-content: center;">
+        <button routerLink="/jobs" class="btn-primary" style="padding: 12px 25px; font-weight: 600;">Voir les offres</button>
+        <button routerLink="/profile" class="btn-secondary" style="border: 1px solid #E21E26; color: #E21E26; background: transparent; padding: 12px 25px; border-radius: 8px; font-weight: 600;">Compléter mon profil</button>
+      </div>
+    </div>
+</div>

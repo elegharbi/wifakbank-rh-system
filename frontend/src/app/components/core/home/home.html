@@ -1,0 +1,312 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     WIFAK BANK — PAGE D'ACCUEIL RH
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ── TOP BAR ────────────────────────────────────────────────── -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-bar-left">
+      <span><i class="fa-solid fa-phone"></i> +216 71 123 456</span>
+      <span><i class="fa-solid fa-envelope"></i> rh&#64;wifakbank.com.tn</span>
+    </div>
+    <div class="top-bar-right">
+      <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ── HEADER / NAVBAR ────────────────────────────────────────── -->
+<header class="home-header" id="top">
+  <div class="header-inner">
+    <div class="header-brand">
+      <img src="logo.png"
+           alt="Wifak Bank" class="header-logo">
+      <div class="brand-text">
+        <span class="brand-name">Wifak Bank</span>
+        <span class="brand-sub">Portail Ressources Humaines</span>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a (click)="scrollTo('hero')" class="nav-link">Accueil</a>
+      <a (click)="scrollTo('programmes')" class="nav-link">Programmes</a>
+      <a (click)="scrollTo('stats')" class="nav-link">Chiffres</a>
+      <a (click)="scrollTo('contact')" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button"
+              class="theme-switch"
+              [class.is-dark]="theme.isDarkMode"
+              (click)="theme.toggle()"
+              role="switch"
+              [attr.aria-checked]="theme.isDarkMode"
+              [attr.title]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+              [attr.aria-label]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+        <span class="theme-switch-track" aria-hidden="true">
+          <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+          <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+          <span class="theme-switch-knob"></span>
+        </span>
+      </button>
+
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" href="/login" class="btn-header-outline">Se connecter</a>
+        <a routerLink="/register" class="btn-header-solid">Postuler</a>
+      </ng-container>
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <a routerLink="/dashboard" class="btn-header-outline">Mon espace</a>
+        <a (click)="authService.logout()" style="cursor: pointer;" class="btn-header-solid">Se déconnecter</a>
+      </ng-container>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO SECTION ───────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-particles">
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+  </div>
+
+  <!-- Decor 3D : purement visuel -->
+  <div class="hero-3d" aria-hidden="true">
+    <span class="hero-grid"></span>
+    <span class="hero-pane hero-pane--1"></span>
+    <span class="hero-pane hero-pane--2"></span>
+    <span class="hero-pane hero-pane--3"></span>
+    <img class="hero-flame3d" src="icon-512.png?v=2" alt="">
+  </div>
+  <div class="hero-content">
+    <div class="hero-copy">
+    <div class="hero-badge">
+      <i class="fa-solid fa-sparkles"></i> Rejoignez l'excellence bancaire participative
+    </div>
+    <h1 class="hero-title">
+      Construisez votre <span class="highlight">carrière</span><br>
+      avec <span class="highlight-red">Wifak Bank</span>
+    </h1>
+    <p class="hero-subtitle">
+      Découvrez nos programmes de formation, stages et événements.<br>
+      Intégrez une banque moderne tournée vers l'avenir.
+    </p>
+    <div class="hero-buttons">
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" href="/login" class="btn-hero-primary">
+          <i class="fa-solid fa-right-to-bracket"></i> Se connecter
+        </a>
+        <a routerLink="/register" href="/register" class="btn-hero-secondary">
+          <i class="fa-solid fa-paper-plane"></i> Postuler maintenant
+        </a>
+      </ng-container>
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <a routerLink="/dashboard" class="btn-hero-primary">
+          <i class="fa-solid fa-dashboard"></i> Accéder à mon espace
+        </a>
+        <a (click)="authService.logout()" style="cursor: pointer;" class="btn-hero-secondary">
+          <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
+        </a>
+      </ng-container>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <i class="fa-solid fa-shield-check"></i> Banque certifiée
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-users-gear"></i> +250 collaborateurs
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-award"></i> Top Employer 2026
+      </div>
+    </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="visual-halo"></div>
+      <div class="talent-card">
+        <div class="talent-card-top">
+          <div class="mini-logo"><i class="fa-solid fa-w"></i></div>
+          <span>Wifak Talent</span>
+          <i class="fa-solid fa-ellipsis"></i>
+        </div>
+        <div class="talent-card-body">
+          <div class="profile-orbit"><i class="fa-solid fa-user-tie"></i></div>
+          <div><strong>Votre avenir commence ici</strong><small>Un parcours qui vous ressemble</small></div>
+        </div>
+        <div class="progress-label"><span>Votre potentiel</span><b>92%</b></div>
+        <div class="progress-track"><span></span></div>
+        <div class="talent-metrics">
+          <div><i class="fa-solid fa-briefcase"></i><b>40+</b><small>opportunités</small></div>
+          <div><i class="fa-solid fa-arrow-trend-up"></i><b>98%</b><small>satisfaction</small></div>
+        </div>
+      </div>
+      <div class="floating-chip chip-career"><i class="fa-solid fa-rocket"></i> Carrière</div>
+      <div class="floating-chip chip-learning"><i class="fa-solid fa-graduation-cap"></i> Formation</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROGRAMMES SECTION ─────────────────────────────────────── -->
+<section class="programmes-section" id="programmes">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag"><i class="fa-solid fa-grid-2"></i> Nos Programmes</span>
+      <h2 class="section-title">Des opportunités pour chaque talent</h2>
+      <p class="section-desc">
+        Wifak Bank investit dans le capital humain à travers des programmes innovants
+        et diversifiés adaptés à chaque profil.
+      </p>
+    </div>
+    <div class="programmes-grid">
+      <div class="programme-card" *ngFor="let prog of programmes">
+        <div class="programme-icon" [style.background]="prog.color + '15'" [style.color]="prog.color">
+          <i class="fa-solid" [class]="prog.icon"></i>
+        </div>
+        <h3 class="programme-title">{{ prog.title }}</h3>
+        <p class="programme-desc">{{ prog.description }}</p>
+        <div class="programme-link" [style.color]="prog.color">
+          En savoir plus <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATISTIQUES ────────────────────────────────────────────── -->
+<section class="stats-section" id="stats">
+  <div class="stats-overlay"></div>
+  <div class="section-container stats-container">
+    <div class="section-header light-header">
+      <span class="section-tag light"><i class="fa-solid fa-chart-line"></i> En chiffres</span>
+      <h2 class="section-title light-title">Wifak Bank en quelques chiffres</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card" *ngFor="let stat of stats; let i = index" [style.animation-delay]="i * 0.1 + 's'">
+        <div class="stat-icon-wrap">
+          <i class="fa-solid" [class]="stat.icon"></i>
+        </div>
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACTEZ-NOUS ─────────────────────────────────────────── -->
+<section class="contact-section" id="contact">
+  <div class="section-container contact-card">
+    <div class="section-header contact-head">
+      <span class="section-tag"><i class="fa-solid fa-envelope"></i> Contactez-nous</span>
+      <h2 class="section-title">Une question ? Écrivez-nous</h2>
+      <p class="section-desc">L'équipe RH vous répond sous 48 heures ouvrables.</p>
+    </div>
+
+    <div *ngIf="contactSubmitted" class="success-message">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>Merci de nous avoir contactés. Nous vous répondrons bientôt.</span>
+    </div>
+
+    <form (ngSubmit)="onSubmitContact()" *ngIf="!contactSubmitted" #contactNgForm="ngForm" class="contact-form">
+      <div class="contact-row">
+        <div class="form-field">
+          <label for="c-name">Nom complet <span class="req">*</span></label>
+          <input id="c-name" type="text" name="nomComplet" [(ngModel)]="contactForm.nomComplet"
+                 placeholder="Votre nom complet" required>
+        </div>
+
+        <div class="form-field">
+          <label for="c-mail">Email <span class="req">*</span></label>
+          <input id="c-mail" type="email" name="emailContact" [(ngModel)]="contactForm.email"
+                 placeholder="votre@email.com" required>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="c-subject">Sujet <span class="req">*</span></label>
+        <input id="c-subject" type="text" name="sujet" [(ngModel)]="contactForm.sujet"
+               placeholder="Sujet de votre message" required>
+      </div>
+
+      <div class="form-field">
+        <label for="c-msg">Message <span class="req">*</span></label>
+        <textarea id="c-msg" name="message" [(ngModel)]="contactForm.message" rows="4"
+                  placeholder="Votre message…" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isContactSubmitting || contactNgForm.invalid">
+        <span *ngIf="!isContactSubmitting">
+          <i class="fa-solid fa-paper-plane"></i> Envoyer le message
+        </span>
+        <span *ngIf="isContactSubmitting">
+          <i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours…
+        </span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────── -->
+<footer class="home-footer">
+  <div class="footer-main">
+    <div class="section-container footer-grid">
+      <div class="footer-col footer-about">
+        <img src="logo.png"
+             alt="Wifak Bank" class="footer-logo">
+        <p>
+          Wifak Bank, banque participative tunisienne engagée dans
+          le développement du capital humain et l'excellence opérationnelle.
+        </p>
+        <div class="footer-socials">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Liens Rapides</h4>
+        <ng-container *ngIf="!authService.isLoggedIn()">
+          <a routerLink="/login" href="/login">Se connecter</a>
+          <a routerLink="/register">Créer un compte</a>
+        </ng-container>
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <a routerLink="/dashboard">Mon espace</a>
+          <a (click)="authService.logout()" style="cursor: pointer;">Se déconnecter</a>
+        </ng-container>
+        <a (click)="scrollTo('programmes')">Nos programmes</a>
+        <a routerLink="/register">Postuler</a>
+      </div>
+      <div class="footer-col">
+        <h4>Programmes</h4>
+        <a href="#">Formation interne</a>
+        <a href="#">Stage professionnel</a>
+        <a href="#">Événements RH</a>
+        <a href="#">Programme Points</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Avenue Habib Bourguiba, Tunis</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>+216 71 123 456</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>rh&#64;wifakbank.com.tn</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="section-container footer-bottom-inner">
+      <span>&copy; 2026 Wifak Bank. Tous droits réservés.</span>
+      <span>Portail RH développé avec <i class="fa-solid fa-heart" style="color:#E21E26"></i> par l'équipe IT</span>
+    </div>
+  </div>
+</footer>

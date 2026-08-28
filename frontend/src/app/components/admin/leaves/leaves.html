@@ -1,0 +1,148 @@
+<div class="la-wrapper">
+
+  <!-- EN-TÊTE -->
+  <div class="la-header">
+    <div class="la-header-left">
+      <h1 class="la-title">
+        <i class="fa-solid fa-clipboard-check"></i>
+        Validation des Congés
+      </h1>
+      <p class="la-sub">Gérez les demandes de congé de vos collaborateurs</p>
+    </div>
+    <button class="la-refresh-btn" (click)="fetchAll()" title="Actualiser">
+      <i class="fa-solid fa-rotate-right"></i> Actualiser
+    </button>
+  </div>
+
+  <!-- Alertes -->
+  <div class="la-alert la-success" *ngIf="successMsg">
+    <i class="fa-solid fa-circle-check"></i> {{ successMsg }}
+  </div>
+  <div class="la-alert la-error" *ngIf="error && !loading">
+    <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+    <button class="la-retry" (click)="fetchAll()">Réessayer</button>
+  </div>
+
+  <!-- Filtres résumé -->
+  <div class="la-filters" *ngIf="!loading">
+    <button class="la-filter-btn" [class.active]="activeFilter === 'PENDING'" (click)="activeFilter = 'PENDING'">
+      <i class="fa-solid fa-hourglass-half"></i>
+      En attente
+      <span class="la-badge la-badge-pending">{{ pendingCount }}</span>
+    </button>
+    <button class="la-filter-btn" [class.active]="activeFilter === 'APPROVED'" (click)="activeFilter = 'APPROVED'">
+      <i class="fa-solid fa-check-circle"></i>
+      Approuvés
+      <span class="la-badge la-badge-approved">{{ approvedCount }}</span>
+    </button>
+    <button class="la-filter-btn" [class.active]="activeFilter === 'REJECTED'" (click)="activeFilter = 'REJECTED'">
+      <i class="fa-solid fa-times-circle"></i>
+      Refusés
+      <span class="la-badge la-badge-rejected">{{ rejectedCount }}</span>
+    </button>
+    <button class="la-filter-btn" [class.active]="activeFilter === 'ALL'" (click)="activeFilter = 'ALL'">
+      <i class="fa-solid fa-list"></i>
+      Toutes
+      <span class="la-badge la-badge-all">{{ allLeaves.length }}</span>
+    </button>
+  </div>
+
+  <!-- Chargement -->
+  <div class="la-loading" *ngIf="loading">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+    <p>Chargement des demandes…</p>
+  </div>
+
+  <!-- Tableau -->
+  <div class="la-table-card" *ngIf="!loading && filtered.length > 0">
+    <table class="la-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employé</th>
+          <th>Type de congé</th>
+          <th>Période</th>
+          <th>Durée</th>
+          <th>Motif</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of filtered; let i = index" [class.la-row-processing]="processingId === l.id">
+          <td class="la-td-num">{{ i + 1 }}</td>
+          <td class="la-td-name">
+            <div class="la-avatar">{{ (l.employee?.name || 'E').charAt(0) | uppercase }}</div>
+            <div class="la-name-info">
+              <span class="la-name-full">{{ l.employee?.name || 'Employé' }}</span>
+              <span class="la-emp-id">#{{ l.employee?.id || '—' }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="la-type-tag">{{ l.leaveType || 'Congé annuel' }}</span>
+          </td>
+          <td class="la-td-date">
+            <i class="fa-regular fa-calendar"></i>
+            {{ l.startDate }} → {{ l.endDate }}
+          </td>
+          <td class="la-td-days">
+            <span class="la-days-pill">{{ getDays(l.startDate, l.endDate) }} j</span>
+          </td>
+          <td class="la-td-reason">{{ l.reason || '—' }}</td>
+          <td>
+            <span class="la-status-badge"
+              [class.la-status-pending]="l.status === 'PENDING'"
+              [class.la-status-approved]="l.status === 'APPROVED' || l.status === 'VALIDATED'"
+              [class.la-status-rejected]="l.status === 'REJECTED'">
+              <i class="fa-solid"
+                [class.fa-hourglass-half]="l.status === 'PENDING'"
+                [class.fa-check]="l.status === 'APPROVED' || l.status === 'VALIDATED'"
+                [class.fa-xmark]="l.status === 'REJECTED'"></i>
+              {{ l.status === 'PENDING' ? 'En attente' : l.status === 'APPROVED' || l.status === 'VALIDATED' ? 'Approuvé' : 'Refusé' }}
+            </span>
+          </td>
+          <td class="la-td-actions">
+            <!-- Bouton Approuver (si PENDING) -->
+            <button *ngIf="l.status === 'PENDING'"
+              class="la-btn la-btn-approve"
+              (click)="approve(l.id)"
+              [disabled]="processingId === l.id"
+              title="Approuver le congé">
+              <i class="fa-solid fa-check"></i>
+              <span>Approuver</span>
+            </button>
+
+            <!-- Bouton Refuser (si PENDING) -->
+            <button *ngIf="l.status === 'PENDING'"
+              class="la-btn la-btn-reject"
+              (click)="reject(l.id)"
+              [disabled]="processingId === l.id"
+              title="Refuser le congé">
+              <i class="fa-solid fa-xmark"></i>
+              <span>Refuser</span>
+            </button>
+
+            <!-- Déjà traité -->
+            <span *ngIf="l.status !== 'PENDING'" class="la-processed-label">
+              <i class="fa-solid fa-check-double"></i> Traité
+            </span>
+
+            <!-- Supprimer -->
+            <button class="la-btn la-btn-delete" (click)="deleteLeave(l.id)" title="Supprimer">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Vide -->
+  <div class="la-empty" *ngIf="!loading && filtered.length === 0 && !error">
+    <i class="fa-solid fa-inbox"></i>
+    <p *ngIf="activeFilter === 'PENDING'">Aucune demande de congé en attente. ✅</p>
+    <p *ngIf="activeFilter !== 'PENDING'">Aucune demande dans cette catégorie.</p>
+  </div>
+
+</div>
+

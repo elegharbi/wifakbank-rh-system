@@ -1,0 +1,15 @@
+// src/styles/_variables.scss
+
+$primary: #0044CC; // Wifak Bank blue
+$secondary: #A0C4FF; // Light blue
+$dark-bg: #2B2B2B;
+$light-bg: #F5F5F5;
+$text-light: #FFFFFF;
+$text-dark: #212529;
+
+// Font
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}

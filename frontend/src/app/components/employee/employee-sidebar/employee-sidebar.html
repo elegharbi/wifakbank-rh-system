@@ -1,0 +1,60 @@
+<nav class="emp-sidebar">
+  <!-- Avatar + Nom utilisateur -->
+  <div class="emp-sidebar-header">
+    <div class="emp-avatar">
+      <img *ngIf="avatarService.avatar$ | async as photo" [src]="photo" alt="" class="emp-avatar-img">
+      <i class="fa-solid fa-user-tie" *ngIf="!(avatarService.avatar$ | async)" aria-hidden="true"></i>
+    </div>
+    <div class="emp-user-info">
+      <span class="emp-user-name">{{ userName }}</span>
+      <span class="emp-user-role">Employé</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="emp-nav-section-label">PRINCIPAL</div>
+
+  <a routerLink="/employee-dashboard" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
+    <span>Tableau de bord personnalisé</span>
+  </a>
+
+  <a routerLink="/profile" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-circle-user"></i></span>
+    <span>Mon Profil</span>
+  </a>
+
+  <div class="emp-nav-section-label">GESTION</div>
+
+  <a routerLink="/my-leaves" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-plane-departure"></i></span>
+    <span>Mes Congés</span>
+  </a>
+
+  <a routerLink="/employee-points" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-star"></i></span>
+    <span>Mes Points & Classement</span>
+  </a>
+
+  <a routerLink="/events" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+    <span>Événements</span>
+  </a>
+
+  <div class="emp-nav-section-label">DÉVELOPPEMENT</div>
+
+  <a routerLink="/employee-trainings" routerLinkActive="active" class="emp-nav-item">
+    <span class="emp-nav-icon"><i class="fa-solid fa-chalkboard-user"></i></span>
+    <span>Plan de Formation</span>
+  </a>
+
+
+
+  <!-- Déconnexion -->
+  <div class="emp-sidebar-footer">
+    <button class="emp-logout-btn" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+</nav>

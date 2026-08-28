@@ -1,0 +1,124 @@
+.performance-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.header-card {
+  padding: 32px;
+}
+
+.evaluation-form {
+  margin-top: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.rating-input {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rating-input input {
+  flex: 1;
+}
+
+.score-display {
+  font-weight: 700;
+  color: var(--primary-color);
+  min-width: 50px;
+}
+
+.evaluations-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.eval-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.eval-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.emp-avatar {
+  width: 45px;
+  height: 45px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.emp-info {
+  flex: 1;
+}
+
+.emp-info h4 {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.eval-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.score-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.score-box[data-score="5"] { background: #dcfce7; color: #15803d; }
+.score-box[data-score="4"] { background: #ecfdf5; color: #059669; }
+.score-box[data-score="3"] { background: #fef9c3; color: #a16207; }
+.score-box[data-score="2"] { background: #fff7ed; color: #ea580c; }
+.score-box[data-score="1"] { background: #fef2f2; color: #dc2626; }
+
+.eval-body {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.feedback-text {
+  display: flex;
+  gap: 10px;
+}
+
+.feedback-text i {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.feedback-text p {
+  font-size: 14px;
+  color: #475569;
+  font-style: italic;
+  line-height: 1.5;
+}

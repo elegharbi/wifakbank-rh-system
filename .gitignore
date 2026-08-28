@@ -1,0 +1,35 @@
+# ───────────── Secrets (JAMAIS versionnés) ─────────────
+# Le vrai fichier contient les identifiants de base de données,
+# le jeton Hugging Face et le mot de passe SMTP.
+# Repartez de application.properties.example.
+src/main/resources/application.properties
+
+# ───────────── Java / Maven ─────────────
+target/
+build/
+*.class
+*.jar
+*.war
+
+# ───────────── Outils embarqués (1,3 Go) ─────────────
+.tools/
+.gradle/
+
+# ───────────── Node / Angular ─────────────
+node_modules/
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
+dist/
+
+# ───────────── Sauvegardes de travail ─────────────
+*.bak
+*.orig
+
+# ───────────── Système / IDE ─────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.log

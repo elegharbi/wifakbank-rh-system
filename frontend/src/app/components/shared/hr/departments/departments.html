@@ -1,0 +1,64 @@
+<div class="departments-container">
+  <div class="card add-dept-card">
+    <h2>Gestion des départements</h2>
+    <p class="subtitle">Créez, modifiez et supprimez des départements pour organiser l'administration.</p>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nom du département</label>
+        <input type="text" [(ngModel)]="newDept.name" placeholder="Ex: Informatique, RH, Finance...">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" [(ngModel)]="newDept.description" placeholder="Brève description...">
+      </div>
+      <div class="form-group">
+        <label>Chef de département</label>
+        <input type="text" [(ngModel)]="newDept.headOfDepartment" placeholder="Ex: Jean Dupont">
+      </div>
+      <div class="form-actions" style="align-self: flex-end;">
+        <button class="btn-primary" (click)="saveDepartment()" [disabled]="!newDept.name">
+          <i class="fa-solid" [ngClass]="editingDept ? 'fa-save' : 'fa-plus'"></i>
+          {{ editingDept ? 'Mettre à jour' : 'Ajouter' }}
+        </button>
+        <button *ngIf="editingDept" class="btn-secondary" (click)="cancelEdit()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dept-grid">
+    <div *ngFor="let dept of departments" class="card dept-card">
+      <div class="dept-icon">
+        <i class="fa-solid fa-building-user"></i>
+      </div>
+      <div class="dept-info">
+        <h3>{{ dept.name }}</h3>
+        <p><strong>Chef:</strong> {{ dept.headOfDepartment || 'Non assigné' }}</p>
+        <p>{{ dept.description || 'Aucune description disponible.' }}</p>
+      </div>
+      <div class="dept-actions">
+        <button class="btn-secondary" (click)="editDepartment(dept)"><i class="fa-solid fa-pen"></i></button>
+        <button class="btn-delete" (click)="deleteDepartment(dept.id, dept.name)" title="Supprimer">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation de suppression -->
+  <app-confirm-dialog
+    [open]="pendingDelete !== null"
+    title="Supprimer ce département ?"
+    [message]="pendingDelete?.name
+                 ? 'Le département « ' + pendingDelete?.name + ' » sera supprimé.'
+                 : 'Ce département sera supprimé.'"
+    detail="Les collaborateurs rattachés se retrouveront sans département."
+    confirmLabel="Supprimer"
+    cancelLabel="Conserver"
+    icon="fa-sitemap"
+    tone="danger"
+    (confirmed)="confirmDelete()"
+    (cancelled)="cancelDelete()">
+  </app-confirm-dialog>
+</div>
+

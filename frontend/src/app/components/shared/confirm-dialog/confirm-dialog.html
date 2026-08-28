@@ -1,0 +1,22 @@
+<div class="cd-backdrop" *ngIf="open" (click)="cancel()">
+  <div class="cd-box"
+       [class.is-danger]="tone === 'danger'"
+       role="alertdialog"
+       aria-modal="true"
+       [attr.aria-label]="title"
+       (click)="$event.stopPropagation()">
+
+    <span class="cd-icon" aria-hidden="true">
+      <i class="fa-solid" [ngClass]="icon"></i>
+    </span>
+
+    <h2 class="cd-title">{{ title }}</h2>
+    <p class="cd-message">{{ message }}</p>
+    <p class="cd-detail" *ngIf="detail">{{ detail }}</p>
+
+    <div class="cd-actions">
+      <button type="button" class="cd-btn cd-btn-ghost" (click)="cancel()">{{ cancelLabel }}</button>
+      <button type="button" class="cd-btn cd-btn-go" (click)="confirm()" autofocus>{{ confirmLabel }}</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,293 @@
+/* ==========================================================
+   DEPARTEMENTS
+   ========================================================== */
+
+.departments-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 26px 32px 60px;
+  font-family: 'Inter', sans-serif;
+  color: var(--wf-ink);
+  perspective: 1400px;
+}
+
+/* ---------------- Formulaire ---------------- */
+
+.add-dept-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 32px 30px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #123E73 0%, #0B5CA8 48%, #1E77C4 100%);
+  box-shadow: var(--wf-lift-3);
+  isolation: isolate;
+  animation: wf-rise .5s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+.add-dept-card::before {
+  content: '';
+  position: absolute;
+  inset: -60% -20% auto auto;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,72,63,.46) 0%, transparent 68%);
+  filter: blur(28px);
+  z-index: -1;
+  animation: dp-orbit 20s ease-in-out infinite;
+}
+
+@keyframes dp-orbit {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-70px,55px) scale(1.15); }
+}
+
+.add-dept-card h2 {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+
+.add-dept-card .subtitle {
+  margin: 10px 0 22px;
+  max-width: 64ch;
+  font-size: .91rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,.75);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 15px;
+  align-items: end;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+.form-group label {
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.72);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 11px;
+  background: rgba(255,255,255,.12);
+  font-family: inherit;
+  font-size: .885rem;
+  color: #fff;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.form-group input::placeholder { color: rgba(255,255,255,.45); }
+
+.form-group input:focus {
+  outline: none;
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.55);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.12);
+}
+
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---------------- Boutons ---------------- */
+
+.btn-primary,
+.btn-secondary,
+.btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: .865rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+/* dans le bandeau : contraste inverse */
+.add-dept-card .btn-primary {
+  background: #fff;
+  color: var(--wf-blue);
+  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+}
+
+.add-dept-card .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 13px 26px rgba(0,0,0,.3); }
+.add-dept-card .btn-primary:disabled { opacity: .5; cursor: default; }
+
+.add-dept-card .btn-secondary {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.3);
+  color: #fff;
+}
+
+.add-dept-card .btn-secondary:hover { background: rgba(255,255,255,.24); }
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ---------------- Grille ---------------- */
+
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.dept-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 22px 20px;
+  border-radius: 20px;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+  animation: wf-rise .5s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+.dept-card:nth-child(1) { animation-delay: .08s; }
+.dept-card:nth-child(2) { animation-delay: .13s; }
+.dept-card:nth-child(3) { animation-delay: .18s; }
+.dept-card:nth-child(4) { animation-delay: .23s; }
+.dept-card:nth-child(n+5) { animation-delay: .28s; }
+
+/* liseret flamme revele au survol */
+.dept-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--wf-flame);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+.dept-card:hover {
+  transform: translateY(-7px) rotateX(3deg);
+  box-shadow: var(--wf-lift-3);
+  border-color: transparent;
+}
+
+.dept-card:hover::before { transform: scaleX(1); }
+
+.dept-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 17px;
+  font-size: 1.25rem;
+  color: #fff;
+  background: linear-gradient(150deg, var(--wf-blue-lit), var(--wf-blue));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.45),
+    inset 0 -2px 5px rgba(0,0,0,.16),
+    0 9px 18px rgba(11,92,168,.32);
+  transition: transform .3s cubic-bezier(.16,1,.3,1);
+}
+
+.dept-card:hover .dept-icon { transform: translateY(-3px) scale(1.06) rotate(-4deg); }
+
+.dept-info { flex: 1; min-width: 0; }
+
+.dept-info h3 {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--wf-ink);
+}
+
+.dept-info p {
+  margin: 8px 0 0;
+  font-size: .83rem;
+  line-height: 1.55;
+  color: var(--wf-ink-soft);
+}
+
+.dept-info p strong { color: var(--wf-ink); font-weight: 600; }
+
+.dept-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--wf-line);
+}
+
+.dept-actions .btn-secondary,
+.dept-actions .btn-delete {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 11px;
+}
+
+.dept-actions .btn-secondary {
+  background: var(--wf-surface);
+  border-color: var(--wf-line);
+  color: var(--wf-ink-soft);
+}
+
+.dept-actions .btn-secondary:hover {
+  background: var(--wf-blue-pale);
+  border-color: var(--wf-blue);
+  color: var(--wf-blue);
+  transform: translateY(-2px);
+}
+
+.dept-actions .btn-delete {
+  background: var(--wf-surface);
+  border-color: var(--wf-red-pale);
+  color: var(--wf-red);
+}
+
+.dept-actions .btn-delete:hover {
+  background: var(--wf-red);
+  border-color: var(--wf-red);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.dept-actions .btn-delete:focus-visible { outline: 2px solid var(--wf-red); outline-offset: 2px; }
+
+/* ---------------- Adaptatif ---------------- */
+
+@media (max-width: 700px) {
+  .departments-container { padding: 18px 16px 46px; }
+  .add-dept-card { padding: 22px 20px 24px; border-radius: 20px; }
+  .dept-grid { grid-template-columns: 1fr; }
+  .form-actions { width: 100%; }
+  .form-actions button { flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-dept-card::before { animation: none; }
+  .add-dept-card, .dept-card { animation: none; }
+  .dept-card, .dept-card::before, .dept-icon,
+  .btn-primary, .btn-secondary, .btn-delete, .form-group input { transition: none; }
+  .dept-card:hover { transform: none; }
+  .dept-card:hover .dept-icon { transform: none; }
+  .add-dept-card .btn-primary:hover:not(:disabled),
+  .dept-actions .btn-secondary:hover,
+  .dept-actions .btn-delete:hover { transform: none; }
+}

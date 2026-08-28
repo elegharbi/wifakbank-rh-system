@@ -1,0 +1,135 @@
+<div class="dash">
+
+  <!-- ===== Accueil ===== -->
+  <header class="hero wf-rise">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <img src="icon-512.png?v=2" alt="" class="hero-flame" aria-hidden="true">
+
+    <div class="hero-text">
+      <p class="hero-date">{{ today }}</p>
+      <h1 class="hero-title">
+        {{ greeting }},
+        <span class="hero-name">{{ firstName || userName }}</span>
+      </h1>
+      <p class="hero-sub">Voici où en sont vos congés, vos points et vos formations.</p>
+    </div>
+  </header>
+
+  <!-- ===== Notification ===== -->
+  <div class="notice wf-rise" *ngIf="recentNotif" style="animation-delay:.06s" role="status">
+    <span class="notice-cushion wf-cushion wf-cushion--blue"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></span>
+    <p class="notice-text">{{ recentNotif }}</p>
+    <button class="notice-close" (click)="recentNotif = ''" aria-label="Masquer cette notification">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <!-- ===== Chargement ===== -->
+  <div class="loading" *ngIf="loading">
+    <span class="loading-ring" aria-hidden="true"></span>
+    <p>Chargement de vos données…</p>
+  </div>
+
+  <!-- ===== Indicateurs ===== -->
+  <div class="tiles" *ngIf="!loading && stats">
+
+    <a routerLink="/my-leaves" class="tile wf-rise" style="animation-delay:.10s">
+      <div class="tile-face">
+        <div class="tile-top">
+          <span class="wf-cushion wf-cushion--blue tile-icon"><i class="fa-solid fa-umbrella-beach" aria-hidden="true"></i></span>
+          <span class="tile-unit">jours restants</span>
+        </div>
+        <p class="tile-value">{{ shown.leaves }}</p>
+        <p class="tile-label">Solde de congés</p>
+        <div class="meter" [attr.aria-label]="'Solde : ' + shown.leaves + ' jours sur ' + LEAVE_ALLOWANCE">
+          <span class="meter-fill" [style.width.%]="leavePercent"></span>
+        </div>
+        <span class="tile-go">Gérer mes congés <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </div>
+    </a>
+
+    <a routerLink="/employee-points" class="tile wf-rise" style="animation-delay:.16s">
+      <div class="tile-face">
+        <div class="tile-top">
+          <span class="wf-cushion wf-cushion--red tile-icon"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+          <span class="tile-unit">points</span>
+        </div>
+        <p class="tile-value">{{ shown.points }}</p>
+        <p class="tile-label">Score de performance</p>
+        <p class="tile-note">Votre rang se met à jour chaque nuit.</p>
+        <span class="tile-go">Voir le classement <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </div>
+    </a>
+
+    <a routerLink="/events" class="tile wf-rise" style="animation-delay:.22s">
+      <div class="tile-face">
+        <div class="tile-top">
+          <span class="wf-cushion wf-cushion--navy tile-icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+          <span class="tile-unit">à venir</span>
+        </div>
+        <p class="tile-value">{{ shown.events }}</p>
+        <p class="tile-label">Événements</p>
+        <p class="tile-note">Séminaires, ateliers et rencontres internes.</p>
+        <span class="tile-go">Découvrir <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </div>
+    </a>
+
+    <a routerLink="/employee-trainings" class="tile wf-rise" style="animation-delay:.28s">
+      <div class="tile-face">
+        <div class="tile-top">
+          <span class="wf-cushion wf-cushion--grey tile-icon"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i></span>
+          <span class="tile-unit">ouvertes</span>
+        </div>
+        <p class="tile-value">{{ shown.trainings }}</p>
+        <p class="tile-label">Formations</p>
+        <p class="tile-note">Inscrivez-vous avant la clôture des places.</p>
+        <span class="tile-go">S'inscrire <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ===== Raccourcis ===== -->
+  <section class="quick wf-rise" *ngIf="!loading" style="animation-delay:.34s" aria-labelledby="quick-title">
+    <h2 id="quick-title" class="quick-title">Que voulez-vous faire ?</h2>
+
+    <div class="quick-grid">
+      <a routerLink="/leave-request" class="act">
+        <span class="act-cushion wf-cushion wf-cushion--blue"><i class="fa-solid fa-plus" aria-hidden="true"></i></span>
+        <span class="act-body">
+          <span class="act-name">Demander un congé</span>
+          <span class="act-hint">Envoi direct à votre manager</span>
+        </span>
+        <i class="fa-solid fa-chevron-right act-chev" aria-hidden="true"></i>
+      </a>
+
+      <a routerLink="/my-leaves" class="act">
+        <span class="act-cushion wf-cushion wf-cushion--navy"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i></span>
+        <span class="act-body">
+          <span class="act-name">Historique des congés</span>
+          <span class="act-hint">Suivre l'état de vos demandes</span>
+        </span>
+        <i class="fa-solid fa-chevron-right act-chev" aria-hidden="true"></i>
+      </a>
+
+      <a routerLink="/employee-trainings" class="act">
+        <span class="act-cushion wf-cushion wf-cushion--red"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
+        <span class="act-body">
+          <span class="act-name">S'inscrire à une formation</span>
+          <span class="act-hint">Catalogue du plan de développement</span>
+        </span>
+        <i class="fa-solid fa-chevron-right act-chev" aria-hidden="true"></i>
+      </a>
+
+      <a routerLink="/profile" class="act">
+        <span class="act-cushion wf-cushion wf-cushion--grey"><i class="fa-solid fa-user-pen" aria-hidden="true"></i></span>
+        <span class="act-body">
+          <span class="act-name">Mon profil</span>
+          <span class="act-hint">Photo, coordonnées et mot de passe</span>
+        </span>
+        <i class="fa-solid fa-chevron-right act-chev" aria-hidden="true"></i>
+      </a>
+    </div>
+  </section>
+
+</div>

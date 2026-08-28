@@ -1,0 +1,51 @@
+<div class="card">
+  <h2 class="page-title">Gestion des Congés</h2>
+
+  <form (submit)="addLeave()" class="form-container">
+    <div class="form-row">
+      <select [(ngModel)]="newLeave.employeeId" name="employeeId" required>
+        <option value="" disabled selected>Sélectionner un employé</option>
+        <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+      </select>
+      <input type="text" [(ngModel)]="newLeave.reason" name="reason" placeholder="Raison du congé (ex: Maladie, Annuel...)" required>
+    </div>
+    <div class="form-row">
+      <div class="field-group">
+        <label>Date de début</label>
+        <input type="date" [(ngModel)]="newLeave.startDate" name="startDate" required>
+      </div>
+      <div class="field-group">
+        <label>Date de fin</label>
+        <input type="date" [(ngModel)]="newLeave.endDate" name="endDate" required>
+      </div>
+    </div>
+    <button type="submit" class="btn-primary" [disabled]="!newLeave.employeeId || !newLeave.startDate || !newLeave.endDate">
+      Soumettre la demande
+    </button>
+  </form>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Dates</th>
+          <th>Raison</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of leaves">
+          <td><strong>{{ l.employee?.name }}</strong></td>
+          <td>Du {{ l.startDate | date:'shortDate' }} au {{ l.endDate | date:'shortDate' }}</td>
+          <td>{{ l.reason }}</td>
+          <td><span class="status-badge" [ngClass]="getStatusClass(l.status)">{{ l.status }}</span></td>
+          <td>
+            <button class="btn-danger" (click)="deleteLeave(l.id)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

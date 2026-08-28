@@ -1,0 +1,99 @@
+<div class="candidates-container">
+  <div class="header-card card shadow-lg">
+    <h2>{{ t('trackCandidates') }}</h2>
+    <p class="subtitle">{{ t('trackCandidatesDesc') }}</p>
+    
+    <div class="candidate-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ t('fullName') }}</label>
+          <input type="text" [(ngModel)]="newCandidate.fullName" placeholder="Ex: Jean Dupont">
+        </div>
+        <div class="form-group">
+          <label>{{ t('targetJob') }}</label>
+          <select [(ngModel)]="selectedJobId">
+            <option [ngValue]="null">{{ t('chooseJob') }}</option>
+            <option *ngFor="let job of jobs" [value]="job.id">{{ job.title }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ t('email') }}</label>
+          <input type="email" [(ngModel)]="newCandidate.email" placeholder="email@exemple.com">
+        </div>
+        <div class="form-group">
+          <label>{{ t('phone') }}</label>
+          <input type="tel" [(ngModel)]="newCandidate.phone" placeholder="+216 12 345 678">
+        </div>
+      </div>
+
+
+      <div class="form-actions">
+        <button class="btn-primary" (click)="addCandidate()" [disabled]="!newCandidate.fullName || !selectedJobId">
+          <i class="fa-solid fa-user-plus"></i> {{ t('saveCandidate') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card candidates-card shadow-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{ t('candidate') }}</th>
+          <th>{{ t('position') }}</th>
+          <th>{{ t('contact') }}</th>
+          <th>{{ t('status') }}</th>
+          <th>{{ t('actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let cand of candidates">
+          <tr>
+            <td>
+              <div class="cand-name">
+                <i class="fa-solid fa-circle-user"></i>
+                {{ cand.fullName }}
+              </div>
+            </td>
+            <td><span class="job-tag">{{ cand.jobPosition?.title || t('notSpecified') }}</span></td>
+            <td>
+              <div class="text-sm">{{ cand.email }}</div>
+              <div class="text-sm text-muted">{{ cand.phone || t('notProvided') }}</div>
+            </td>
+            <td><span class="status-pill" [class]="cand.status.toLowerCase()">{{ cand.status }}</span></td>
+            <td>
+              <a [routerLink]="['/viewer/cv', cand.id || 1]" target="_blank" class="btn-icon" title="Voir CV"><i class="fa-solid fa-file-pdf"></i></a>
+              <button (click)="startEvaluation(cand)" class="btn-icon text-green" title="Évaluer"><i class="fa-solid fa-star-half-stroke"></i></button>
+            </td>
+          </tr>
+          
+          <!-- Modal d'évaluation (simplifié pour la démo) -->
+          <tr *ngIf="evaluatingCandId === cand.id">
+            <td colspan="5" class="eval-row-bg">
+              <div class="eval-box shadow">
+                <h4><i class="fa-solid fa-pen-to-square"></i> {{ t('evaluate') }}</h4>
+                <div class="eval-fields">
+                  <div class="f-group">
+                    <label>{{ t('score') }} (0-100)</label>
+                    <input type="number" [(ngModel)]="evalScore" min="0" max="100">
+                  </div>
+                <div class="f-btns">
+                  <button class="btn-save" (click)="saveEvaluation()">Valider</button>
+                  <button class="btn-cancel" (click)="evaluatingCandId = null">Annuler</button>
+                </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    
+    <div *ngIf="candidates.length === 0" class="no-data-simple">
+      <p>{{ t('noCandidates') }}</p>
+    </div>
+  </div>
+</div>

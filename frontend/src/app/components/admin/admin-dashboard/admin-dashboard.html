@@ -1,0 +1,135 @@
+<div class="dashboard-wrapper">
+  <!-- Section: Stats Cards -->
+  <div class="stats-grid">
+    <!-- Total Utilisateurs -->
+    <div class="stat-card users-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ shown.users }}</div>
+        <div class="stat-label">Total Utilisateurs</div>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+    </div>
+
+    <!-- Total Candidats -->
+    <div class="stat-card candidates-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ shown.candidates }}</div>
+        <div class="stat-label">Total Candidats</div>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+    </div>
+
+
+
+    <!-- Total Départements -->
+    <div class="stat-card departments-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ shown.departments }}</div>
+        <div class="stat-label">Départements</div>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-sitemap"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 1: Repartition & Activite -->
+  <div class="dashboard-row">
+    <!-- Répartition par rôle -->
+    <div class="dashboard-panel flex-1">
+      <h3 class="panel-title">Répartition par rôle</h3>
+      <div class="role-bars">
+        <div class="role-bar-item">
+          <div class="role-info">
+            <span class="role-name">Admin</span>
+            <span class="role-count">{{ roleDistribution.admin }}</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill admin-fill" [style.width.%]="sharePercent(roleDistribution.admin)"></div>
+          </div>
+        </div>
+        <div class="role-bar-item">
+          <div class="role-info">
+            <span class="role-name">RH</span>
+            <span class="role-count">{{ roleDistribution.hr }}</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill hr-fill" [style.width.%]="sharePercent(roleDistribution.hr)"></div>
+          </div>
+        </div>
+        <div class="role-bar-item">
+          <div class="role-info">
+            <span class="role-name">Employé</span>
+            <span class="role-count">{{ roleDistribution.employee }}</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill employee-fill" [style.width.%]="sharePercent(roleDistribution.employee)"></div>
+          </div>
+        </div>
+        <div class="role-bar-item">
+          <div class="role-info">
+            <span class="role-name">Candidat</span>
+            <span class="role-count">{{ roleDistribution.candidate }}</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill candidate-fill" [style.width.%]="sharePercent(roleDistribution.candidate)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activité Récente -->
+    <div class="dashboard-panel flex-1">
+      <h3 class="panel-title">Activité Récente</h3>
+      <ul class="activity-list">
+        <li *ngFor="let act of recentActivities" class="activity-item">
+          <div class="activity-icon" [ngClass]="act.color">
+            <i class="{{ act.icon }}"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-text">{{ act.text }}</div>
+            <div class="activity-time">{{ act.time }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Row 2: Tables -->
+  <div class="dashboard-row">
+
+    <!-- Derniers Utilisateurs -->
+    <div class="dashboard-panel flex-1">
+      <h3 class="panel-title">Derniers Utilisateurs</h3>
+      <div class="table-responsive">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of recentUsers">
+              <td>{{ user.firstName }} {{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-badge" [ngClass]="'role-' + user.role?.toLowerCase()">
+                  {{ user.role }}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="recentUsers.length === 0">
+              <td colspan="3" class="text-center text-muted py-3">Aucun utilisateur récent</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

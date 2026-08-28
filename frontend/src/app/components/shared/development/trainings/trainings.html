@@ -1,0 +1,124 @@
+<div class="trainings-container">
+  <div class="header-card card shadow-lg">
+    <div class="header-content">
+      <h2>Catalogue des Formations</h2>
+      <p class="subtitle">Organisez la montée en compétences des collaborateurs de Wifak Bank.</p>
+    </div>
+
+    <div class="training-form grid">
+      <!-- Titre -->
+      <div class="form-group">
+        <label>Titre de la Formation</label>
+        <input type="text" [(ngModel)]="newTraining.title" placeholder="Ex: Sécurité Informatique, Compliance...">
+      </div>
+
+      <!-- Organisme -->
+      <div class="form-group">
+        <label>Organisme</label>
+        <input type="text" [(ngModel)]="newTraining.organization" placeholder="Ex: Interne, Microsoft, Udemy...">
+      </div>
+
+      <!-- Durée -->
+      <div class="form-group">
+        <label>Durée (H)</label>
+        <input type="number" [(ngModel)]="newTraining.durationHours" placeholder="Heures">
+      </div>
+
+      <!-- Type de formation -->
+      <div class="form-group">
+        <label>Type de Formation</label>
+        <select [(ngModel)]="newTraining.trainingType">
+          <option value="PRESENTIEL">🏢 Présentiel</option>
+          <option value="ONLINE">🌐 En Ligne</option>
+        </select>
+      </div>
+
+      <!-- Lien (visible seulement si ONLINE) -->
+      <div class="form-group" *ngIf="newTraining.trainingType === 'ONLINE'">
+        <label><i class="fa-solid fa-link"></i> Lien de la Formation</label>
+        <input type="url" [(ngModel)]="newTraining.trainingLink" placeholder="https://...">
+      </div>
+
+      <!-- Chef de formation -->
+      <div class="form-group">
+        <label><i class="fa-solid fa-user-tie"></i> Chef de Formation</label>
+        <input type="text" [(ngModel)]="newTraining.trainerName" placeholder="Nom du responsable / formateur...">
+      </div>
+
+      <!-- Date de formation -->
+      <div class="form-group">
+        <label><i class="fa-solid fa-calendar-days"></i> Date de la Formation</label>
+        <input type="date" [(ngModel)]="newTraining.trainingDate">
+      </div>
+
+      <!-- Boutons -->
+      <button class="btn-primary" (click)="addTraining()" *ngIf="!isEditing" [disabled]="!newTraining.title">
+        <i class="fa-solid fa-graduation-cap"></i> Ajouter
+      </button>
+      <div class="edit-actions" *ngIf="isEditing">
+        <button class="btn-primary" (click)="saveEdit()">
+          <i class="fa-solid fa-check"></i> Enregistrer
+        </button>
+        <button class="btn-secondary" (click)="cancelEdit()">
+          <i class="fa-solid fa-xmark"></i> Annuler
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="training-grid">
+    <div *ngFor="let tr of trainings" class="card training-card shadow">
+      <div class="training-icon">
+        <i class="fa-solid fa-book-bookmark"></i>
+      </div>
+      <div class="training-body">
+        <div class="training-header">
+          <h3>{{ tr.title }}</h3>
+          <span class="status-badge" [class]="tr.status.toLowerCase()">{{ tr.status }}</span>
+        </div>
+
+        <p class="org-name"><i class="fa-solid fa-building-columns"></i> {{ tr.organization }}</p>
+        <p class="training-desc">{{ tr.description || 'Formation certifiante pour le secteur bancaire.' }}</p>
+
+        <!-- Type badge -->
+        <div class="training-meta" *ngIf="tr.trainingType">
+          <span class="meta-badge" [class.online]="tr.trainingType === 'ONLINE'" [class.presentiel]="tr.trainingType === 'PRESENTIEL'">
+            <i class="fa-solid" [class.fa-globe]="tr.trainingType === 'ONLINE'" [class.fa-building]="tr.trainingType === 'PRESENTIEL'"></i>
+            {{ tr.trainingType === 'ONLINE' ? 'En Ligne' : 'Présentiel' }}
+          </span>
+        </div>
+
+        <!-- Lien (uniquement si ONLINE et lien renseigné) -->
+        <div class="training-link-row" *ngIf="tr.trainingType === 'ONLINE' && tr.trainingLink">
+          <a [href]="tr.trainingLink" target="_blank" rel="noopener noreferrer" class="training-link-btn">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Accéder à la formation
+          </a>
+        </div>
+
+        <!-- Chef de formation -->
+        <p class="trainer-name" *ngIf="tr.trainerName">
+          <i class="fa-solid fa-user-tie"></i> {{ tr.trainerName }}
+        </p>
+
+        <!-- Date de formation -->
+        <p class="training-date" *ngIf="tr.trainingDate">
+          <i class="fa-solid fa-calendar-days"></i> {{ tr.trainingDate | date:'dd/MM/yyyy' }}
+        </p>
+
+        <div class="training-footer">
+          <span class="duration"><i class="fa-solid fa-clock"></i> {{ tr.durationHours }} Heures</span>
+          <div class="actions">
+            <button class="btn-sm btn-del" (click)="deleteTraining(tr.id)" title="Supprimer">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+            <button class="btn-sm btn-outline" (click)="editTraining(tr)">Éditer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="trainings.length === 0" class="no-data-card card">
+      <p>Aucune formation enregistrée dans le catalogue.</p>
+    </div>
+  </div>
+</div>

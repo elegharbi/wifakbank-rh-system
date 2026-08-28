@@ -1,0 +1,16 @@
+/* src/styles/variables.css */
+:root {
+  --primary: #E21E26; /* Wifak Bank red */
+  --secondary: #FFF5F5; /* Light red */
+  --dark-bg: #2B2B2B;
+  --light-bg: #F5F5F5;
+  --text-light: #FFFFFF;
+  --text-dark: #212529;
+  --font-family: 'Inter', sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--light-bg);
+  color: var(--text-dark);
+}

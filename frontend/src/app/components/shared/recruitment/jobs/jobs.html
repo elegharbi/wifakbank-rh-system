@@ -1,0 +1,102 @@
+<div class="jobs-container">
+  <div class="header-card card shadow-lg" style="background: linear-gradient(135deg, #0f1c2e 0%, #1e293b 100%); color: white; border: none;">
+    <div class="header-flex">
+      <div>
+        <h2 style="color: white; margin-bottom: 8px;"><i class="fa-solid fa-briefcase" style="color: #ff8a8e; margin-right: 10px;"></i>{{ t('openJobs') }}</h2>
+        <p class="subtitle" style="color: #94a3b8;">Explorez les opportunités de carrière au sein de Wifak Bank et postulez dès maintenant.</p>
+      </div>
+      <span class="badge badge-open" style="background: rgba(226, 30, 38, 0.2); color: #ff8a8e;">{{ jobs.length }} Poste(s) disponible(s)</span>
+    </div>
+  </div>
+
+  <div class="jobs-list" *ngIf="jobs.length > 0">
+    <div class="job-card card shadow-sm" *ngFor="let job of jobs" style="position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+      <div style="position: absolute; top: 0; left: 0; height: 4px; width: 100%; background: #E21E26;"></div>
+      
+      <div>
+        <div class="job-header" style="margin-bottom: 12px;">
+          <h3 style="font-size: 1.2rem; color: var(--text); font-weight: 700;">{{ job.title }}</h3>
+          <span class="job-status open">Ouvert</span>
+        </div>
+        
+        <div class="job-meta" style="margin-bottom: 16px; font-size: 0.85rem; display: flex; gap: 15px;">
+          <span><i class="fa-solid fa-building" style="margin-right: 5px; color: var(--primary);"></i>{{ job.department }}</span>
+          <span *ngIf="job.postedDate"><i class="fa-solid fa-calendar-alt" style="margin-right: 5px; color: var(--primary);"></i>{{ job.postedDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted);">Description :</h4>
+          <p class="job-desc">{{ job.description }}</p>
+        </div>
+
+        <div style="margin-bottom: 20px;" *ngIf="job.requirements">
+          <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text-muted);">Exigences :</h4>
+          <p class="job-desc" style="font-style: italic;">{{ job.requirements }}</p>
+        </div>
+      </div>
+
+      <div class="job-actions" style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 15px;">
+        <button class="btn-primary" style="width: 100%;" (click)="openApplyModal(job)">
+          <i class="fa-solid fa-paper-plane"></i> Postuler à cette offre
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-data" *ngIf="jobs.length === 0">
+    <i class="fa-solid fa-folder-open"></i>
+    <p>Aucun poste ouvert pour le moment. Veuillez repasser plus tard.</p>
+  </div>
+
+  <!-- Apply Modal Overlay -->
+  <div class="modal-overlay" *ngIf="showApplyModal" (click)="closeApplyModal()">
+    <div class="modal-card shadow-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-signature" style="color: #E21E26; margin-right: 10px;"></i>Soumettre ma candidature</h3>
+        <button class="close-btn" (click)="closeApplyModal()" type="button" aria-label="Fermer">&times;</button>
+      </div>
+      
+      <div class="modal-body" *ngIf="selectedJob">
+        <div class="job-summary-badge">
+          <strong>Poste ciblé :</strong> {{ selectedJob.title }} <span style="color: #64748b; font-weight: 500;">({{ selectedJob.department }})</span>
+        </div>
+
+        <form (ngSubmit)="submitApplication()" #applyForm="ngForm" class="apply-form">
+          <div class="form-group">
+            <label>Nom complet <span class="req">*</span></label>
+            <input type="text" name="fullName" [(ngModel)]="applyFullName" placeholder="Ex: Mohamed Ahmed" required style="width: 100%;">
+          </div>
+
+          <div class="form-group">
+            <label>Adresse e-mail <span class="req">*</span></label>
+            <input type="email" name="email" [(ngModel)]="applyEmail" placeholder="Ex: candidat@gmail.com" required style="width: 100%;">
+          </div>
+
+          <div class="form-group">
+            <label>Numéro de téléphone <span class="req">*</span></label>
+            <input type="tel" name="phone" [(ngModel)]="applyPhone" placeholder="Ex: +216 22 123 456" required style="width: 100%;">
+          </div>
+
+          <div class="form-group">
+            <label>Sélectionner votre CV (PDF/Word) <span class="req">*</span></label>
+            <div class="cv-upload-zone" (click)="fileInput.click()">
+              <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" accept=".pdf,.doc,.docx">
+              <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+              <p class="upload-text" *ngIf="!selectedFileName">Cliquez pour parcourir ou glissez votre CV ici</p>
+              <p class="file-name-text" *ngIf="selectedFileName"><i class="fa-solid fa-file-pdf" style="color: #E21E26; margin-right: 5px;"></i>{{ selectedFileName }}</p>
+              <span class="upload-hint">PDF ou DOCX uniquement</span>
+            </div>
+          </div>
+
+          <div class="modal-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px;">
+            <button type="button" class="btn-secondary" (click)="closeApplyModal()">Annuler</button>
+            <button type="submit" class="btn-primary" [disabled]="applyForm.invalid || !applyCvUrl || isSubmitting">
+              <span *ngIf="!isSubmitting"><i class="fa-solid fa-paper-plane" style="margin-right: 6px;"></i> Envoyer ma candidature</span>
+              <span *ngIf="isSubmitting"><i class="fa-solid fa-spinner fa-spin" style="margin-right: 6px;"></i> Envoi en cours...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

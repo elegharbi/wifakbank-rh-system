@@ -1,0 +1,98 @@
+<div class="pts-wrapper">
+
+  <!-- EN-TÊTE -->
+  <div class="pts-header">
+    <h1 class="pts-title"><i class="fa-solid fa-star"></i> Mes Points & Performance</h1>
+    <p class="pts-sub">Suivez votre score, consultez le classement et votre historique d'activité</p>
+  </div>
+
+  <!-- Chargement -->
+  <div class="pts-loading" *ngIf="loading">
+    <i class="fa-solid fa-circle-notch fa-spin"></i> Chargement de vos données...
+  </div>
+
+  <div class="pts-error" *ngIf="errorMessage">
+    <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!loading && !errorMessage" class="pts-content">
+
+    <!-- Carte score principal -->
+    <div class="pts-score-card">
+      <div class="pts-score-bg"></div>
+      <div class="pts-score-left">
+        <div class="pts-score-label">Votre score actuel</div>
+        <div class="pts-score-value">{{ totalPoints }}<span class="pts-unit"> pts</span></div>
+        <div class="pts-score-badge">
+          <i class="fa-solid fa-medal"></i>
+          <span *ngIf="totalPoints >= 1000">Collaborateur Expert</span>
+          <span *ngIf="totalPoints >= 500 && totalPoints < 1000">Collaborateur Confirmé</span>
+          <span *ngIf="totalPoints < 500">Collaborateur Junior</span>
+        </div>
+      </div>
+      <div class="pts-score-right">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+    </div>
+
+    <div class="pts-grid">
+
+      <!-- Classement Top 5 -->
+      <div class="pts-card">
+        <div class="pts-card-header">
+          <i class="fa-solid fa-ranking-star"></i>
+          <h2>Classement — Top 5</h2>
+        </div>
+        <div class="pts-leaderboard">
+          <div class="pts-leader-item" *ngFor="let item of leaderboard; let i = index">
+            <div class="pts-rank"
+              [class.rank-gold]="i === 0"
+              [class.rank-silver]="i === 1"
+              [class.rank-bronze]="i === 2"
+              [class.rank-other]="i > 2">
+              <span *ngIf="i === 0">🥇</span>
+              <span *ngIf="i === 1">🥈</span>
+              <span *ngIf="i === 2">🥉</span>
+              <span *ngIf="i > 2">#{{ i + 1 }}</span>
+            </div>
+            <div class="pts-leader-avatar">
+              <i class="fa-solid fa-user-circle"></i>
+            </div>
+            <div class="pts-leader-name">{{ item.username }}</div>
+            <div class="pts-leader-score">{{ item.totalPoints }} <span>pts</span></div>
+          </div>
+          <div class="pts-empty" *ngIf="leaderboard.length === 0">
+            Classement non disponible
+          </div>
+        </div>
+      </div>
+
+      <!-- Historique -->
+      <div class="pts-card">
+        <div class="pts-card-header">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <h2>Historique d'activité</h2>
+        </div>
+        <div class="pts-history">
+          <div class="pts-log-item" *ngFor="let log of history">
+            <div class="pts-log-icon" [class.icon-pos]="log.pointsChanged > 0" [class.icon-neg]="log.pointsChanged < 0">
+              <i class="fa-solid" [class.fa-arrow-trend-up]="log.pointsChanged > 0" [class.fa-arrow-trend-down]="log.pointsChanged < 0"></i>
+            </div>
+            <div class="pts-log-info">
+              <p class="pts-log-reason">{{ log.reason }}</p>
+              <span class="pts-log-date">{{ log.date | date:'dd MMM yyyy' }}</span>
+            </div>
+            <div class="pts-log-delta" [class.delta-pos]="log.pointsChanged > 0" [class.delta-neg]="log.pointsChanged < 0">
+              {{ log.pointsChanged > 0 ? '+' : '' }}{{ log.pointsChanged }} pts
+            </div>
+          </div>
+          <div class="pts-empty" *ngIf="history.length === 0">
+            Aucun historique pour le moment.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

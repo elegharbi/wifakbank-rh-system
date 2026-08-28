@@ -1,0 +1,191 @@
+<div class="hr-dashboard-wrapper">
+
+  <!-- KPI Stats Cards -->
+  <div class="stats-grid">
+    <!-- Candidatures en attente -->
+    <div class="stat-card candidates-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ pendingCandidatesCount }}</div>
+        <div class="stat-label">Candidatures en attente</div>
+        <a routerLink="/hr/candidates" class="stat-link">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+    </div>
+
+    <!-- Congés à valider -->
+    <div class="stat-card leaves-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ pendingLeavesCount }}</div>
+        <div class="stat-label">Congés à valider</div>
+        <a routerLink="/hr/leaves" class="stat-link">Gérer <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-calendar-xmark"></i>
+      </div>
+    </div>
+
+    <!-- Formations actives -->
+    <div class="stat-card trainings-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ totalTrainings }}</div>
+        <div class="stat-label">Formations actives</div>
+        <a routerLink="/hr/trainings" class="stat-link">Gérer <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+    </div>
+
+    <!-- Total employés -->
+    <div class="stat-card employees-card">
+      <div class="stat-content">
+        <div class="stat-value">{{ totalEmployees }}</div>
+        <div class="stat-label">Total Employés</div>
+        <a routerLink="/hr/performance" class="stat-link">Évaluer <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="stat-icon">
+        <i class="fa-solid fa-users"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Row 1: Congés + Offres d'emploi -->
+  <div class="dashboard-row">
+    <!-- Congés à valider -->
+    <div class="dashboard-panel flex-1">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="fa-solid fa-calendar-xmark"></i> Congés à valider</h3>
+        <a routerLink="/hr/leaves" class="panel-link">Voir tout</a>
+      </div>
+      <div class="table-responsive">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Employé</th>
+              <th>Période</th>
+              <th>Raison</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leave of pendingLeaves">
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar-sm">{{ getInitials(leave) }}</div>
+                  <span>{{ leave.employee?.name || leave.nom + ' ' + leave.prenom }}</span>
+                </div>
+              </td>
+              <td>{{ leave.startDate | date:'dd/MM/yy' }} → {{ leave.endDate | date:'dd/MM/yy' }}</td>
+              <td><span class="reason-badge">{{ leave.reason || 'N/A' }}</span></td>
+              <td class="actions-cell">
+                <button class="btn-icon btn-approve" (click)="approveLeave(leave.id)" title="Valider">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button class="btn-icon btn-reject" (click)="rejectLeave(leave.id)" title="Refuser">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="pendingLeaves.length === 0">
+              <td colspan="4" class="empty-state">
+                <i class="fa-solid fa-check-circle"></i> Aucun congé en attente
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Dernières candidatures -->
+    <div class="dashboard-panel flex-1">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="fa-solid fa-user-graduate"></i> Dernières candidatures</h3>
+        <a routerLink="/hr/candidates" class="panel-link">Voir tout</a>
+      </div>
+      <div class="table-responsive">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Candidat</th>
+              <th>Poste</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of recentCandidates">
+              <td>{{ c.fullName }}</td>
+              <td>{{ c.jobPosition?.title || c.jobPosition || 'N/A' }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="'status-' + (c.status || 'PENDING').toLowerCase()">
+                  {{ c.status || 'EN ATTENTE' }}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="recentCandidates.length === 0">
+              <td colspan="3" class="empty-state">
+                <i class="fa-solid fa-inbox"></i> Aucune candidature récente
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Formations à venir + Actions rapides -->
+  <div class="dashboard-row">
+    <!-- Formations -->
+    <div class="dashboard-panel flex-1">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="fa-solid fa-graduation-cap"></i> Formations récentes</h3>
+        <a routerLink="/hr/trainings" class="panel-link">Gérer</a>
+      </div>
+      <ul class="training-list">
+        <li *ngFor="let t of recentTrainings" class="training-item">
+          <div class="training-icon">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div class="training-info">
+            <div class="training-title">{{ t.title }}</div>
+            <div class="training-meta">{{ t.organization || 'Interne' }} · {{ t.durationHours || 0 }}h</div>
+          </div>
+          <span class="training-badge">{{ t.status || 'Planifiée' }}</span>
+        </li>
+        <li *ngIf="recentTrainings.length === 0" class="empty-state">
+          <i class="fa-solid fa-circle-info"></i> Aucune formation planifiée
+        </li>
+      </ul>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="dashboard-panel flex-shrink-0" style="min-width: 280px; max-width: 320px;">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="fa-solid fa-bolt"></i> Actions rapides</h3>
+      </div>
+      <div class="quick-actions">
+
+        <a routerLink="/hr/trainings" class="quick-action-btn">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Créer formation</span>
+        </a>
+
+        <a routerLink="/hr/performance" class="quick-action-btn">
+          <i class="fa-solid fa-chart-bar"></i>
+          <span>Évaluer employé</span>
+        </a>
+        <a routerLink="/hr/events" class="quick-action-btn">
+          <i class="fa-solid fa-calendar-plus"></i>
+          <span>Créer événement</span>
+        </a>
+        <a routerLink="/hr/participations" class="quick-action-btn">
+          <i class="fa-solid fa-star"></i>
+          <span>Attribuer points</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,106 @@
+<div class="hr-layout">
+  <!-- SIDEBAR RH -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">
+        <i class="fa-solid fa-people-roof"></i>
+      </div>
+      <span class="logo-text">Directeur Ressources Humaines</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/hr/dashboard" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-chart-pie icon"></i>
+          <span>Tableau de bord</span>
+        </div>
+      </a>
+
+      <!-- Recrutement -->
+      <div class="nav-group-label">Recrutement</div>
+      <a routerLink="/hr/candidates" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-user-graduate icon"></i>
+          <span>Candidatures</span>
+        </div>
+      </a>
+
+      <!-- Gestion RH -->
+      <div class="nav-group-label">Gestion RH</div>
+      <a routerLink="/hr/leaves" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-calendar-xmark icon"></i>
+          <span>Congés</span>
+        </div>
+        <span class="badge badge-red" *ngIf="pendingLeaves > 0">{{ pendingLeaves }}</span>
+      </a>
+      <a routerLink="/hr/trainings" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-graduation-cap icon"></i>
+          <span>Formations</span>
+        </div>
+      </a>
+      <a routerLink="/hr/performance" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-chart-bar icon"></i>
+          <span>Évaluations</span>
+        </div>
+      </a>
+      <a routerLink="/hr/participations" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-star icon"></i>
+          <span>Points & Participation</span>
+        </div>
+      </a>
+
+      <!-- Communication -->
+      <div class="nav-group-label">Communication</div>
+
+      <a routerLink="/hr/events" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-calendar-days icon"></i>
+          <span>Événements</span>
+        </div>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <a routerLink="/hr/profile" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-circle-user icon"></i>
+          <span>Mon profil</span>
+        </div>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket icon"></i>
+        <span>Déconnexion</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-container">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        <span class="page-subtitle">Espace Directeur Ressources Humaines</span>
+      </div>
+
+      <div class="topbar-right">
+
+        <div class="user-avatar" title="{{ currentUser?.firstName }} {{ currentUser?.lastName }}">
+          {{ userInitials }}
+        </div>
+      </div>
+    </header>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <app-chatbot></app-chatbot>
+</div>

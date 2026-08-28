@@ -1,0 +1,145 @@
+<div class="payroll-container">
+  <div class="header-card card shadow-lg">
+    <h2>Gestion de la Paie</h2>
+    <p class="subtitle">Générez et suivez les règlements des salaires des employés.</p>
+    
+    <div class="payroll-form grid">
+      <div class="form-group">
+        <label>Employé</label>
+        <div class="employee-select-row">
+          <select [(ngModel)]="selectedEmployeeId">
+            <option [ngValue]="null">Sélectionner...</option>
+            <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+          </select>
+          <button class="btn-add-employee" (click)="openAddEmployeeModal()" title="Ajouter un employé">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Ajouter</span>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Période</label>
+        <div class="period-inputs">
+          <select [(ngModel)]="newSalary.month">
+            <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+          </select>
+          <input type="text" [(ngModel)]="newSalary.year" style="width: 80px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Salaire de base (DT)</label>
+        <input type="number" [(ngModel)]="newSalary.baseAmount">
+      </div>
+      <div class="form-group">
+        <label>Primes</label>
+        <input type="number" [(ngModel)]="newSalary.bonusAmount">
+      </div>
+      <button class="btn-primary" (click)="addSalary()" [disabled]="!selectedEmployeeId">
+        <i class="fa-solid fa-file-invoice-dollar"></i> Générer
+      </button>
+    </div>
+  </div>
+
+  <div class="card payroll-card shadow">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Période</th>
+          <th>Brut</th>
+          <th>Net à payer</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sal of salaries">
+          <td><strong>{{ (sal.user?.firstName ? sal.user?.firstName + ' ' + sal.user?.lastName : sal.user?.username) || sal.employee?.name || 'Inconnu' }}</strong></td>
+          <td>{{ sal.month }} {{ sal.year }}</td>
+          <td>{{ sal.baseAmount + sal.bonusAmount | number:'1.2-2' }} DT</td>
+          <td class="net-value">{{ calculateNet(sal) | number:'1.2-2' }} DT</td>
+          <td><span class="badge badge-paid">Payé</span></td>
+          <td>
+            <a [routerLink]="['/viewer/payslip', sal.id]" target="_blank" class="btn-light btn-sm"><i class="fa-solid fa-print"></i> PDF</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="salaries.length === 0" class="no-data-simple">
+      <p>Aucun bulletin de paie généré pour ce mois.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========= MODALE AJOUT EMPLOYÉ ========= -->
+<div class="modal-overlay" *ngIf="showAddEmployeeModal" (click)="closeOnOverlay($event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <i class="fa-solid fa-user-plus"></i>
+      </div>
+      <div>
+        <h3>Ajouter un employé</h3>
+        <p>Remplissez les informations pour créer le profil employé.</p>
+      </div>
+      <button class="modal-close" (click)="closeAddEmployeeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-form-grid">
+        <div class="modal-form-group">
+          <label>Prénom <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="newEmployeeForm.firstName" placeholder="Ex: Ahmed" [class.input-error]="submitted && !newEmployeeForm.firstName">
+          <span class="error-msg" *ngIf="submitted && !newEmployeeForm.firstName">Prénom obligatoire</span>
+        </div>
+        <div class="modal-form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="newEmployeeForm.lastName" placeholder="Ex: Ben Ali" [class.input-error]="submitted && !newEmployeeForm.lastName">
+          <span class="error-msg" *ngIf="submitted && !newEmployeeForm.lastName">Nom obligatoire</span>
+        </div>
+        <div class="modal-form-group">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" [(ngModel)]="newEmployeeForm.email" placeholder="exemple@wifakbank.com" [class.input-error]="submitted && !newEmployeeForm.email">
+          <span class="error-msg" *ngIf="submitted && !newEmployeeForm.email">Champ obligatoire</span>
+        </div>
+        <div class="modal-form-group">
+          <label>Téléphone</label>
+          <input type="tel" [(ngModel)]="newEmployeeForm.phone" placeholder="+216 XX XXX XXX">
+        </div>
+        <div class="modal-form-group">
+          <label>Département <span class="required">*</span></label>
+          <select [(ngModel)]="newEmployeeForm.department" [class.input-error]="submitted && !newEmployeeForm.department">
+            <option value="">Sélectionner un département...</option>
+            <option value="Informatique">Informatique</option>
+            <option value="Finance">Finance</option>
+            <option value="RH">Ressources Humaines</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Operations">Opérations</option>
+            <option value="Juridique">Juridique</option>
+            <option value="Direction">Direction</option>
+          </select>
+          <span class="error-msg" *ngIf="submitted && !newEmployeeForm.department">Champ obligatoire</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeAddEmployeeModal()">
+        <i class="fa-solid fa-xmark"></i> Annuler
+      </button>
+      <button class="btn-save" (click)="saveEmployee()" [disabled]="savingEmployee">
+        <i class="fa-solid fa-floppy-disk"></i>
+        {{ savingEmployee ? 'Enregistrement...' : 'Enregistrer' }}
+      </button>
+    </div>
+
+    <!-- Message succès -->
+    <div class="success-toast" *ngIf="employeeAdded">
+      <i class="fa-solid fa-circle-check"></i> Employé ajouté avec succès !
+    </div>
+  </div>
+</div>

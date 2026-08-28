@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Backlog Produit Global - Wifak Bank RH</title>
+    <style>
+        @media print { body { margin: 20px; } }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; margin: 40px auto; max-width: 1000px; }
+        h1 { color: #1e3a8a; text-align: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 12px; font-size: 22px; }
+        h2 { color: #2563eb; margin-top: 30px; font-size: 18px; border-left: 4px solid #2563eb; padding-left: 10px; }
+        p { text-align: justify; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 30px; font-size: 13px; }
+        th, td { border: 1px solid #cbd5e1; padding: 9px 10px; vertical-align: top; }
+        th { background-color: #1e3a8a; color: white; font-weight: bold; text-align: left; }
+        .priority-high { color: #dc2626; font-weight: bold; }
+        .priority-med { color: #ca8a04; font-weight: bold; }
+        .role-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .role-admin { background: #fee2e2; color: #991b1b; }
+        .role-drh { background: #dcfce7; color: #166534; }
+        .role-emp { background: #dbeafe; color: #1e40af; }
+        .role-cand { background: #fef9c3; color: #854d0e; }
+        .role-all { background: #f3e8ff; color: #6b21a8; }
+        .epic-cell { background-color: #f8fafc; font-weight: bold; color: #1e3a8a; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <h1>Backlog Produit Global — Système de Gestion des Ressources Humaines<br>Wifak Bank</h1>
+
+    <p>
+        Dans le cadre de la méthodologie agile <strong>Scrum</strong>, le Backlog Produit regroupe l'ensemble des besoins fonctionnels du système exprimés sous forme de <strong>User Stories</strong>. Les besoins sont structurés par <strong>Épopées (Epics)</strong> et priorisés selon la valeur métier apportée à <strong>Wifak Bank</strong>.
+    </p>
+
+    <h2>Tableau du Backlog Produit</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:20%;">Épopée (Epic)</th>
+                <th style="width:7%;">ID</th>
+                <th style="width:13%;">Acteur</th>
+                <th style="width:48%;">User Story</th>
+                <th style="width:12%;">Priorité</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- EPIC 1 -->
+            <tr>
+                <td rowspan="4" class="epic-cell">1. Authentification &amp; Sécurité</td>
+                <td><b>US1.1</b></td>
+                <td><span class="role-tag role-all">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux m'authentifier via login/email et accéder à mon tableau de bord spécifique.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US1.2</b></td>
+                <td><span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant que candidat, je veux m'inscrire directement avec dépôt de mon CV (PDF) et recevoir un email de confirmation.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US1.3</b></td>
+                <td><span class="role-tag role-all">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux pouvoir réinitialiser mon mot de passe par email en cas d'oubli.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US1.4</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux changer mon mot de passe temporaire dès ma première connexion.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 2 -->
+            <tr>
+                <td rowspan="3" class="epic-cell">2. Gouvernance &amp; Comptes (Admin)</td>
+                <td><b>US2.1</b></td>
+                <td><span class="role-tag role-admin">Admin</span></td>
+                <td>En tant qu'administrateur, je veux <b>créer, modifier et supprimer</b> les comptes utilisateurs (Admin, DRH, Employé, Candidat).</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US2.2</b></td>
+                <td><span class="role-tag role-admin">Admin</span></td>
+                <td>En tant qu'administrateur, je veux ajouter un compte Directeur RH et lui envoyer ses identifiants par email.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US2.3</b></td>
+                <td><span class="role-tag role-admin">Admin</span></td>
+                <td>En tant qu'administrateur, je veux activer, bloquer ou suspendre l'accès d'un compte utilisateur.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 3 -->
+            <tr>
+                <td class="epic-cell">3. Gestion des Départements</td>
+                <td><b>US3.1</b></td>
+                <td><span class="role-tag role-admin">Admin</span></td>
+                <td>En tant qu'administrateur, je veux <b>créer, modifier et supprimer</b> des départements et désigner un responsable.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 4 -->
+            <tr>
+                <td rowspan="2" class="epic-cell">4. Profils &amp; Espace Candidat</td>
+                <td><b>US4.1</b></td>
+                <td><span class="role-tag role-all">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux consulter et mettre à jour mes informations personnelles (avatar, nom, contact).</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US4.2</b></td>
+                <td><span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant que candidat, je veux gérer mes compétences, expériences et mettre à jour mon fichier CV PDF.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 5 -->
+            <tr>
+                <td rowspan="3" class="epic-cell">5. Gestion des Congés</td>
+                <td><b>US5.1</b></td>
+                <td><span class="role-tag role-emp">Employé</span></td>
+                <td>En tant qu'employé, je veux soumettre une demande de congé et recevoir un accusé de réception par email.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US5.2</b></td>
+                <td><span class="role-tag role-emp">Employé</span></td>
+                <td>En tant qu'employé, je veux suivre le statut de mes demandes de congé et consulter mon solde.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US5.3</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux <b>valider ou refuser</b> les demandes de congé avec notification email automatique.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 6 -->
+            <tr>
+                <td rowspan="4" class="epic-cell">6. Recrutement &amp; Offres</td>
+                <td><b>US6.1</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux créer, modifier, publier et fermer des offres d'emploi.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US6.2</b></td>
+                <td><span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant que candidat, je veux rechercher et consulter les offres d'emploi de Wifak Bank.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US6.3</b></td>
+                <td><span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant que candidat, je veux postuler à une offre d'emploi avec envoi de mes coordonnées et de mon CV.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US6.4</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux consulter les candidatures et examiner les CVs via le lecteur PDF intégré.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 7 -->
+            <tr>
+                <td rowspan="3" class="epic-cell">7. Formations</td>
+                <td><b>US7.1</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux programmer des sessions de formation pour les collaborateurs.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US7.2</b></td>
+                <td><span class="role-tag role-emp">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter les formations ouvertes et demander une inscription.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US7.3</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux approuver ou rejeter les inscriptions aux formations et notifier par email.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 8 -->
+            <tr>
+                <td rowspan="2" class="epic-cell">8. Événements Internes</td>
+                <td><b>US8.1</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux <b>créer, modifier et planifier des événements internes</b>.</td>
+                <td class="priority-med">Moyenne</td>
+            </tr>
+            <tr>
+                <td><b>US8.2</b></td>
+                <td><span class="role-tag role-emp">Employé</span> <span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant qu'employé ou candidat, je veux consulter le calendrier des événements et marquer ma participation.</td>
+                <td class="priority-med">Moyenne</td>
+            </tr>
+
+            <!-- EPIC 9 -->
+            <tr>
+                <td rowspan="2" class="epic-cell">9. Performance &amp; Gamification</td>
+                <td><b>US9.1</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux attribuer des points de performance (+/-) aux employés avec justification.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US9.2</b></td>
+                <td><span class="role-tag role-emp">Employé</span></td>
+                <td>En tant qu'employé, je veux consulter mon solde de points et mon rang sur le classement (leaderboard).</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 10 -->
+            <tr>
+                <td rowspan="2" class="epic-cell">10. Chatbot IA &amp; Assistance</td>
+                <td><b>US10.1</b></td>
+                <td><span class="role-tag role-emp">Employé</span> <span class="role-tag role-drh">DRH</span></td>
+                <td>En tant qu'utilisateur, je veux interagir avec le Chatbot IA Wifak RH pour obtenir des réponses rapides sur les procédures.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US10.2</b></td>
+                <td><span class="role-tag role-all">Tous</span></td>
+                <td>En tant qu'utilisateur, je veux recevoir des notifications emails pour chaque transaction importante.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+
+            <!-- EPIC 11 -->
+            <tr>
+                <td rowspan="4" class="epic-cell">11. Tableaux de Bord</td>
+                <td><b>US11.1</b></td>
+                <td><span class="role-tag role-admin">Admin</span></td>
+                <td>En tant qu'administrateur, je veux un tableau de bord analytique axé sur la gouvernance technique.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US11.2</b></td>
+                <td><span class="role-tag role-drh">DRH</span></td>
+                <td>En tant que Directeur RH, je veux un tableau de bord synthétisant tous les KPI RH.</td>
+                <td class="priority-high">Haute</td>
+            </tr>
+            <tr>
+                <td><b>US11.3</b></td>
+                <td><span class="role-tag role-emp">Employé</span></td>
+                <td>En tant qu'employé, je veux un tableau de bord personnel regroupant mes congés, points, formations et événements.</td>
+                <td class="priority-med">Moyenne</td>
+            </tr>
+            <tr>
+                <td><b>US11.4</b></td>
+                <td><span class="role-tag role-cand">Candidat</span></td>
+                <td>En tant que candidat, je veux un espace carrière résumé montrant mes postulations.</td>
+                <td class="priority-med">Moyenne</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Backlog Produit Global — Système de Gestion RH Wifak Bank — Projet de Fin d'Études 2026</p>
+    </div>
+
+</body>
+</html>

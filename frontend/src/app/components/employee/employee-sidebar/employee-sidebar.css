@@ -1,0 +1,211 @@
+/* ==========================================================
+   SIDEBAR EMPLOYE — verre clair, accent flamme
+   ========================================================== */
+
+.emp-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 14px 18px;
+  background: transparent;
+  overflow-x: hidden;
+}
+
+/* ---------- Identite ---------- */
+
+.emp-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 18px 0 6px;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-1);
+}
+
+.emp-avatar {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 18px;
+  background: var(--wf-flame);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.45),
+    0 8px 18px rgba(11,92,168,.32);
+}
+
+/* pastille de presence */
+.emp-avatar::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2.5px solid #fff;
+}
+
+.emp-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.emp-user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.emp-user-name {
+  font-family: var(--wf-display);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--wf-ink);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emp-user-role {
+  margin-top: 2px;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--wf-blue);
+}
+
+/* ---------- Sections ---------- */
+
+.emp-nav-section-label {
+  margin: 20px 0 8px;
+  padding: 0 12px;
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--wf-ink-faint);
+}
+
+/* ---------- Liens ---------- */
+
+.emp-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  margin-bottom: 3px;
+  border-radius: 13px;
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--wf-ink-soft);
+  line-height: 1.35;
+  transition: color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.emp-nav-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--wf-inset);
+  color: var(--wf-ink-soft);
+  font-size: .88rem;
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.emp-nav-item:hover {
+  background: var(--wf-surface);
+  color: var(--wf-ink);
+  transform: translateX(3px);
+}
+
+.emp-nav-item:hover .emp-nav-icon {
+  background: var(--wf-blue-pale);
+  color: var(--wf-blue);
+  transform: translateY(-1px);
+}
+
+.emp-nav-item:focus-visible {
+  outline: 2px solid var(--wf-blue);
+  outline-offset: 2px;
+}
+
+/* actif : la flamme, en relief */
+.emp-nav-item.active {
+  color: #fff;
+  font-weight: 600;
+  background: var(--wf-flame);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    0 8px 18px rgba(11,92,168,.3);
+  transform: none;
+}
+
+.emp-nav-item.active .emp-nav-icon {
+  background: rgba(255,255,255,.22);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+}
+
+/* ---------- Deconnexion ---------- */
+
+.emp-sidebar-footer {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.emp-logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px;
+  border-radius: 13px;
+  border: 1px solid var(--wf-red-pale);
+  background: var(--wf-surface);
+  color: var(--wf-red);
+  font-family: inherit;
+  font-size: .855rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.emp-logout-btn:hover {
+  background: var(--wf-red);
+  border-color: var(--wf-red);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(214,43,36,.28);
+}
+
+.emp-logout-btn:focus-visible {
+  outline: 2px solid var(--wf-red);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emp-nav-item,
+  .emp-nav-icon,
+  .emp-logout-btn { transition: none; }
+  .emp-nav-item:hover,
+  .emp-logout-btn:hover { transform: none; }
+}

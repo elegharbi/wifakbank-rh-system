@@ -1,0 +1,360 @@
+/* ==========================================================
+   PLAN DE FORMATION
+   ========================================================== */
+
+.trainings-wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 26px 28px 60px;
+  font-family: 'Inter', sans-serif;
+  color: var(--wf-ink);
+  perspective: 1400px;
+}
+
+/* ---------------- En-tete ---------------- */
+
+.trainings-header {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 34px 32px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #123E73 0%, #0B5CA8 48%, #1E77C4 100%);
+  box-shadow: var(--wf-lift-3);
+  isolation: isolate;
+  animation: wf-rise .5s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+.trainings-header::before {
+  content: '';
+  position: absolute;
+  inset: -60% -20% auto auto;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,72,63,.46) 0%, transparent 68%);
+  filter: blur(28px);
+  z-index: -1;
+  animation: tr-orbit 21s ease-in-out infinite;
+}
+
+@keyframes tr-orbit {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-75px,58px) scale(1.15); }
+}
+
+.trainings-title {
+  margin: 0;
+  max-width: 74%;
+  font-family: var(--wf-display);
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+
+
+
+.trainings-sub {
+  margin: 12px 0 0;
+  max-width: 58ch;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,.75);
+}
+
+/* ---- Bandeau personnalise ---- */
+
+.tr-mark {
+  position: absolute;
+  right: 38px;
+  top: 50%;
+  width: 120px;
+  height: auto;
+  translate: 0 -50%;
+  z-index: -1;
+  opacity: .92;
+  filter: drop-shadow(0 14px 26px rgba(0,0,0,.34));
+  animation: tr-breathe 7s ease-in-out infinite;
+}
+
+@keyframes tr-breathe {
+  0%,100% { transform: translateY(0) rotate(-1.5deg); }
+  50%     { transform: translateY(-12px) rotate(1.5deg); }
+}
+
+.tr-eyebrow {
+  margin: 0 0 10px;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+
+.tr-name {
+  background: linear-gradient(100deg, #FFFFFF 0%, #FFD9D7 45%, #9FD2F7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Deux reperes chiffres, separes par un filet */
+.tr-stats {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+
+.tr-stat { display: flex; align-items: baseline; gap: 8px; }
+
+.tr-stat-num {
+  font-family: var(--wf-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.tr-stat-lbl {
+  font-size: .76rem;
+  color: rgba(255,255,255,.62);
+}
+
+.tr-stat-sep {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,.2);
+}
+
+.tr-empty-hint { font-size: .8rem !important; color: var(--wf-ink-faint) !important; }
+
+/* ---------------- Alertes ---------------- */
+
+.tr-alert {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 18px;
+  padding: 13px 17px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: .87rem;
+  animation: wf-rise .35s ease backwards;
+}
+
+.tr-success { background: var(--wf-note-ok-bg);  border-color: var(--wf-note-ok-bd);  color: var(--wf-note-ok-fg); }
+.tr-error   { background: var(--wf-note-err-bg); border-color: var(--wf-note-err-bd); color: var(--wf-note-err-fg); }
+
+/* ---------------- Chargement ---------------- */
+
+.trainings-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 60px 0;
+  color: var(--wf-ink-soft);
+  font-size: .9rem;
+}
+
+.trainings-loading i { color: var(--wf-blue); font-size: 1.3rem; }
+
+/* ---------------- Grille ---------------- */
+
+.trainings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.tr-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+  animation: wf-rise .5s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+.tr-card:nth-child(1) { animation-delay: .06s; }
+.tr-card:nth-child(2) { animation-delay: .11s; }
+.tr-card:nth-child(3) { animation-delay: .16s; }
+.tr-card:nth-child(4) { animation-delay: .21s; }
+.tr-card:nth-child(5) { animation-delay: .26s; }
+.tr-card:nth-child(n+6) { animation-delay: .31s; }
+
+/* liseret flamme revele au survol */
+.tr-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--wf-flame);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+.tr-card:hover {
+  transform: translateY(-7px) rotateX(3deg);
+  box-shadow: var(--wf-lift-3);
+  border-color: transparent;
+}
+
+.tr-card:hover::before { transform: scaleX(1); }
+
+.tr-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 18px 20px 0;
+}
+
+.tr-org-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--wf-blue-pale);
+  color: var(--wf-blue);
+  font-size: .74rem;
+  font-weight: 600;
+  max-width: 66%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tr-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--wf-ink-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tr-card-body { flex: 1; padding: 14px 20px 18px; }
+
+.tr-title {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: 1.06rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -.015em;
+  color: var(--wf-ink);
+}
+
+.tr-desc {
+  margin: 8px 0 0;
+  font-size: .835rem;
+  line-height: 1.55;
+  color: var(--wf-ink-soft);
+}
+
+.tr-card-footer {
+  padding: 0 20px 20px;
+}
+
+/* ---------------- Actions ---------------- */
+
+.tr-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: .865rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.tr-btn-register {
+  background: linear-gradient(150deg, var(--wf-blue-lit), var(--wf-blue));
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 7px 16px rgba(11,92,168,.3);
+}
+
+.tr-btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 12px 24px rgba(11,92,168,.4);
+}
+
+.tr-btn:focus-visible { outline: 2px solid var(--wf-blue); outline-offset: 2px; }
+
+.tr-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: .82rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.tr-pending  { background: rgba(232,163,61,.15); color: #B5790F; }
+.tr-approved { background: rgba(34,197,94,.15);  color: #17914A; }
+.tr-rejected { background: var(--wf-red-pale);   color: var(--wf-red); }
+
+body.dark-mode .tr-pending  { color: #F0C77C; }
+body.dark-mode .tr-approved { color: #86EFAC; }
+body.dark-mode .tr-rejected { color: #FCA5A5; }
+
+/* ---------------- Vide ---------------- */
+
+.trainings-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 58px 24px;
+  border-radius: 20px;
+  background: var(--wf-surface);
+  border: 1px dashed var(--wf-line);
+  text-align: center;
+}
+
+.trainings-empty i { font-size: 2.3rem; color: var(--wf-ink-faint); opacity: .55; }
+.trainings-empty p { margin: 0; font-size: .9rem; color: var(--wf-ink-soft); }
+
+/* ---------------- Adaptatif ---------------- */
+
+@media (max-width: 700px) {
+  .trainings-wrapper { padding: 18px 16px 46px; }
+  .trainings-header { padding: 24px 20px 26px; border-radius: 20px; }
+  .tr-mark { display: none; }
+  .trainings-title { max-width: 100%; }
+  .tr-stats { flex-wrap: wrap; gap: 14px; }
+  .trainings-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trainings-header::before, .tr-mark { animation: none; }
+  .trainings-header, .tr-card, .tr-alert { animation: none; }
+  .tr-card, .tr-card::before, .tr-btn { transition: none; }
+  .tr-card:hover { transform: none; }
+  .tr-btn-register:hover { transform: none; }
+}

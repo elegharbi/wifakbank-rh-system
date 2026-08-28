@@ -1,0 +1,107 @@
+<div class="cb" [class.open]="isOpen">
+
+  <div class="cb-window" *ngIf="isOpen" role="dialog" aria-label="Assistant RH Wifak Bank">
+
+    <header class="cb-head">
+      <span class="cb-mark" aria-hidden="true">W</span>
+      <div class="cb-head-text">
+        <p class="cb-title">Assistant RH</p>
+        <p class="cb-status"><span class="cb-dot" aria-hidden="true"></span>En ligne</p>
+      </div>
+
+      <button type="button" class="cb-icon-btn" (click)="toggleHistory()"
+              [class.is-on]="showHistory"
+              [attr.aria-pressed]="showHistory"
+              title="Conversations enregistrées" aria-label="Conversations enregistrées">
+        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+      </button>
+
+      <button type="button" class="cb-icon-btn" (click)="startNew()"
+              title="Nouvelle conversation" aria-label="Nouvelle conversation">
+        <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+      </button>
+
+      <button type="button" class="cb-icon-btn" (click)="closeChat()" aria-label="Fermer l'assistant">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <!-- ============ Conversations enregistrées ============ -->
+    <div class="cb-history" *ngIf="showHistory">
+      <div class="cb-history-head">
+        <p class="cb-history-title">Vos conversations</p>
+        <button type="button" class="cb-new" (click)="startNew()">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i> Nouvelle
+        </button>
+      </div>
+
+      <ul class="cb-list" *ngIf="hasSaved; else noHistory">
+        <li *ngFor="let c of conversations">
+          <button type="button" class="cb-item" [class.is-current]="c.id === conversationId" (click)="open(c)">
+            <span class="cb-item-body">
+              <span class="cb-item-title">{{ c.title }}</span>
+              <span class="cb-item-meta">{{ labelFor(c.updatedAt) }} · {{ c.messages.length }} messages</span>
+            </span>
+            <span class="cb-del" (click)="remove(c, $event)" role="button" tabindex="0"
+                  (keydown.enter)="remove(c, $event)"
+                  [attr.aria-label]="'Supprimer la conversation ' + c.title">
+              <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+            </span>
+          </button>
+        </li>
+      </ul>
+
+      <ng-template #noHistory>
+        <div class="cb-empty">
+          <i class="fa-regular fa-comments" aria-hidden="true"></i>
+          <p>Vos échanges apparaîtront ici.</p>
+          <p class="cb-empty-hint">Posez une première question pour démarrer.</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- ============ Conversation en cours ============ -->
+    <ng-container *ngIf="!showHistory">
+      <div class="cb-log" #scrollContainer role="log" aria-live="polite">
+        <div *ngFor="let msg of messages" class="cb-row" [class.is-user]="msg.isUser">
+          <div class="cb-bubble">{{ msg.text }}</div>
+          <span class="cb-time">{{ msg.time }}</span>
+        </div>
+
+        <div class="cb-row" *ngIf="isLoading">
+          <div class="cb-bubble cb-typing" aria-label="L'assistant rédige une réponse">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cb-suggest" *ngIf="!hasConversation && !isLoading">
+        <button type="button" class="cb-chip" *ngFor="let s of suggestions" (click)="useSuggestion(s)">
+          {{ s }}
+        </button>
+      </div>
+
+      <form class="cb-compose" (submit)="$event.preventDefault(); sendMessage()">
+        <input #chatInput
+               type="text"
+               [(ngModel)]="userInput"
+               name="chatInput"
+               autocomplete="off"
+               placeholder="Écrivez votre question…"
+               aria-label="Votre question">
+        <button type="submit" class="cb-send" [disabled]="isLoading || !userInput.trim()" aria-label="Envoyer">
+          <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+        </button>
+      </form>
+    </ng-container>
+  </div>
+
+  <button type="button"
+          class="cb-trigger"
+          (click)="toggleChat()"
+          [attr.aria-expanded]="isOpen"
+          [attr.aria-label]="isOpen ? 'Fermer l\'assistant RH' : 'Ouvrir l\'assistant RH'">
+    <i class="fa-solid" [class.fa-comment-dots]="!isOpen" [class.fa-xmark]="isOpen" aria-hidden="true"></i>
+  </button>
+
+</div>

@@ -1,0 +1,58 @@
+<div class="performance-container">
+  <div class="header-card card shadow-lg">
+    <h2>Évaluations de Performance</h2>
+    <p class="subtitle">Évaluez et suivez la progression de vos collaborateurs Wifak Bank.</p>
+    
+    <div class="evaluation-form grid">
+      <div class="form-group">
+        <label>Collaborateur</label>
+        <select [(ngModel)]="selectedEmployeeId">
+          <option [ngValue]="null">Choisir un employé...</option>
+          <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Score (1-5)</label>
+        <div class="rating-input">
+          <input type="range" min="1" max="5" [(ngModel)]="newEvaluation.score">
+          <span class="score-display">{{ newEvaluation.score }} / 5</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Commentaires</label>
+        <input type="text" [(ngModel)]="newEvaluation.feedback" placeholder="Observations générales...">
+      </div>
+      <button class="btn-primary" (click)="addEvaluation()" [disabled]="!selectedEmployeeId">
+        <i class="fa-solid fa-star-half-stroke"></i> Évaluer
+      </button>
+    </div>
+  </div>
+
+  <div class="evaluations-list">
+    <div *ngFor="let ev of evaluations" class="card eval-card shadow">
+      <div class="eval-header">
+        <div class="emp-avatar">
+          {{ ev.employee?.name ? ev.employee.name[0] : 'E' }}
+        </div>
+        <div class="emp-info">
+          <h4>{{ ev.employee?.name || 'Employé Supprimé' }}</h4>
+          <span class="eval-date">{{ ev.evaluationDate | date:'dd MMM yyyy' }}</span>
+        </div>
+        <div class="score-box" [attr.data-score]="ev.score">
+          {{ ev.score }}
+        </div>
+      </div>
+      <div class="eval-body">
+        <div class="feedback-text">
+          <i class="fa-solid fa-quote-left"></i>
+          <p>{{ ev.feedback || 'Aucun commentaire détaillé pour cette évaluation.' }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="evaluations.length === 0" class="no-data card">
+      <p>Aucune évaluation réalisée cette année.</p>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,163 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <h2>Paramètres</h2>
+    <p>Gérez vos préférences et paramètres de sécurité Wifak Bank RH.</p>
+  </div>
+
+  <div class="settings-grid">
+    <!-- Navigation latérale des paramètres -->
+    <div class="settings-nav">
+      <div class="nav-item" [class.active]="activeTab === 'general'" (click)="activeTab = 'general'">
+        <i class="fa-solid fa-gear"></i>
+        <span>Général</span>
+      </div>
+      <div class="nav-item" [class.active]="activeTab === 'security'" (click)="activeTab = 'security'">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Sécurité</span>
+      </div>
+      <div class="nav-item" [class.active]="activeTab === 'notifications'" (click)="activeTab = 'notifications'">
+        <i class="fa-solid fa-bell"></i>
+        <span>Notifications</span>
+      </div>
+      <div class="nav-item" [class.active]="activeTab === 'appearance'" (click)="activeTab = 'appearance'">
+        <i class="fa-solid fa-palette"></i>
+        <span>Apparence</span>
+      </div>
+    </div>
+
+    <!-- Contenu des paramètres -->
+    <div class="settings-content">
+
+      <p class="settings-saved" *ngIf="saved" role="status">
+        <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ saved }}
+      </p>
+      
+      <!-- Onglet Général -->
+      <div *ngIf="activeTab === 'general'">
+        <h3 class="section-title">Paramètres Généraux</h3>
+        
+        <div class="form-group">
+          <label>Langue de l'interface</label>
+          <select class="form-control">
+            <option value="fr" selected>Français</option>
+            <option value="ar">العربية (Arabe)</option>
+            <option value="en">English (Anglais)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Format de date</label>
+          <select class="form-control">
+            <option value="dd/mm/yyyy" selected>JJ/MM/AAAA (ex: 25/12/2026)</option>
+            <option value="mm/dd/yyyy">MM/JJ/AAAA (ex: 12/25/2026)</option>
+          </select>
+        </div>
+        
+        <button class="btn-primary" (click)="saveSettings()">
+          <i class="fa-solid fa-floppy-disk"></i> Enregistrer les modifications
+        </button>
+      </div>
+
+      <!-- Onglet Sécurité -->
+      <div *ngIf="activeTab === 'security'">
+        <h3 class="section-title">Sécurité et Mot de passe</h3>
+        
+        <div class="form-group">
+          <label>Mot de passe actuel</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <div class="form-group">
+          <label>Nouveau mot de passe</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <div class="form-group">
+          <label>Confirmer le nouveau mot de passe</label>
+          <input type="password" class="form-control" placeholder="••••••••">
+        </div>
+
+        <div class="toggle-wrapper" style="margin-top: 30px;">
+          <div class="toggle-info">
+            <strong>Authentification à deux facteurs (2FA)</strong>
+            <span>Sécurisez votre compte en exigeant un code par SMS lors de la connexion.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <button class="btn-primary" (click)="saveSettings()">
+          <i class="fa-solid fa-key"></i> Mettre à jour la sécurité
+        </button>
+      </div>
+
+      <!-- Onglet Notifications -->
+      <div *ngIf="activeTab === 'notifications'">
+        <h3 class="section-title">Préférences de Notifications</h3>
+        
+        <div class="toggle-wrapper">
+          <div class="toggle-info">
+            <strong>Nouvelles candidatures</strong>
+            <span>Recevoir un email lorsqu'un candidat postule à une offre.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-wrapper">
+          <div class="toggle-info">
+            <strong>Demandes de congés</strong>
+            <span>Être notifié lorsqu'un employé soumet une demande de congé.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-wrapper">
+          <div class="toggle-info">
+            <strong>Rappels de formations</strong>
+            <span>Rappels 24h avant le début d'une formation planifiée.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Onglet Apparence -->
+      <div *ngIf="activeTab === 'appearance'">
+        <h3 class="section-title">Apparence de l'application</h3>
+        
+        <div class="toggle-wrapper">
+          <div class="toggle-info">
+            <strong>Mode Sombre (Dark Mode)</strong>
+            <span>Basculer l'interface en thème sombre pour réduire la fatigue oculaire.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" [checked]="darkMode" (change)="toggleDarkMode($event)">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="toggle-wrapper">
+          <div class="toggle-info">
+            <strong>Animations fluides</strong>
+            <span>Activer les transitions et animations dans l'interface.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+/* Layout.css — minimal override since all styles live in styles.css */
+
+/* Remove old layout-only rules that are now global */
+.no-sidebar .content {
+  padding: 0;
+  overflow: hidden;
+}

@@ -1,0 +1,77 @@
+<div class="viewer-controls no-print">
+  <button class="btn-primary" (click)="printCV()"><i class="fa-solid fa-print"></i> Imprimer / Sauvegarder PDF</button>
+  <button class="btn-danger" onclick="window.close()"><i class="fa-solid fa-xmark"></i> Fermer</button>
+</div>
+
+<div class="cv-document">
+  <header class="cv-header">
+    <div class="cv-logo">
+      <img src="logo.png" alt="Wifak Bank Logo" onerror="this.src='https://via.placeholder.com/150x50?text=Logo'">
+    </div>
+    <div class="cv-title">DOSSIER CANDIDAT</div>
+  </header>
+
+  <div class="cv-body" *ngIf="candidate">
+    <div class="cv-sidebar">
+      <div class="candidate-avatar">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Contact</h3>
+        <ul class="contact-list">
+          <li><i class="fa-solid fa-envelope"></i> {{ candidate.email }}</li>
+          <li><i class="fa-solid fa-phone"></i> {{ candidate.phone }}</li>
+          <li><i class="fa-solid fa-location-dot"></i> {{ candidate.address }}</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Compétences</h3>
+        <div class="skills-tags">
+          <span class="skill-tag" *ngFor="let skill of candidate.skills">{{ skill }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cv-main">
+      <div class="candidate-header">
+        <h1>{{ candidate.name }}</h1>
+        <h2>{{ candidate.position }}</h2>
+      </div>
+
+      <div class="cv-section">
+        <h3><i class="fa-solid fa-bullseye"></i> Profil Professionnel</h3>
+        <p class="summary-text">{{ candidate.summary }}</p>
+      </div>
+
+      <div class="cv-section">
+        <h3><i class="fa-solid fa-briefcase"></i> Expérience Professionnelle</h3>
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let exp of candidate.experience">
+            <div class="timeline-date">{{ exp.period }}</div>
+            <div class="timeline-content">
+              <h4>{{ exp.title }}</h4>
+              <h5>{{ exp.company }}</h5>
+              <p>{{ exp.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <h3><i class="fa-solid fa-graduation-cap"></i> Formation</h3>
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let edu of candidate.education">
+            <div class="timeline-date">{{ edu.year }}</div>
+            <div class="timeline-content">
+              <h4>{{ edu.degree }}</h4>
+              <h5>{{ edu.school }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

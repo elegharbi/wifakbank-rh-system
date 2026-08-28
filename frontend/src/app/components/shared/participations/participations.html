@@ -1,0 +1,44 @@
+<div class="card">
+  <h2 class="page-title">Inscriptions aux Événements</h2>
+
+  <form (submit)="addParticipation()" class="form-container">
+    <div class="form-row">
+      <select [(ngModel)]="newParticipation.employeeId" name="employeeId" required>
+        <option value="" disabled selected>Sélectionner un employé</option>
+        <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+      </select>
+      <select [(ngModel)]="newParticipation.eventId" name="eventId" required>
+        <option value="" disabled selected>Sélectionner un événement</option>
+        <option *ngFor="let ev of events" [value]="ev.id">{{ ev.title }} ({{ ev.eventDate }})</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-primary" [disabled]="!newParticipation.employeeId || !newParticipation.eventId">
+      Inscrire à l'événement
+    </button>
+  </form>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Employé</th>
+          <th>Événement</th>
+          <th>Date d'inscription</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of participations">
+          <td>#{{ p.id }}</td>
+          <td>{{ p.employee?.name }}</td>
+          <td>{{ p.event?.title }}</td>
+          <td>{{ p.registrationDate | date:'short' }}</td>
+          <td>
+            <button class="btn-danger" (click)="deleteParticipation(p.id)">Annuler</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,188 @@
+<div class="pf">
+
+  <!-- ============ Badge employé ============ -->
+  <section class="badge-card" aria-labelledby="pf-name">
+    <div class="badge-rule" aria-hidden="true"></div>
+
+    <div class="badge-body">
+
+      <!-- Photo : cliquer ou déposer un fichier -->
+      <div class="photo-col">
+        <button
+          type="button"
+          class="photo-well"
+          [class.has-image]="avatarSrc"
+          [class.dragging]="isDraggingPhoto"
+          (click)="photoInput.click()"
+          (dragover)="onPhotoDragOver($event)"
+          (dragleave)="onPhotoDragLeave()"
+          (drop)="onPhotoDrop($event)"
+          [attr.aria-label]="avatarSrc ? 'Remplacer la photo de profil' : 'Ajouter une photo de profil'">
+
+          <img *ngIf="avatarSrc" [src]="avatarSrc" alt="" class="photo-img">
+          <span *ngIf="!avatarSrc" class="photo-initials">{{ initials }}</span>
+
+          <span class="photo-overlay">
+            <i class="fa-solid fa-camera" aria-hidden="true"></i>
+            <span>{{ avatarSrc ? 'Remplacer' : 'Ajouter' }}</span>
+          </span>
+        </button>
+
+        <input #photoInput type="file" accept="image/*" hidden (change)="onPhotoSelected($event)">
+
+        <div class="photo-actions">
+          <button type="button" class="photo-btn" (click)="photoInput.click()">
+            <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+            {{ avatarSrc ? 'Changer' : 'Importer' }}
+          </button>
+          <button type="button" class="link-btn link-btn--quiet" *ngIf="avatarDataUrl" (click)="removePhoto()">
+            Retirer
+          </button>
+        </div>
+
+        <p class="photo-hint" *ngIf="!avatarError">JPG, PNG ou WebP · 5 Mo maximum</p>
+        <p class="photo-error" *ngIf="avatarError" role="alert">{{ avatarError }}</p>
+      </div>
+
+      <!-- Identité -->
+      <div class="ident-col">
+        <p class="eyebrow">Wifak Bank · Espace collaborateur</p>
+        <h1 id="pf-name" class="ident-name">{{ user.firstName }} {{ user.lastName }}</h1>
+
+        <div class="ident-meta">
+          <span class="chip">{{ user.role }}</span>
+          <span class="ident-sep" aria-hidden="true"></span>
+          <span class="ident-dept">{{ user.department?.name || user.department || 'Département non renseigné' }}</span>
+        </div>
+
+        <dl class="ident-facts">
+          <div class="fact">
+            <dt>Identifiant</dt>
+            <dd>{{ user.username }}</dd>
+          </div>
+          <div class="fact">
+            <dt>Email</dt>
+            <dd class="fact-email">{{ user.email || '—' }}</dd>
+          </div>
+          <div class="fact">
+            <dt>Téléphone</dt>
+            <dd>{{ user.phone || '—' }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Situation : lecture chiffrée -->
+      <div class="standing-col">
+        <div class="standing">
+          <p class="standing-label">Score de performance</p>
+          <p class="standing-value">{{ stats.performanceScore }}</p>
+        </div>
+        <div class="standing">
+          <p class="standing-label">Solde de congés</p>
+          <p class="standing-value">{{ stats.leavesBalance }}<span class="standing-unit">j</span></p>
+        </div>
+        <div class="standing">
+          <p class="standing-label">Demandes en attente</p>
+          <p class="standing-value">{{ stats.leavesPending }}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ Panneaux ============ -->
+  <div class="pf-grid">
+
+    <!-- Informations personnelles -->
+    <section class="panel" aria-labelledby="pf-info-title">
+      <header class="panel-head">
+        <h2 id="pf-info-title" class="panel-title">Informations personnelles</h2>
+        <p class="panel-desc">Ces coordonnées sont visibles par les ressources humaines.</p>
+      </header>
+
+      <form (submit)="saveProfile()" class="form">
+        <div class="field-row">
+          <div class="field">
+            <label for="f-first">Prénom</label>
+            <input id="f-first" type="text" [(ngModel)]="user.firstName" name="firstName"
+                   [readonly]="!isEditing" [class.locked]="!isEditing">
+          </div>
+          <div class="field">
+            <label for="f-last">Nom</label>
+            <input id="f-last" type="text" [(ngModel)]="user.lastName" name="lastName"
+                   [readonly]="!isEditing" [class.locked]="!isEditing">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" type="email" [(ngModel)]="user.email" name="email"
+                   [readonly]="!isEditing" [class.locked]="!isEditing">
+          </div>
+          <div class="field">
+            <label for="f-phone">Téléphone</label>
+            <input id="f-phone" type="text" [(ngModel)]="user.phone" name="phone"
+                   [readonly]="!isEditing" [class.locked]="!isEditing">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-user">Identifiant</label>
+            <input id="f-user" type="text" [(ngModel)]="user.username" name="username"
+                   [readonly]="!isEditing" [class.locked]="!isEditing">
+          </div>
+          <div class="field" *ngIf="isEditing">
+            <label for="f-img">Photo hébergée <span class="field-opt">(adresse web)</span></label>
+            <input id="f-img" type="text" [(ngModel)]="user.profileImage" name="profileImage"
+                   placeholder="https://…">
+            <p class="field-help">Enregistrée sur le serveur. Une photo importée reste sur cet appareil.</p>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" *ngIf="!isEditing" class="btn btn-primary" (click)="toggleEdit()">
+            Modifier mes informations
+          </button>
+          <ng-container *ngIf="isEditing">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <button type="button" class="btn btn-ghost" (click)="cancelEdit()">Annuler</button>
+          </ng-container>
+        </div>
+      </form>
+    </section>
+
+    <!-- Sécurité -->
+    <section class="panel" aria-labelledby="pf-sec-title">
+      <header class="panel-head">
+        <h2 id="pf-sec-title" class="panel-title">Mot de passe</h2>
+        <p class="panel-desc">Au moins 6 caractères. Utilisez une phrase que vous seul connaissez.</p>
+      </header>
+
+      <form (submit)="changePassword()" class="form">
+        <div class="field">
+          <label for="f-pw">Nouveau mot de passe</label>
+          <input id="f-pw" type="password" [(ngModel)]="passwordForm.newPassword" name="newPassword"
+                 placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+        <div class="field">
+          <label for="f-pw2">Confirmer le mot de passe</label>
+          <input id="f-pw2" type="password" [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword"
+                 placeholder="••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+
+        <p *ngIf="passwordError" class="note note-error" role="alert">{{ passwordError }}</p>
+        <p *ngIf="passwordSuccess" class="note note-ok" role="status">{{ passwordSuccess }}</p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-block" [disabled]="isChangingPassword">
+            <span *ngIf="isChangingPassword" class="spin" aria-hidden="true"></span>
+            {{ isChangingPassword ? 'Enregistrement…' : 'Changer le mot de passe' }}
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </div>
+</div>

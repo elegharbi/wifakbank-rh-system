@@ -1,0 +1,42 @@
+<nav class="mt-3">
+  <!-- Badge Admin -->
+  <div class="sidebar-role-badge admin-badge mb-4 text-center">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span class="ms-2 fw-bold">Administrateur</span>
+  </div>
+
+  <!-- Général -->
+  <div class="nav-section text-uppercase text-muted small fw-bold mb-2 ps-3">Général</div>
+
+  <!-- Tableau de bord -->
+  <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-chart-pie icon"></i> Tableau de bord personnalisé
+  </a>
+
+  <!-- Gouvernance / Comptes & Rôles -->
+  <div class="nav-section text-uppercase text-muted small fw-bold mt-4 mb-2 ps-3">Gouvernance</div>
+  <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-users-gear icon"></i> Utilisateurs
+  </a>
+  <a routerLink="/admin/departments" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-sitemap icon"></i> Départements
+  </a>
+
+  <!-- Analytique -->
+  <div class="nav-section text-uppercase text-muted small fw-bold mt-4 mb-2 ps-3">Analytique</div>
+  <a routerLink="/admin/analytics" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-chart-line icon"></i> Analytics
+  </a>
+
+
+
+  <!-- Paramètres -->
+  <div class="nav-section text-uppercase text-muted small fw-bold mt-4 mb-2 ps-3">Paramètres</div>
+  <a routerLink="/admin/profile" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-id-badge icon"></i> Mon profil
+  </a>
+  <a routerLink="/admin/settings" routerLinkActive="active" class="nav-item">
+    <i class="fa-solid fa-gear icon"></i> Paramètres
+  </a>
+
+</nav>

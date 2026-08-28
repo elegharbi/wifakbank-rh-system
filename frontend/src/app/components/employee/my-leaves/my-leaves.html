@@ -1,0 +1,159 @@
+<div class="leaves-wrapper">
+
+  <!-- EN-TÊTE -->
+  <div class="leaves-header">
+    <div>
+      <h1 class="leaves-title"><i class="fa-solid fa-plane-departure"></i> Mes Congés</h1>
+      <p class="leaves-sub">Gérez vos demandes et consultez votre historique</p>
+    </div>
+    <div class="leaves-balance-pill">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Solde estimé : <strong>{{ remainingDays }} jours</strong></span>
+    </div>
+  </div>
+
+  <!-- ONGLETS -->
+  <div class="leaves-tabs">
+    <button class="leaves-tab" [class.active]="activeView === 'new'" (click)="activeView = 'new'">
+      <i class="fa-solid fa-plus"></i> Nouvelle demande
+    </button>
+    <button class="leaves-tab" [class.active]="activeView === 'history'" (click)="activeView = 'history'">
+      <i class="fa-solid fa-clock-rotate-left"></i> Historique
+      <span class="tab-count" *ngIf="leaves.length > 0">{{ leaves.length }}</span>
+    </button>
+  </div>
+
+  <!-- ===== ONGLET : FORMULAIRE ===== -->
+  <div class="leaves-panel" *ngIf="activeView === 'new'">
+    <div class="leave-form-card">
+      <h2 class="form-card-title"><i class="fa-solid fa-file-pen"></i> Nouvelle demande de congé</h2>
+
+      <div class="form-alert success" *ngIf="formSuccess">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>{{ formSuccess }}</span>
+      </div>
+      <div class="form-alert error" *ngIf="formError">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>{{ formError }}</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Type de congé <span class="required">*</span></label>
+          <select [(ngModel)]="form.leaveType" class="form-control">
+            <option value="">-- Choisir un type --</option>
+            <option value="Congé annuel">Congé annuel</option>
+            <option value="Congé maladie">Congé maladie</option>
+            <option value="Congé maternité">Congé maternité</option>
+            <option value="Congé paternité">Congé paternité</option>
+            <option value="Congé exceptionnel">Congé exceptionnel</option>
+            <option value="Congé sans solde">Congé sans solde</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Date de début <span class="required">*</span></label>
+          <input type="date" [(ngModel)]="form.startDate" class="form-control" [min]="minDate">
+        </div>
+
+        <div class="form-group">
+          <label>Date de fin <span class="required">*</span></label>
+          <input type="date" [(ngModel)]="form.endDate" class="form-control" [min]="form.startDate || minDate">
+        </div>
+
+        <div class="form-group form-group-full">
+          <label>Motif (optionnel)</label>
+          <textarea [(ngModel)]="form.reason" class="form-control" rows="3" placeholder="Décrivez brièvement la raison de votre demande..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <div class="form-duration" *ngIf="form.startDate && form.endDate">
+          <i class="fa-solid fa-clock"></i> Durée : <strong>{{ getDuration() }} jour(s)</strong>
+        </div>
+        <button class="btn-submit" (click)="submitForm()" [disabled]="submitting">
+          <i class="fa-solid fa-paper-plane" *ngIf="!submitting"></i>
+          <i class="fa-solid fa-circle-notch fa-spin" *ngIf="submitting"></i>
+          {{ submitting ? 'Envoi en cours...' : 'Soumettre la demande' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ONGLET : HISTORIQUE ===== -->
+  <div class="leaves-panel" *ngIf="activeView === 'history'">
+
+    <!-- Chargement -->
+    <div class="leaves-loading" *ngIf="loading">
+      <i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...
+    </div>
+
+    <div *ngIf="!loading">
+
+      <!-- Cartes résumé -->
+      <div class="summary-row">
+        <div class="summary-chip chip-all" [class.chip-active]="filterStatus === 'ALL'" (click)="filterStatus = 'ALL'">
+          <i class="fa-solid fa-list"></i> Toutes <span>{{ leaves.length }}</span>
+        </div>
+        <div class="summary-chip chip-pending" [class.chip-active]="filterStatus === 'PENDING'" (click)="filterStatus = 'PENDING'">
+          <i class="fa-solid fa-hourglass-half"></i> En attente <span>{{ pendingCount }}</span>
+        </div>
+        <div class="summary-chip chip-approved" [class.chip-active]="filterStatus === 'APPROVED'" (click)="filterStatus = 'APPROVED'">
+          <i class="fa-solid fa-check-circle"></i> Acceptés <span>{{ approvedCount }}</span>
+        </div>
+        <div class="summary-chip chip-rejected" [class.chip-active]="filterStatus === 'REJECTED'" (click)="filterStatus = 'REJECTED'">
+          <i class="fa-solid fa-times-circle"></i> Refusés <span>{{ rejectedCount }}</span>
+        </div>
+      </div>
+
+      <!-- Tableau -->
+      <div class="leaves-table-card" *ngIf="filteredLeaves.length > 0">
+        <table class="leaves-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Début</th>
+              <th>Fin</th>
+              <th>Durée</th>
+              <th>Motif</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leave of filteredLeaves">
+              <td><span class="type-tag">{{ leave.leaveType || 'Congé annuel' }}</span></td>
+              <td>{{ leave.startDate }}</td>
+              <td>{{ leave.endDate }}</td>
+              <td>{{ getDuration(leave.startDate, leave.endDate) }} j</td>
+              <td>{{ leave.reason || '—' }}</td>
+              <td>
+                <span class="status-pill"
+                  [class.pill-pending]="leave.status === 'PENDING'"
+                  [class.pill-approved]="leave.status === 'APPROVED'"
+                  [class.pill-rejected]="leave.status === 'REJECTED'">
+                  <i class="fa-solid"
+                    [class.fa-hourglass-half]="leave.status === 'PENDING'"
+                    [class.fa-check]="leave.status === 'APPROVED'"
+                    [class.fa-xmark]="leave.status === 'REJECTED'"></i>
+                  {{ statusLabel(leave.status) }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Vide -->
+      <div class="leaves-empty" *ngIf="filteredLeaves.length === 0">
+        <i class="fa-solid fa-calendar-xmark"></i>
+        <p>Aucune demande dans cette catégorie.</p>
+        <button class="btn-submit" style="margin-top: 12px;" (click)="activeView = 'new'">
+          <i class="fa-solid fa-plus"></i> Faire une demande
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+

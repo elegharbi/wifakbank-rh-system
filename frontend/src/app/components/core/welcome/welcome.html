@@ -1,0 +1,30 @@
+<div class="welcome-portal">
+  <div class="header-section">
+    <img src="logo.png" alt="Wifak Bank" class="main-logo">
+    <h1>Bienvenue sur le Portail RH</h1>
+    <p class="description">
+      Gérez efficacement les ressources humaines de <strong>Wifak Bank</strong> grâce à cette interface moderne et sécurisée. 
+      Choisissez un module ci-dessous pour commencer votre session d'administration.
+    </p>
+  </div>
+
+  <div class="portal-grid">
+    <div *ngFor="let mod of modules" class="portal-card" [routerLink]="mod.link">
+      <div class="card-icon" [style.color]="mod.color">
+        <i class="fa-solid" [ngClass]="mod.icon"></i>
+      </div>
+      <div class="card-content">
+        <h3>{{ mod.title }}</h3>
+        <p>{{ mod.desc }}</p>
+      </div>
+      <div class="card-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-msg">
+    Wifak Bank - Système de Gestion Interne (PFE)
+  </div>
+</div>
+

@@ -1,0 +1,69 @@
+<div class="leave-request-container">
+  <div class="card shadow-lg form-card">
+    <div class="card-header">
+      <div class="icon-circle">
+        <i class="fa-solid fa-calendar-plus"></i>
+      </div>
+      <h2>Nouvelle Demande de Congé</h2>
+      <p class="subtitle">Soumettez votre demande de congé pour validation par l'équipe RH.</p>
+    </div>
+
+    <form (ngSubmit)="submit()" #leaveForm="ngForm" class="leave-form">
+
+      <div class="form-group">
+        <label for="leaveType">Type de congé</label>
+        <select id="leaveType" [(ngModel)]="request.leaveType" name="leaveType" required>
+          <option value="">-- Sélectionner --</option>
+          <option value="Congé annuel">Congé annuel</option>
+          <option value="Congé maladie">Congé maladie</option>
+          <option value="Congé maternité / paternité">Congé maternité / paternité</option>
+          <option value="Congé sans solde">Congé sans solde</option>
+          <option value="Congé exceptionnel">Congé exceptionnel</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="startDate">Date de début</label>
+          <div class="input-with-icon">
+            <i class="fa-regular fa-calendar"></i>
+            <input type="date" id="startDate" [(ngModel)]="request.startDate" name="startDate" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">Date de fin</label>
+          <div class="input-with-icon">
+            <i class="fa-regular fa-calendar"></i>
+            <input type="date" id="endDate" [(ngModel)]="request.endDate" name="endDate" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Motif / Justification</label>
+        <textarea id="reason" [(ngModel)]="request.reason" name="reason" rows="4"
+          placeholder="Ex: Congé annuel, raisons familiales..." required></textarea>
+      </div>
+
+      <div *ngIf="message" class="alert"
+        [class.success]="isSuccess"
+        [class.error]="!isSuccess">
+        <i class="fa-solid" [class.fa-circle-check]="isSuccess" [class.fa-triangle-exclamation]="!isSuccess"></i>
+        <span>{{ message }}</span>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" routerLink="/my-leaves" class="btn-secondary">
+          <i class="fa-solid fa-arrow-left"></i> Annuler
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="submitting || leaveForm.invalid">
+          <i class="fa-solid" [class.fa-paper-plane]="!submitting" [class.fa-spinner]="submitting"
+            [class.fa-spin]="submitting"></i>
+          {{ submitting ? 'Envoi en cours...' : 'Soumettre la demande' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

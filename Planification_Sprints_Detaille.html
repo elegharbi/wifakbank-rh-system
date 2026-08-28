@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Planification Détaillée des Sprints - Wifak Bank RH</title>
+    <style>
+        @media print { body { margin: 20px; } .sprint-block { page-break-inside: avoid; } }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; margin: 40px auto; max-width: 1000px; }
+        h1 { color: #1e3a8a; text-align: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 12px; font-size: 22px; }
+        h2 { color: #1e3a8a; margin-top: 30px; font-size: 17px; background: #e0e7ff; padding: 10px 15px; border-left: 5px solid #1e3a8a; border-radius: 4px; }
+        p { text-align: justify; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 15px; font-size: 12px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px 10px; vertical-align: top; }
+        th { background-color: #1e3a8a; color: white; font-weight: bold; text-align: left; }
+        .role-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .role-admin { background: #fee2e2; color: #991b1b; }
+        .role-drh { background: #dcfce7; color: #166534; }
+        .role-emp { background: #dbeafe; color: #1e40af; }
+        .role-cand { background: #fef9c3; color: #854d0e; }
+        .role-all { background: #f3e8ff; color: #6b21a8; }
+        .task-list { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 20px; font-size: 12px; margin-top: 10px; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <h1>Planification Détaillée des Sprints — Système de Gestion RH<br>Wifak Bank</h1>
+
+    <p>
+        Dans le cadre du cycle de développement agile <strong>Scrum</strong>, chaque <strong>Sprint</strong> regroupe un sous-ensemble cohérent de fonctionnalités (Sprint Backlog) accompagnées des tâches techniques de réalisation, de la durée estimée et des livrables opérationnels.
+    </p>
+
+    <!-- 🚀 SPRINT 1 -->
+    <div class="sprint-block">
+        <h2>🚀 Sprint 1 : Socle Technique, Authentification &amp; Gouvernance (Admin &amp; Candidat)</h2>
+        <p><b>Durée :</b> 3 semaines (Semaines 1 à 3) &nbsp;|&nbsp; <b>Objectif :</b> Mettre en place la sécurité JWT, l'inscription directe des candidats et la gouvernance technique de l'Admin (CRUD Utilisateurs et Départements).</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:10%;">ID US</th>
+                    <th style="width:15%;">Rôle</th>
+                    <th style="width:75%;">User Story (Sprint Backlog)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>US1.1</b></td><td><span class="role-tag role-all">Tous</span></td><td>Authentification sécurisée par login/email et mot de passe (token JWT).</td></tr>
+                <tr><td><b>US1.2</b></td><td><span class="role-tag role-cand">Candidat</span></td><td>Inscription directe et autonome avec dépôt du CV (PDF) et email de confirmation.</td></tr>
+                <tr><td><b>US1.3</b></td><td><span class="role-tag role-all">Tous</span></td><td>Procédure de réinitialisation de mot de passe par email via mot de passe temporaire.</td></tr>
+                <tr><td><b>US1.4</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Modification obligatoire du mot de passe temporaire à la première connexion du DRH.</td></tr>
+                <tr><td><b>US2.1</b></td><td><span class="role-tag role-admin">Admin</span></td><td><b>Création, modification et suppression (CRUD)</b> des comptes utilisateurs (Admin, DRH, Employé, Candidat).</td></tr>
+                <tr><td><b>US2.2</b></td><td><span class="role-tag role-admin">Admin</span></td><td>Ajout d'un compte Directeur RH par l'Admin avec transmission automatique des identifiants par email.</td></tr>
+                <tr><td><b>US2.3</b></td><td><span class="role-tag role-admin">Admin</span></td><td>Activation, suspension et blocage des accès des comptes utilisateurs.</td></tr>
+                <tr><td><b>US3.1</b></td><td><span class="role-tag role-admin">Admin</span></td><td><b>Création, modification et suppression (CRUD)</b> des départements et désignation du chef.</td></tr>
+                <tr><td><b>US4.1</b></td><td><span class="role-tag role-all">Tous</span></td><td>Consultation et mise à jour du profil utilisateur (nom, contact, avatar).</td></tr>
+                <tr><td><b>US4.2</b></td><td><span class="role-tag role-cand">Candidat</span></td><td>Gestion des compétences, diplômes et mise à jour du CV PDF.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="task-list">
+            <b>🛠️ Tâches Techniques &amp; Livrables du Sprint 1 :</b>
+            <ul>
+                <li>Architecture Spring Boot + Angular, Spring Security, JWT, JPA Repositories (User, Department).</li>
+                <li>Layouts dynamiques (AdminLayoutComponent), Guardien de sécurité (authGuard, roleGuard).</li>
+                <li>Formulaires d'authentification, console d'administration des comptes/départements et espace candidat.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 📅 SPRINT 2 -->
+    <div class="sprint-block">
+        <h2>📅 Sprint 2 : Gestion des Congés &amp; Événements Internes (Directeur RH &amp; Employé)</h2>
+        <p><b>Durée :</b> 3 semaines (Semaines 4 à 6) &nbsp;|&nbsp; <b>Objectif :</b> Dématérialisation du processus de demande et validation des congés avec alertes email SMTP, et création des événements par le DRH.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:10%;">ID US</th>
+                    <th style="width:15%;">Rôle</th>
+                    <th style="width:75%;">User Story (Sprint Backlog)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>US5.1</b></td><td><span class="role-tag role-emp">Employé</span></td><td>Soumission d'une demande de congé avec accusé de réception automatique par email.</td></tr>
+                <tr><td><b>US5.2</b></td><td><span class="role-tag role-emp">Employé</span></td><td>Consultation du statut et de l'historique des demandes de congé personnelles.</td></tr>
+                <tr><td><b>US5.3</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Validation ou refus des demandes de congé par le DRH avec notification email automatique.</td></tr>
+                <tr><td><b>US8.1</b></td><td><span class="role-tag role-drh">DRH</span></td><td><b>Création, modification et planification des événements internes</b> par le Directeur RH.</td></tr>
+                <tr><td><b>US8.2</b></td><td><span class="role-tag role-emp">Employé</span> <span class="role-tag role-cand">Cand.</span></td><td>Consultation de l'agenda des événements et marquage de participation.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="task-list">
+            <b>🛠️ Tâches Techniques &amp; Livrables du Sprint 2 :</b>
+            <ul>
+                <li>Entités `Leave`, `Event`, `Participation`, contrôleurs Java et service SMTP JavaMailSender.</li>
+                <li>Interface de demande de congé employé, dashboard d'approbation DRH et composant `Events` réservé au DRH.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 💼 SPRINT 3 -->
+    <div class="sprint-block">
+        <h2>💼 Sprint 3 : Recrutement, Candidatures &amp; Formations (DRH, Candidat &amp; Employé)</h2>
+        <p><b>Durée :</b> 4 semaines (Semaines 7 à 10) &nbsp;|&nbsp; <b>Objectif :</b> Portail de recrutement externe (offres, postulation, lecteur de CV PDF) et système d'inscription aux formations.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:10%;">ID US</th>
+                    <th style="width:15%;">Rôle</th>
+                    <th style="width:75%;">User Story (Sprint Backlog)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>US6.1</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Création, modification, publication et clôture des offres d'emploi.</td></tr>
+                <tr><td><b>US6.2</b></td><td><span class="role-tag role-cand">Candidat</span></td><td>Consultation et recherche des opportunités de carrière sur la plateforme.</td></tr>
+                <tr><td><b>US6.3</b></td><td><span class="role-tag role-cand">Candidat</span></td><td>Postulation en ligne avec envoi automatique du dossier et du CV.</td></tr>
+                <tr><td><b>US6.4</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Consultation des candidatures reçues et examen des CVs via le lecteur PDF intégré.</td></tr>
+                <tr><td><b>US7.1</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Organisation des sessions de formation et gestion de la capacité.</td></tr>
+                <tr><td><b>US7.2</b></td><td><span class="role-tag role-emp">Employé</span></td><td>Inscription aux sessions de formation proposées dans le catalogue.</td></tr>
+                <tr><td><b>US7.3</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Validation des inscriptions aux formations et confirmation par email.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="task-list">
+            <b>🛠️ Tâches Techniques &amp; Livrables du Sprint 3 :</b>
+            <ul>
+                <li>Entités `JobOffer`, `Application`, `Training`, lecteur de CV `CvViewerComponent`.</li>
+                <li>Espace Carrières public, console de suivi de recrutement et catalogue de formations.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 🏆 SPRINT 4 -->
+    <div class="sprint-block">
+        <h2>🏆 Sprint 4 : Gamification, Chatbot IA &amp; Tableaux de Bord (Tous Rôles)</h2>
+        <p><b>Durée :</b> 4 semaines (Semaines 11 à 14) &nbsp;|&nbsp; <b>Objectif :</b> Système de points et d'évaluation, assistant Chatbot IA RH, tableaux de bord statistiques personnalisés et finalisation.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:10%;">ID US</th>
+                    <th style="width:15%;">Rôle</th>
+                    <th style="width:75%;">User Story (Sprint Backlog)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><b>US9.1</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Évaluation des collaborateurs et attribution de points de performance (+/-).</td></tr>
+                <tr><td><b>US9.2</b></td><td><span class="role-tag role-emp">Employé</span></td><td>Consultation du solde de points et du classement des collaborateurs (Leaderboard).</td></tr>
+                <tr><td><b>US10.1</b></td><td><span class="role-tag role-emp">Employé</span> <span class="role-tag role-drh">DRH</span></td><td>Interaction avec le Chatbot IA Wifak RH pour obtenir des réponses instantanées.</td></tr>
+                <tr><td><b>US10.2</b></td><td><span class="role-tag role-all">Tous</span></td><td>Notifications emails automatiques pour toutes les transactions clés du système.</td></tr>
+                <tr><td><b>US11.1</b></td><td><span class="role-tag role-admin">Admin</span></td><td>Tableau de bord analytique de gouvernance technique (comptes, départements, activités).</td></tr>
+                <tr><td><b>US11.2</b></td><td><span class="role-tag role-drh">DRH</span></td><td>Tableau de bord synthétique RH (KPI congés, recrutements, formations, événements).</td></tr>
+                <tr><td><b>US11.3</b></td><td><span class="role-tag role-emp">Employé</span></td><td>Tableau de bord personnel réunissant congés, points, formations et événements.</td></tr>
+                <tr><td><b>US11.4</b></td><td><span class="role-tag role-cand">Candidat</span></td><td>Espace candidat synthétique réunissant postulations et candidatures.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="task-list">
+            <b>🛠️ Tâches Techniques &amp; Livrables du Sprint 4 :</b>
+            <ul>
+                <li>Système de gamification, endpoints Chatbot IA, widgets graphiques et tableaux de bords finaux.</li>
+                <li>Recette globale, validation des workflows et finalisation de la documentation PFE.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Planification Détaillée des Sprints — Système de Gestion RH Wifak Bank — Projet de Fin d'Études 2026</p>
+    </div>
+
+</body>
+</html>

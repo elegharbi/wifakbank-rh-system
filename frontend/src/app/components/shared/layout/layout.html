@@ -1,0 +1,98 @@
+<div class="app-container">
+  <!-- Top Navbar -->
+  <header class="navbar" *ngIf="authService.isLoggedIn()">
+    <div class="navbar-brand">
+      <img src="logo.png" alt="Wifak Bank Logo" class="brand-logo">
+      <h1>{{ t('appName') }}</h1>
+    </div>
+
+    <!-- Navbar Controls -->
+    <div class="navbar-controls">
+
+      <!-- Clair / Sombre -->
+      <button type="button"
+              class="theme-switch"
+              [class.is-dark]="isDarkMode"
+              (click)="toggleDarkMode()"
+              role="switch"
+              [attr.aria-checked]="isDarkMode"
+              [attr.title]="isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+              [attr.aria-label]="isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+        <span class="theme-switch-track" aria-hidden="true">
+          <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+          <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+          <span class="theme-switch-knob"></span>
+        </span>
+      </button>
+
+      <!-- User Profile -->
+      <div class="user-profile" (click)="toggleDropdown()">
+        <span>{{ user?.firstName }} {{ user?.lastName }}</span>
+        <div class="avatar">
+          <img *ngIf="(avatarService.avatar$ | async) || user?.profileImage as photo"
+               [src]="photo" alt="" class="avatar-img">
+          <span *ngIf="!((avatarService.avatar$ | async) || user?.profileImage)">
+            {{ (user?.firstName?.charAt(0) || '') + (user?.lastName?.charAt(0) || '') || 'U' }}
+          </span>
+        </div>
+
+        <!-- Admin Dropdown Menu -->
+        <div class="admin-dropdown" *ngIf="isDropdownOpen">
+          <a href="#" class="dropdown-item logout" (click)="$event.preventDefault(); authService.logout()">
+            <i class="fa-solid fa-right-from-bracket"></i> {{ t('logout') }}
+          </a>
+        </div>
+      </div>
+
+      <!-- ⚙️ Settings Dropdown (Language & Dark Mode) -->
+      <div class="settings-menu" style="position: relative; margin-inline-start: 10px;" (click)="toggleSettingsDropdown()">
+        <span class="icon-btn" style="cursor: pointer; padding: 8px;">
+          <i class="fa-solid fa-ellipsis-vertical" style="font-size: 1.2rem; color: white;"></i>
+        </span>
+        
+        <div class="admin-dropdown" *ngIf="isSettingsDropdownOpen" style="min-width: 200px;">
+          <div class="dropdown-header">Paramètres</div>
+          
+          <div class="dropdown-item" style="display: flex; justify-content: space-between; align-items: center; cursor: default;">
+            <span><i class="fa-solid fa-globe"></i> Langue</span>
+            <div style="display: flex; gap: 5px;">
+              <button (click)="switchLang('fr'); $event.stopPropagation()" [class.active]="translation.currentLang === 'fr'" style="padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1; background: transparent; cursor: pointer;" [style.background]="translation.currentLang === 'fr' ? '#E21E26' : ''" [style.color]="translation.currentLang === 'fr' ? 'white' : ''">FR</button>
+              <button (click)="switchLang('ar'); $event.stopPropagation()" [class.active]="translation.currentLang === 'ar'" style="padding: 2px 8px; border-radius: 4px; border: 1px solid #cbd5e1; background: transparent; cursor: pointer;" [style.background]="translation.currentLang === 'ar' ? '#E21E26' : ''" [style.color]="translation.currentLang === 'ar' ? 'white' : ''">AR</button>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+          
+          <div class="dropdown-item" (click)="toggleDarkMode(); $event.stopPropagation()" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>
+              <i class="fa-solid" [class.fa-moon]="!isDarkMode" [class.fa-sun]="isDarkMode"></i>
+              Mode {{ isDarkMode ? 'Clair' : 'Sombre' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-body" [class.no-sidebar]="!authService.isLoggedIn()">
+    <!-- Sidebar -->
+    <aside class="sidebar"
+           [class.sidebar-admin]="isAdmin"
+           [class.sidebar-hr]="isHR"
+           [class.sidebar-employee]="isEmployee"
+           [class.sidebar-candidate]="isCandidat"
+           *ngIf="authService.isLoggedIn()">
+      <app-admin-sidebar     *ngIf="isAdmin"></app-admin-sidebar>
+      <app-hr-sidebar        *ngIf="isHR"></app-hr-sidebar>
+      <app-employee-sidebar  *ngIf="isEmployee"></app-employee-sidebar>
+      <app-candidate-sidebar *ngIf="isCandidat"></app-candidate-sidebar>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content">
+      <router-outlet></router-outlet>
+      <app-chatbot *ngIf="authService.isLoggedIn()"></app-chatbot>
+    </main>
+  </div>
+</div>
+

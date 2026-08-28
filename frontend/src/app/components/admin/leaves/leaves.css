@@ -1,0 +1,250 @@
+/* VALIDATION DES CONGÉS — Design Premium RH */
+
+.la-wrapper {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* En-tête */
+.la-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.la-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.la-title i { color: #E21E26; }
+.la-sub { color: #6b7280; font-size: 14px; margin: 4px 0 0; }
+
+.la-refresh-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 18px;
+  background: #FFF5F5; color: #E21E26;
+  border: 1px solid #fca5a5;
+  border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.la-refresh-btn:hover { background: #fee2e2; }
+
+/* Alertes */
+.la-alert {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 18px; border-radius: 10px; font-size: 14px;
+}
+.la-success { background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46; }
+.la-error   { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+
+.la-retry {
+  margin-left: auto;
+  background: none; border: 1px solid #991b1b;
+  color: #991b1b; border-radius: 6px;
+  padding: 4px 12px; font-size: 13px; cursor: pointer;
+}
+
+/* Filtres */
+.la-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.la-filter-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 18px;
+  background: #f9fafb; color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.la-filter-btn:hover { background: #f3f4f6; }
+.la-filter-btn.active {
+  background: #E21E26; color: #fff;
+  border-color: #E21E26;
+}
+
+.la-badge {
+  padding: 2px 8px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+}
+.la-badge-pending  { background: rgba(255,255,255,0.2); color: inherit; }
+.la-badge-approved { background: rgba(255,255,255,0.2); color: inherit; }
+.la-badge-rejected { background: rgba(255,255,255,0.2); color: inherit; }
+.la-badge-all      { background: rgba(0,0,0,0.08); color: inherit; }
+
+/* Chargement */
+.la-loading {
+  text-align: center; padding: 60px;
+  color: #6b7280; font-size: 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+
+/* Tableau */
+.la-table-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.la-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.la-table thead tr {
+  background: #f8fafc;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.la-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.la-table td {
+  padding: 16px 16px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+}
+
+.la-table tbody tr:last-child td { border-bottom: none; }
+.la-table tbody tr:hover { background: #fafafa; }
+.la-row-processing { opacity: 0.6; pointer-events: none; }
+
+/* Cellules */
+.la-td-num { font-weight: 700; color: #9ca3af; width: 40px; }
+
+.la-td-name { display: flex; align-items: center; gap: 12px; }
+
+.la-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E21E26, #f04048);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.la-name-full { font-weight: 600; color: #111827; display: block; }
+.la-emp-id { font-size: 12px; color: #9ca3af; }
+
+.la-type-tag {
+  background: #FFF5F5; color: #E21E26;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 12px; font-weight: 600;
+  white-space: nowrap;
+}
+
+.la-td-date {
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+  color: #374151;
+}
+.la-td-date i { color: #9ca3af; }
+
+.la-days-pill {
+  background: #f3f4f6; color: #374151;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+}
+
+.la-td-reason { color: #6b7280; max-width: 150px; }
+
+/* Status */
+.la-status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.la-status-pending  { background: #fffbeb; color: #b45309; }
+.la-status-approved { background: #dcfce7; color: #15803d; }
+.la-status-rejected { background: #fee2e2; color: #b91c1c; }
+
+/* Actions */
+.la-td-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.la-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.la-btn-approve {
+  background: #dcfce7; color: #15803d;
+  border: 1px solid #86efac;
+}
+.la-btn-approve:hover:not([disabled]) {
+  background: #22c55e; color: white;
+  box-shadow: 0 3px 8px rgba(34,197,94,0.3);
+}
+
+.la-btn-reject {
+  background: #fee2e2; color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+.la-btn-reject:hover:not([disabled]) {
+  background: #ef4444; color: white;
+  box-shadow: 0 3px 8px rgba(239,68,68,0.3);
+}
+
+.la-btn-delete {
+  background: #f3f4f6; color: #9ca3af;
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+}
+.la-btn-delete:hover { background: #e5e7eb; color: #6b7280; }
+
+.la-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.la-processed-label {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; color: #9ca3af; font-weight: 500;
+}
+
+/* Vide */
+.la-empty {
+  text-align: center;
+  padding: 70px 30px;
+  color: #6b7280;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.la-empty i { font-size: 48px; color: #d1d5db; }
+.la-empty p { font-size: 16px; margin: 0; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .la-wrapper { padding: 16px; }
+  .la-table { display: block; overflow-x: auto; }
+}

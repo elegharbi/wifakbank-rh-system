@@ -1,0 +1,207 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     PAGE DE CANDIDATURE WIFAK BANK
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div class="register-page">
+  <!-- Decor 3D : purement visuel -->
+  <div class="auth-bg" aria-hidden="true">
+    <span class="auth-grid"></span>
+    <span class="auth-orb auth-orb--blue"></span>
+    <span class="auth-orb auth-orb--red"></span>
+    <span class="auth-shape auth-shape--1"></span>
+    <span class="auth-shape auth-shape--2"></span>
+    <span class="auth-shape auth-shape--3"></span>
+    <span class="auth-shape auth-shape--4"></span>
+    <img class="auth-mark auth-mark--a" src="icon-512.png?v=2" alt="">
+    <img class="auth-mark auth-mark--b" src="icon-512.png?v=2" alt="">
+  </div>
+  <div class="page-controls">
+    <button type="button"
+            class="theme-switch"
+            [class.is-dark]="theme.isDarkMode"
+            (click)="theme.toggle()"
+            role="switch"
+            [attr.aria-checked]="theme.isDarkMode"
+            [attr.title]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+            [attr.aria-label]="theme.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+      <span class="theme-switch-track" aria-hidden="true">
+        <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+        <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+        <span class="theme-switch-knob"></span>
+      </span>
+    </button>
+
+    <div class="lang-switch" [class.is-ar]="translation.currentLang === 'ar'" role="group" aria-label="Langue de l'interface">
+      <span class="lang-knob" aria-hidden="true"></span>
+      <button type="button"
+              (click)="translation.setLang('fr')"
+              [class.active]="translation.currentLang === 'fr'"
+              [attr.aria-pressed]="translation.currentLang === 'fr'">FR</button>
+      <button type="button"
+              (click)="translation.setLang('ar')"
+              [class.active]="translation.currentLang === 'ar'"
+              [attr.aria-pressed]="translation.currentLang === 'ar'">AR</button>
+    </div>
+  </div>
+  <div class="register-container">
+    <!-- HEADER -->
+    <div class="register-header">
+      <div style="display: flex; justify-content: flex-start; margin-bottom: 10px;">
+        <a routerLink="/home" style="color: #64748b; font-size: 14px; text-decoration: none;">
+          <i class="fa-solid fa-home"></i> Accueil
+        </a>
+      </div>
+      <img src="logo.png" alt="Wifak Bank" style="height: 60px; margin-bottom: 20px;">
+      <span class="section-tag"><i class="fa-solid fa-rocket"></i> Candidature Express</span>
+      <h2 class="register-title">Déposez votre candidature en quelques clics</h2>
+      <p class="register-subtitle">
+        Remplissez le formulaire ci-dessous et notre équipe RH vous contactera
+        dans les plus brefs délais pour étudier votre profil.
+      </p>
+
+      <!-- FEATURES -->
+      <div class="candidature-features">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-clock"></i></div>
+          <div>
+            <strong>Réponse rapide</strong>
+            <span>Sous 48h ouvrables</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
+          <div>
+            <strong>Données sécurisées</strong>
+            <span>Confidentialité garantie</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fa-solid fa-handshake"></i></div>
+          <div>
+            <strong>Accompagnement</strong>
+            <span>Suivi personnalisé</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="register-form-card">
+      <div *ngIf="submitted" class="success-message">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Votre candidature a été envoyée avec succès. Notre équipe vous contactera bientôt.</span>
+      </div>
+
+      <form (ngSubmit)="onSubmitCandidature()" *ngIf="!submitted" #candidatureForm="ngForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Nom <span class="req">*</span></label>
+            <input type="text" name="nom" [(ngModel)]="candidature.nom" placeholder="Votre nom" required>
+          </div>
+          <div class="form-field">
+            <label>Prénom <span class="req">*</span></label>
+            <input type="text" name="prenom" [(ngModel)]="candidature.prenom" placeholder="Votre prénom" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" [(ngModel)]="candidature.email" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-field">
+            <label>Téléphone <span class="req">*</span></label>
+            <input type="tel" name="telephone" [(ngModel)]="candidature.telephone" placeholder="+216 XX XXX XXX" required pattern="[0-9+ ]{8,15}">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Adresse <span class="req">*</span></label>
+          <input type="text" name="adresse" [(ngModel)]="candidature.adresse" placeholder="Votre adresse" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Date de naissance <span class="req">*</span></label>
+            <input type="date" name="dateNaissance" [(ngModel)]="candidature.dateNaissance" required>
+          </div>
+          <div class="form-field">
+            <label>Niveau d'étude <span class="req">*</span></label>
+            <select name="niveauEtude" [(ngModel)]="candidature.niveauEtude" required>
+              <option value="" disabled>Choisir un niveau...</option>
+              <option value="Bac">Bac</option>
+              <option value="Bac+3">Licence (Bac+3)</option>
+              <option value="Bac+5">Master / Ingénierie (Bac+5)</option>
+              <option value="Doctorat">Doctorat</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Spécialité <span class="req">*</span></label>
+            <input type="text" name="specialite" [(ngModel)]="candidature.specialite" placeholder="Votre spécialité" required>
+          </div>
+          <div class="form-field">
+            <label>Poste souhaité <span class="req">*</span></label>
+            <input type="text" name="poste" [(ngModel)]="candidature.poste" placeholder="Titre du poste" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+           <div class="form-field">
+             <label>Mot de passe <span class="req">*</span></label>
+             <div class="password-input-wrapper">
+               <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="candidature.password" placeholder="Entrez un mot de passe sécurisé" required minlength="8">
+               <span class="password-toggle" (click)="togglePasswordVisibility('password')">
+                 <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+               </span>
+             </div>
+             <div style="font-size: 12px; color: #64748b; margin-top: 5px;">Minimum 8 caractères</div>
+           </div>
+           <div class="form-field">
+             <label>Confirmer le mot de passe <span class="req">*</span></label>
+             <div class="password-input-wrapper">
+               <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirmPassword" [(ngModel)]="candidature.confirmPassword" placeholder="Confirmez votre mot de passe" required minlength="8">
+               <span class="password-toggle" (click)="togglePasswordVisibility('confirmPassword')">
+                 <i class="fa-solid" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword"></i>
+               </span>
+             </div>
+             <div *ngIf="passwordError" style="color: red; font-size: 12px; margin-top: 5px;">{{ passwordError }}</div>
+           </div>
+         </div>
+
+        <div class="form-field">
+          <label>CV (PDF uniquement) <span class="req">*</span></label>
+          <input type="file" name="cv" accept=".pdf" (change)="onFileSelected($event)" required>
+          <div *ngIf="cvError" style="color: red; font-size: 12px; margin-top: 5px;">{{ cvError }}</div>
+          <div *ngIf="candidature.cvFileName" style="color: green; font-size: 12px; margin-top: 5px;">Fichier sélectionné : {{ candidature.cvFileName }}</div>
+        </div>
+
+        <div class="form-field">
+          <label>Lettre de motivation (optionnelle)</label>
+          <textarea name="lettreMotivation" [(ngModel)]="candidature.lettreMotivation" rows="4" placeholder="Votre lettre de motivation..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting || candidatureForm.invalid || !cvFile">
+            <span *ngIf="!isSubmitting">
+              <i class="fa-solid fa-paper-plane"></i> Envoyer la candidature
+            </span>
+            <span *ngIf="isSubmitting">
+              <i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...
+            </span>
+          </button>
+          <button type="button" class="btn-reset" (click)="resetCandidature()">
+            Réinitialiser
+          </button>
+        </div>
+      </form>
+
+      <div class="login-link">
+        <p>Vous avez un compte? <a routerLink="/login">Se connecter</a></p>
+      </div>
+    </div>
+  </div>
+</div>

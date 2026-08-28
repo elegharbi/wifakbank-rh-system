@@ -1,0 +1,249 @@
+:host {
+  display: block;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: 'Inter', sans-serif;
+}
+
+.viewer-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.btn-primary, .btn-danger {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.btn-primary { background: #E30613; }
+.btn-danger { background: #ef4444; }
+
+.cv-document {
+  max-width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 40px;
+  border-bottom: 2px solid #2e7d32;
+  background-color: #f8fafc;
+}
+
+.cv-logo img {
+  height: 40px;
+}
+
+.cv-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 2px;
+}
+
+.cv-body {
+  display: flex;
+  min-height: calc(297mm - 100px);
+}
+
+.cv-sidebar {
+  width: 30%;
+  background-color: #2e7d32;
+  color: white;
+  padding: 40px 30px;
+}
+
+.candidate-avatar {
+  width: 120px;
+  height: 120px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  margin: 0 auto 30px;
+  border: 4px solid rgba(255,255,255,0.4);
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.sidebar-section h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  margin-bottom: 12px;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.contact-list i {
+  margin-top: 3px;
+  opacity: 0.8;
+}
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.cv-main {
+  width: 70%;
+  padding: 40px;
+  background: white;
+}
+
+.candidate-header {
+  margin-bottom: 30px;
+}
+
+.candidate-header h1 {
+  font-size: 36px;
+  color: #1e293b;
+  margin: 0 0 5px;
+}
+
+.candidate-header h2 {
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: 500;
+  margin: 0;
+}
+
+.cv-section {
+  margin-bottom: 30px;
+}
+
+.cv-section h3 {
+  font-size: 18px;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cv-section h3 i {
+  color: #2e7d32;
+}
+
+.summary-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  border-left: 2px solid #cbd5e1;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2e7d32;
+}
+
+.timeline-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.timeline-content h4 {
+  font-size: 16px;
+  color: #1e293b;
+  margin: 0 0 2px;
+}
+
+.timeline-content h5 {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+
+.timeline-content p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media print {
+  :host {
+    padding: 0;
+    background: transparent;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .cv-document {
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .cv-sidebar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

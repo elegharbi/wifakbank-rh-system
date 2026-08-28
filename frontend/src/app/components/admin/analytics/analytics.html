@@ -1,0 +1,148 @@
+<div class="bi-dashboard">
+  <!-- Header -->
+  <div class="bi-header">
+    <div class="bi-header-content">
+      <h1 class="bi-title">
+        <i class="fa-solid fa-chart-pie"></i>
+        Business Intelligence
+      </h1>
+      <p class="bi-subtitle">Tableau de bord analytique et indicateurs de performance clés (KPIs)</p>
+    </div>
+    <div class="bi-header-actions">
+      <button class="bi-btn-refresh" (click)="loadAllData()">
+        <i class="fa-solid fa-rotate" [class.fa-spin]="loading"></i>
+        Actualiser
+      </button>
+      <button class="bi-btn-export" (click)="exportReport()">
+        <i class="fa-solid fa-file-export"></i>
+        Exporter Rapport
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="bi-loader">
+    <div class="spinner"></div>
+    <p>Chargement des données analytiques...</p>
+  </div>
+
+  <!-- KPIs Row -->
+  <div class="bi-kpi-grid" *ngIf="!loading">
+    <div class="bi-kpi-card glass-card">
+      <div class="kpi-icon blue-gradient">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Effectif Total</span>
+        <span class="kpi-value">{{ totalEmployees }}</span>
+      </div>
+    </div>
+
+    <div class="bi-kpi-card glass-card">
+      <div class="kpi-icon green-gradient">
+        <i class="fa-solid fa-building"></i>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Départements Actifs</span>
+        <span class="kpi-value">{{ totalDepartments }}</span>
+      </div>
+    </div>
+
+    <div class="bi-kpi-card glass-card">
+      <div class="kpi-icon purple-gradient">
+        <i class="fa-solid fa-award"></i>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Performance Moyenne</span>
+        <span class="kpi-value">{{ avgPerformance }}<small> pts</small></span>
+      </div>
+    </div>
+
+    <div class="bi-kpi-card glass-card">
+      <div class="kpi-icon orange-gradient">
+        <i class="fa-solid fa-hourglass-half"></i>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-label">Congés en Attente</span>
+        <span class="kpi-value">{{ pendingLeavesCount }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div class="bi-charts-row" *ngIf="!loading">
+    <div class="bi-chart-card glass-card span-2">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-line"></i> Évolution des Recrutements (2026)</h3>
+        <select class="bi-select">
+          <option>Cette année</option>
+          <option>Année dernière</option>
+        </select>
+      </div>
+      <div class="chart-body large-chart">
+        <canvas #trendChart></canvas>
+      </div>
+    </div>
+
+    <div class="bi-chart-card glass-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-pie"></i> Répartition par Département</h3>
+      </div>
+      <div class="chart-body">
+        <canvas #deptChart></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 & Table -->
+  <div class="bi-charts-row" *ngIf="!loading">
+    <div class="bi-chart-card glass-card">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-chart-bar"></i> Performance par Département</h3>
+      </div>
+      <div class="chart-body">
+        <canvas #perfChart></canvas>
+      </div>
+    </div>
+
+    <div class="bi-chart-card glass-card span-2">
+      <div class="chart-header">
+        <h3><i class="fa-solid fa-ranking-star"></i> Top Performers (Leaderboard)</h3>
+        <button class="bi-btn-link" routerLink="/performance">Voir tout</button>
+      </div>
+      <div class="table-container">
+        <table class="bi-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Employé</th>
+              <th>Département</th>
+              <th>Score Actuel</th>
+              <th>Tendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of topPerformers; let i = index">
+              <td>
+                <span class="rank-badge" [ngClass]="{'gold': i===0, 'silver': i===1, 'bronze': i===2}">
+                  {{ i + 1 }}
+                </span>
+              </td>
+              <td class="user-info">
+                <div class="avatar">{{ user.username.charAt(0) | uppercase }}</div>
+                <span>{{ user.username }}</span>
+              </td>
+              <td><span class="dept-tag">{{ user.department || 'Général' }}</span></td>
+              <td class="score-val">{{ user.performanceScore }} pts</td>
+              <td>
+                <i class="fa-solid" [ngClass]="user.performanceScore >= 1000 ? 'fa-arrow-trend-up text-green' : 'fa-arrow-trend-down text-red'"></i>
+              </td>
+            </tr>
+            <tr *ngIf="topPerformers.length === 0">
+              <td colspan="5" class="text-center text-muted">Aucune donnée de performance disponible.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

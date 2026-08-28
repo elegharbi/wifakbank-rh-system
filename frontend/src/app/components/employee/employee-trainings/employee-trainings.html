@@ -1,0 +1,103 @@
+<div class="trainings-wrapper">
+
+  <!-- ===== Bandeau personnalisé ===== -->
+  <header class="trainings-header">
+    <img src="icon-512.png?v=2" alt="" class="tr-mark" aria-hidden="true">
+
+    <p class="tr-eyebrow">Wifak Bank · Développement des compétences</p>
+
+    <h1 class="trainings-title">
+      <span *ngIf="firstName">Votre plan de formation, <span class="tr-name">{{ firstName }}</span></span>
+      <span *ngIf="!firstName">Plan de Formation</span>
+    </h1>
+
+    <p class="trainings-sub">
+      Choisissez une formation et inscrivez-vous. Les RH valident votre demande sous quelques jours.
+    </p>
+
+    <div class="tr-stats" *ngIf="!loading">
+      <div class="tr-stat">
+        <span class="tr-stat-num">{{ trainings.length }}</span>
+        <span class="tr-stat-lbl">{{ trainings.length > 1 ? 'formations ouvertes' : 'formation ouverte' }}</span>
+      </div>
+      <span class="tr-stat-sep" aria-hidden="true"></span>
+      <div class="tr-stat">
+        <span class="tr-stat-num">{{ myActiveCount }}</span>
+        <span class="tr-stat-lbl">{{ myActiveCount > 1 ? 'inscriptions en cours' : 'inscription en cours' }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Alertes ===== -->
+  <div class="tr-alert tr-success" *ngIf="message && !error">
+    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ message }}
+  </div>
+  <div class="tr-alert tr-error" *ngIf="message && error">
+    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{ message }}
+  </div>
+
+  <!-- ===== Chargement ===== -->
+  <div class="trainings-loading" *ngIf="loading">
+    <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> Chargement des formations…
+  </div>
+
+  <!-- ===== Grille ===== -->
+  <div class="trainings-grid" *ngIf="!loading">
+
+    <div class="tr-card" *ngFor="let training of trainings">
+      <div class="tr-card-top">
+        <div class="tr-org-badge">
+          <i class="fa-solid fa-building" aria-hidden="true"></i> {{ training.organization || 'Interne' }}
+        </div>
+        <div class="tr-duration" *ngIf="training.durationHours">
+          <i class="fa-regular fa-clock" aria-hidden="true"></i> {{ training.durationHours }} h
+        </div>
+      </div>
+
+      <div class="tr-card-body">
+        <h3 class="tr-title">{{ training.title }}</h3>
+        <p class="tr-desc">{{ training.description || 'Formation professionnelle interne.' }}</p>
+      </div>
+
+      <div class="tr-card-footer">
+        <button *ngIf="!getRegistrationStatus(training.id!)"
+                class="tr-btn tr-btn-register" (click)="register(training.id!, training.title)">
+          <i class="fa-solid fa-user-plus" aria-hidden="true"></i> S'inscrire
+        </button>
+
+        <div *ngIf="getRegistrationStatus(training.id!) === 'PENDING'" class="tr-status tr-pending">
+          <i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> En attente de validation RH
+        </div>
+
+        <div *ngIf="getRegistrationStatus(training.id!) === 'APPROVED'" class="tr-status tr-approved">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Inscription validée
+        </div>
+
+        <div *ngIf="getRegistrationStatus(training.id!) === 'REJECTED'" class="tr-status tr-rejected">
+          <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i> Inscription refusée
+        </div>
+      </div>
+    </div>
+
+    <div class="trainings-empty" *ngIf="trainings.length === 0">
+      <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+      <p>Aucune formation ouverte pour le moment.</p>
+      <p class="tr-empty-hint">Le catalogue est mis à jour par les ressources humaines.</p>
+    </div>
+
+  </div>
+
+  <!-- ===== Confirmation ===== -->
+  <app-confirm-dialog
+    [open]="pendingId !== null"
+    title="Confirmer votre inscription"
+    [message]="pendingTitle ? 'Vous allez vous inscrire à « ' + pendingTitle + ' ».' : 'Vous allez vous inscrire à cette formation.'"
+    detail="Votre demande sera transmise aux RH pour validation."
+    confirmLabel="Oui, m'inscrire"
+    cancelLabel="Annuler"
+    icon="fa-graduation-cap"
+    (confirmed)="confirmRegister()"
+    (cancelled)="cancelRegister()">
+  </app-confirm-dialog>
+
+</div>

@@ -1,0 +1,134 @@
+<div class="card">
+  <div class="header-card">
+    <h2 class="page-title">Gestion des employés</h2>
+    <p class="subtitle">Créez des profils employés, assignez-les à un département et suivez leur statut.</p>
+  </div>
+
+  <div class="toolbar-grid">
+    <div class="search-panel shadow-sm">
+      <label>Recherche rapide</label>
+      <input type="search" [(ngModel)]="query" (ngModelChange)="applyFilter()" placeholder="Nom, email, identifiant ou département" />
+      <p class="small-text">{{ filteredEmployees.length }} employé(s) correspond(ent).</p>
+    </div>
+
+    <div class="form-container shadow-sm">
+      <h3><i class="fa-solid fa-user-plus"></i> Ajouter un employé</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" [(ngModel)]="newEmployee.firstName" name="firstName" required />
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" [(ngModel)]="newEmployee.lastName" name="lastName" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Identifiant</label>
+          <input type="text" [(ngModel)]="newEmployee.username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" [(ngModel)]="newEmployee.password" name="password" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="newEmployee.email" name="email" />
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" [(ngModel)]="newEmployee.phone" name="phone" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label>Département</label>
+          <select [(ngModel)]="newEmployee.department" name="department">
+            <option [ngValue]="null">Sélectionner un département</option>
+            <option *ngFor="let dept of departments" [ngValue]="dept">{{ dept.name }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" (click)="addEmployee()" [disabled]="!newEmployee.username || !newEmployee.password || !newEmployee.firstName || !newEmployee.lastName">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container shadow-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Département</th>
+          <th>Email</th>
+          <th>Statut</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredEmployees.length === 0">
+          <td colspan="5" class="no-data-simple">Aucun employé trouvé.</td>
+        </tr>
+        <tr *ngFor="let employee of filteredEmployees">
+          <td>
+            <div class="user-name">
+              <i class="fa-solid fa-circle-user"></i>
+              <div>
+                <strong>{{ employee.firstName }} {{ employee.lastName }}</strong>
+                <span class="user-subtitle">{{ employee.username }}</span>
+              </div>
+            </div>
+          </td>
+          <td>{{ $any(employee.department)?.name || '—' }}</td>
+          <td>{{ employee.email || '—' }}</td>
+          <td>
+            <span class="status-pill" [class.active]="employee.active !== false" [class.inactive]="employee.active === false">
+              {{ employee.active !== false ? 'Actif' : 'Bloqué' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <button class="btn-secondary" (click)="startEdit(employee)"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-warning" (click)="toggleStatus(employee)"><i class="fa-solid" [ngClass]="employee.active !== false ? 'fa-lock' : 'fa-lock-open'"></i></button>
+            <button class="btn-danger" (click)="deleteEmployee(employee.id)"><i class="fa-solid fa-trash-can"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="selectedEmployee" class="edit-panel shadow-sm">
+    <h3>Modifier l'employé</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" [(ngModel)]="selectedEmployee.firstName" name="editFirstName" />
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" [(ngModel)]="selectedEmployee.lastName" name="editLastName" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="selectedEmployee.email" name="editEmail" />
+      </div>
+      <div class="form-group">
+        <label>Département</label>
+        <select [(ngModel)]="selectedEmployee.department" name="editDepartment">
+          <option [ngValue]="null">Sélectionner un département</option>
+          <option *ngFor="let dept of departments" [ngValue]="dept">{{ dept.name }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" (click)="saveEmployee()">Enregistrer</button>
+      <button class="btn-secondary" (click)="cancelEdit()">Annuler</button>
+    </div>
+  </div>
+</div>
+

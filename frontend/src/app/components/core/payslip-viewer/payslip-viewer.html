@@ -1,0 +1,78 @@
+<div class="viewer-controls no-print">
+  <button class="btn-primary" (click)="printPayslip()"><i class="fa-solid fa-print"></i> Imprimer / Sauvegarder PDF</button>
+  <button class="btn-danger" onclick="window.close()"><i class="fa-solid fa-xmark"></i> Fermer</button>
+</div>
+
+<div class="payslip-document" *ngIf="payslip">
+  <header class="payslip-header">
+    <div class="company-details">
+      <img src="logo.png" alt="Wifak Bank Logo" class="company-logo" onerror="this.src='https://via.placeholder.com/150x50?text=Logo'">
+      <div class="company-info">
+        <h3>{{ payslip.company.name }}</h3>
+        <p>{{ payslip.company.address }}</p>
+        <p>{{ payslip.company.city }}</p>
+        <p>Matricule Fiscale : {{ payslip.company.matricule }}</p>
+      </div>
+    </div>
+    <div class="payslip-title">
+      <h1>BULLETIN DE PAIE</h1>
+      <p class="period">Période : {{ payslip.period }}</p>
+    </div>
+  </header>
+
+  <div class="employee-section">
+    <div class="employee-details">
+      <p><strong>Nom et Prénom :</strong> {{ payslip.employee.name }}</p>
+      <p><strong>Poste :</strong> {{ payslip.employee.position }}</p>
+    </div>
+    <div class="employee-meta">
+      <p><strong>Matricule :</strong> {{ payslip.employee.matricule }}</p>
+      <p><strong>Département :</strong> {{ payslip.employee.department }}</p>
+    </div>
+  </div>
+
+  <table class="payslip-table">
+    <thead>
+      <tr>
+        <th class="col-designation">Désignation</th>
+        <th class="col-base">Base</th>
+        <th class="col-taux">Taux</th>
+        <th class="col-gains">Gains</th>
+        <th class="col-retenues">Retenues</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of payslip.details">
+        <td>{{ item.label }}</td>
+        <td class="num">{{ item.base || '' }}</td>
+        <td class="num">{{ item.rate }}</td>
+        <td class="num">{{ item.amount > 0 ? (item.amount | number:'1.2-2') : '' }}</td>
+        <td class="num">{{ item.amount < 0 ? (-item.amount | number:'1.2-2') : '' }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" class="total-label"><strong>TOTAUX</strong></td>
+        <td class="num total-val"><strong>{{ payslip.totals.gross | number:'1.2-2' }}</strong></td>
+        <td class="num total-val"><strong>{{ payslip.totals.deductions | number:'1.2-2' }}</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="payslip-footer">
+    <div class="net-to-pay">
+      <p>Net à payer (TND)</p>
+      <h2>{{ payslip.totals.net | number:'1.2-2' }}</h2>
+    </div>
+    <div class="signatures">
+      <div class="signature-box">
+        <p>Signature de l'employé</p>
+      </div>
+      <div class="signature-box">
+        <p>Signature de la Direction</p>
+      </div>
+    </div>
+    <p class="payment-date">Date de paiement : {{ payslip.paymentDate }}</p>
+  </div>
+</div>
+

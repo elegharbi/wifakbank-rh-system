@@ -1,0 +1,111 @@
+<div class="admin-layout">
+  <!-- SIDEBAR ADMIN -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <span class="logo-text">Administration</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- Général -->
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-chart-pie icon"></i>
+          <span>Tableau de bord</span>
+        </div>
+      </a>
+
+      <!-- Gouvernance -->
+      <div class="nav-group-label">Gouvernance</div>
+      <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-users-gear icon"></i>
+          <span>Utilisateurs</span>
+        </div>
+        <span class="badge badge-blue" *ngIf="totalUsers > 0">{{ totalUsers }}</span>
+      </a>
+      <a routerLink="/admin/departments" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-sitemap icon"></i>
+          <span>Départements</span>
+        </div>
+      </a>
+
+
+
+
+
+
+      <div class="nav-divider"></div>
+
+      <a routerLink="/admin/profile" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-circle-user icon"></i>
+          <span>Mon profil</span>
+        </div>
+      </a>
+
+      <a routerLink="/admin/settings" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-gear icon"></i>
+          <span>Paramètres</span>
+        </div>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket icon"></i>
+        <span>Déconnexion</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-container">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        <span class="page-subtitle">Espace Administrateur</span>
+      </div>
+
+      <div class="topbar-right">
+
+        <!-- Clair / Sombre -->
+        <button type="button"
+                class="theme-switch"
+                [class.is-dark]="themeService.isDarkMode"
+                (click)="themeService.toggle()"
+                role="switch"
+                [attr.aria-checked]="themeService.isDarkMode"
+                [attr.title]="themeService.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+                [attr.aria-label]="themeService.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+          <span class="theme-switch-track" aria-hidden="true">
+            <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+            <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+            <span class="theme-switch-knob"></span>
+          </span>
+        </button>
+
+        <div class="topbar-user">
+          <span class="topbar-name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</span>
+          <span class="topbar-role">Administrateur</span>
+        </div>
+
+        <div class="user-avatar" [attr.title]="currentUser?.firstName + ' ' + currentUser?.lastName">
+          <img *ngIf="(avatarService.avatar$ | async) || currentUser?.profileImage as photo"
+               [src]="photo" alt="" class="user-avatar-img">
+          <span *ngIf="!((avatarService.avatar$ | async) || currentUser?.profileImage)">{{ userInitials }}</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <app-chatbot></app-chatbot>
+</div>

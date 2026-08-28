@@ -1,0 +1,135 @@
+<div class="ev-wrapper">
+
+  <!-- ===== En-tête ===== -->
+  <header class="ev-header">
+    <div class="ev-header-glow" aria-hidden="true"></div>
+    <p class="ev-eyebrow">Wifak Bank · Vie interne</p>
+    <h1 class="ev-title">Événements</h1>
+    <p class="ev-sub">Séminaires, ateliers et rencontres organisés par la banque. Inscrivez-vous en un clic.</p>
+  </header>
+
+  <!-- ===== Message ===== -->
+  <div *ngIf="message" class="ev-alert" [class.is-ok]="!error" [class.is-err]="error" role="status">
+    <i class="fa-solid" [class.fa-circle-check]="!error" [class.fa-triangle-exclamation]="error" aria-hidden="true"></i>
+    <span>{{ message }}</span>
+  </div>
+
+  <!-- ===== Création (RH) ===== -->
+  <section class="ev-form-card" *ngIf="isAdminOrRH" aria-labelledby="ev-form-title">
+    <h2 id="ev-form-title" class="ev-form-title">
+      <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i> Créer un événement
+    </h2>
+
+    <form (submit)="$event.preventDefault(); addEvent()">
+      <div class="ev-form-grid">
+        <div class="ev-field">
+          <label for="ev-t">Titre</label>
+          <input id="ev-t" type="text" [(ngModel)]="newEvent.title" name="title" placeholder="Séminaire annuel" required>
+        </div>
+        <div class="ev-field">
+          <label for="ev-d">Date</label>
+          <input id="ev-d" type="date" [(ngModel)]="newEvent.eventDate" name="eventDate" required>
+        </div>
+        <div class="ev-field">
+          <label for="ev-l">Lieu</label>
+          <input id="ev-l" type="text" [(ngModel)]="newEvent.location" name="location" placeholder="Siège Wifak Bank" required>
+        </div>
+        <div class="ev-field ev-field-full">
+          <label for="ev-desc">Description</label>
+          <input id="ev-desc" type="text" [(ngModel)]="newEvent.description" name="description" placeholder="Quelques mots sur le programme">
+        </div>
+      </div>
+
+      <button type="submit" class="ev-btn ev-btn-primary">
+        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publier l'événement
+      </button>
+    </form>
+  </section>
+
+  <!-- ===== Liste ===== -->
+  <div class="ev-grid" *ngIf="events.length > 0">
+    <article class="ev-card" *ngFor="let ev of events">
+
+      <div class="ev-card-side" aria-hidden="true">
+        <span class="ev-day">{{ ev.eventDate | date:'dd' }}</span>
+        <span class="ev-month">{{ ev.eventDate | date:'MMM' }}</span>
+        <span class="ev-year">{{ ev.eventDate | date:'yyyy' }}</span>
+      </div>
+
+      <div class="ev-card-main">
+        <h3 class="ev-name">{{ ev.title }}</h3>
+
+        <p class="ev-place">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          {{ ev.location || 'Lieu à confirmer' }}
+        </p>
+
+        <p class="ev-desc">{{ ev.description || 'Le programme détaillé sera communiqué prochainement.' }}</p>
+
+        <div class="ev-actions">
+          <ng-container *ngIf="isEmployee">
+            <button *ngIf="!hasParticipated(ev.id)" class="ev-btn ev-btn-primary"
+                    (click)="askParticipate(ev.id, ev.title)">
+              <i class="fa-solid fa-hand-point-up" aria-hidden="true"></i> Participer
+            </button>
+
+            <div class="ev-signed" *ngIf="hasParticipated(ev.id)">
+              <span class="ev-joined">
+                <i class="fa-solid fa-check" aria-hidden="true"></i> Vous êtes inscrit
+              </span>
+              <button type="button" class="ev-cancel" (click)="askCancelParticipation(ev.id, ev.title)">
+                Annuler
+              </button>
+            </div>
+          </ng-container>
+
+          <div class="ev-admin" *ngIf="isAdminOrRH">
+            <button class="ev-icon-btn" title="Modifier" aria-label="Modifier l'événement" (click)="editEvent(ev)">
+              <i class="fa-solid fa-pen" aria-hidden="true"></i>
+            </button>
+            <button class="ev-icon-btn is-danger" title="Supprimer" aria-label="Supprimer l'événement" (click)="askDelete(ev.id, ev.title)">
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </div>
+
+  <!-- ===== Confirmation (participer / annuler / supprimer) ===== -->
+  <app-confirm-dialog
+    [open]="pending !== null"
+    [title]="pending?.kind === 'join' ? 'Confirmer votre participation'
+           : pending?.kind === 'leave' ? 'Annuler votre inscription ?'
+           : 'Supprimer cet événement ?'"
+    [message]="pending?.kind === 'join'
+                 ? 'Vous serez inscrit à « ' + (pending?.title || 'cet événement') + ' ».'
+               : pending?.kind === 'leave'
+                 ? 'Vous ne serez plus inscrit à « ' + (pending?.title || 'cet événement') + ' ».'
+                 : '« ' + (pending?.title || 'Cet événement') + ' » sera retiré du calendrier.'"
+    [detail]="pending?.kind === 'join'
+                ? 'Vous pourrez annuler à tout moment depuis cette page.'
+              : pending?.kind === 'leave'
+                ? 'Votre place sera rendue disponible. Vous pourrez vous réinscrire ensuite.'
+                : 'Les inscriptions associées seront perdues. Cette action est définitive.'"
+    [confirmLabel]="pending?.kind === 'join' ? 'Oui, participer'
+                  : pending?.kind === 'leave' ? 'Oui, annuler'
+                  : 'Supprimer'"
+    [cancelLabel]="pending?.kind === 'leave' ? 'Rester inscrit' : 'Annuler'"
+    [icon]="pending?.kind === 'join' ? 'fa-calendar-check'
+          : pending?.kind === 'leave' ? 'fa-calendar-xmark'
+          : 'fa-trash-can'"
+    [tone]="pending?.kind === 'join' ? 'default' : 'danger'"
+    (confirmed)="runPending()"
+    (cancelled)="dismissDialog()">
+  </app-confirm-dialog>
+
+  <!-- ===== Vide ===== -->
+  <div class="ev-empty" *ngIf="events.length === 0">
+    <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+    <p>Aucun événement programmé pour le moment.</p>
+    <p class="ev-empty-hint">Les prochaines dates apparaîtront ici dès leur publication.</p>
+  </div>
+
+</div>
