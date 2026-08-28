@@ -20,7 +20,7 @@ export interface Salary {
 })
 export class FinanceService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/salaries';
+  private apiUrl = '/api/salaries';
 
   getSalaries(): Observable<Salary[]> {
     return this.http.get<Salary[]>(this.apiUrl);

@@ -134,6 +134,19 @@ Ouvrez **http://localhost:4200**.
 Le serveur de développement Angular relaie `/api` vers `localhost:8081`
 (voir `frontend/proxy.conf.json`) — aucune configuration CORS n'est requise.
 
+### Artefact unique
+
+Pour obtenir un JAR contenant **aussi** l'interface :
+
+```bash
+cd frontend && npx ng build --configuration production && cd ..
+mvn -DskipTests package
+java -jar target/rh_system-0.0.1-SNAPSHOT.jar
+```
+
+Tout est alors servi sur un seul port. C'est ce que déploie
+[DEPLOYMENT.md](DEPLOYMENT.md).
+
 ---
 
 ## Comptes de démonstration
@@ -193,6 +206,8 @@ passe hachés en BCrypt, routes protégées par rôle côté serveur et côté c
 
 - **[FEATURES.md](FEATURES.md)** — inventaire des fonctionnalités, journal
   des évolutions, identifiants et notes techniques détaillées.
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** — mise en ligne d'une démo publique
+  (Render + Neon), gratuite et permanente.
 
 ---
 

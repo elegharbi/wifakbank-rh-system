@@ -224,7 +224,7 @@ export class Profile implements OnInit {
     // Because authService might not be injected, let's inject HttpClient at the top of the file if needed, or use fetch.
     const token = localStorage.getItem('token');
     
-    fetch('http://localhost:8081/api/auth/change-password', {
+    fetch('/api/auth/change-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

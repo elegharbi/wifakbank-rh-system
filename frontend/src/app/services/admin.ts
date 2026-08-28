@@ -20,7 +20,7 @@ export interface AdminDashboardStats {
 })
 export class AdminService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/admin';
+  private apiUrl = '/api/admin';
 
   getDashboardStats(): Observable<AdminDashboardStats> {
     return this.http.get<AdminDashboardStats>(`${this.apiUrl}/dashboard`);

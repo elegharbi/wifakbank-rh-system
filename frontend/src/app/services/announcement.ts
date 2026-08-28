@@ -15,7 +15,7 @@ export interface Announcement {
 })
 export class AnnouncementService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/announcements';
+  private apiUrl = '/api/announcements';
 
   getAll(): Observable<Announcement[]> {
     return this.http.get<Announcement[]>(this.apiUrl);

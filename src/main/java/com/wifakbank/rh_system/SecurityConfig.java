@@ -19,8 +19,14 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Connexion, inscription, mot de passe oublié
                 .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
+                // Toute autre API exige un jeton valide
+                .requestMatchers("/api/**").authenticated()
+                // Le reste sert l'application Angular (HTML, JS, CSS, images).
+                // Aucune donnée n'y transite : l'accès aux données reste
+                // protégé par la règle ci-dessus.
+                .anyRequest().permitAll()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

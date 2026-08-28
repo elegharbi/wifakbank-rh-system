@@ -19,7 +19,7 @@ export interface Leave {
 })
 export class LeaveService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/leaves';
+  private apiUrl = '/api/leaves';
 
   // Used by RH to see all pending leaves
   getLeaves(): Observable<Leave[]> {

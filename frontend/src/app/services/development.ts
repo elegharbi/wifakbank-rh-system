@@ -30,8 +30,8 @@ export interface Evaluation {
 })
 export class DevelopmentService {
   private http = inject(HttpClient);
-  private trainingsUrl = 'http://localhost:8081/api/trainings';
-  private evaluationsUrl = 'http://localhost:8081/api/evaluations';
+  private trainingsUrl = '/api/trainings';
+  private evaluationsUrl = '/api/evaluations';
 
   // Trainings
   getTrainings(): Observable<Training[]> {

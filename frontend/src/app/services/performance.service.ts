@@ -15,7 +15,7 @@ export interface PointLog {
 })
 export class PerformanceService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/performance';
+  private apiUrl = '/api/performance';
 
   getLeaderboard(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/leaderboard`);

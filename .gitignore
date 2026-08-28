@@ -1,8 +1,7 @@
 # ───────────── Secrets (JAMAIS versionnés) ─────────────
-# Le vrai fichier contient les identifiants de base de données,
-# le jeton Hugging Face et le mot de passe SMTP.
-# Repartez de application.properties.example.
-src/main/resources/application.properties
+# application.properties est versionné mais ne contient que des
+# variables d'environnement. Les vraies valeurs vivent ici :
+src/main/resources/application-local.properties
 
 # ───────────── Java / Maven ─────────────
 target/
@@ -33,3 +32,6 @@ Thumbs.db
 .vscode/
 *.iml
 *.log
+
+# ───────────── Build Angular (regénéré par le Dockerfile) ─────────────
+src/main/resources/static/

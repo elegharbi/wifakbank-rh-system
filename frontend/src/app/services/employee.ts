@@ -17,7 +17,7 @@ export interface Employee {
 })
 export class EmployeeService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/employees';
+  private apiUrl = '/api/employees';
 
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.apiUrl);

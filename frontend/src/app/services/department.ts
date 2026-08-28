@@ -14,7 +14,7 @@ export interface Department {
 })
 export class DepartmentService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/departments';
+  private apiUrl = '/api/departments';
 
   getAll(): Observable<Department[]> {
     return this.http.get<Department[]>(this.apiUrl);

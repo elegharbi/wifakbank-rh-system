@@ -29,8 +29,8 @@ export interface Candidate {
 })
 export class RecruitmentService {
   private http = inject(HttpClient);
-  private jobsUrl = 'http://localhost:8081/api/job-positions';
-  private candidatesUrl = 'http://localhost:8081/api/candidates';
+  private jobsUrl = '/api/job-positions';
+  private candidatesUrl = '/api/candidates';
 
   // Job Positions
   getJobs(): Observable<JobPosition[]> {

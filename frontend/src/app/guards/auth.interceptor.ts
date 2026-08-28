@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  if (req.url.startsWith('/api') || req.url.includes('localhost:8081/api')) {
+  if (req.url.startsWith('/api')) {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
     const cloned = req.clone({
       withCredentials: true,

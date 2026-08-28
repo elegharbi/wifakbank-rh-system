@@ -32,7 +32,7 @@ export interface PageResponse<T> {
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8081/api/users';
+  private apiUrl = '/api/users';
 
   getMe(): Observable<User> {
     const userStr = sessionStorage.getItem('currentUser');
