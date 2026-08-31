@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { HttpClient } from '@angular/common/http';
 import { ThemeService } from '../../../services/theme.service';
 
 @Component({
@@ -14,6 +15,7 @@ import { ThemeService } from '../../../services/theme.service';
 })
 export class Home implements OnInit {
   authService = inject(AuthService);
+  private http = inject(HttpClient);
   theme = inject(ThemeService);
   router = inject(Router);
   
@@ -31,6 +33,7 @@ export class Home implements OnInit {
   };
   contactSubmitted = false;
   isContactSubmitting = false;
+  contactError = '';
 
   stats = [
     { value: '250+', label: 'Collaborateurs', icon: 'fa-users' },
@@ -71,13 +74,27 @@ export class Home implements OnInit {
       return;
     }
     this.isContactSubmitting = true;
-    // Simulate submission
-    setTimeout(() => {
-      this.isContactSubmitting = false;
-      this.contactSubmitted = true;
-      this.contactForm = { nomComplet: '', email: '', sujet: '', message: '' };
-      setTimeout(() => this.contactSubmitted = false, 5000);
-    }, 1500);
+    this.contactError = '';
+
+    // Envoi réel : le message est enregistré et le RH est notifié.
+    this.http.post<{ success: boolean; message: string }>('/api/contact', {
+      fullName: this.contactForm.nomComplet,
+      email: this.contactForm.email,
+      subject: this.contactForm.sujet,
+      message: this.contactForm.message
+    }).subscribe({
+      next: () => {
+        this.isContactSubmitting = false;
+        this.contactSubmitted = true;
+        this.contactForm = { nomComplet: '', email: '', sujet: '', message: '' };
+        setTimeout(() => this.contactSubmitted = false, 8000);
+      },
+      error: (err) => {
+        this.isContactSubmitting = false;
+        this.contactError = err?.error?.error
+          || "L'envoi a échoué. Vérifiez votre connexion et réessayez.";
+      }
+    });
   }
 
   scrollTo(sectionId: string) {

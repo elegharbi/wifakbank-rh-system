@@ -49,6 +49,7 @@ export const routes: Routes = [
       // PROFIL — accessible à tous
       // ──────────────────────────────────────────────────────────────────
       { path: 'profile', loadComponent: () => import('./components/core/profile/profile').then(m => m.Profile), canActivate: [authGuard, roleGuard(ALL)] },
+      { path: 'notifications', loadComponent: () => import('./components/shared/notifications/notifications').then(m => m.Notifications), canActivate: [authGuard, roleGuard(ALL)] },
 
       // ──────────────────────────────────────────────────────────────────
       // EMPLOYEE UNIQUEMENT
@@ -89,7 +90,8 @@ export const routes: Routes = [
 
 
       { path: 'profile',      loadComponent: () => import('./components/core/profile/profile').then(m => m.Profile) },
-      { path: 'settings',     loadComponent: () => import('./components/admin/settings/settings').then(m => m.Settings) }
+      { path: 'settings',     loadComponent: () => import('./components/admin/settings/settings').then(m => m.Settings) },
+      { path: 'notifications', loadComponent: () => import('./components/shared/notifications/notifications').then(m => m.Notifications) },
     ]
   },
 
@@ -111,7 +113,8 @@ export const routes: Routes = [
       { path: 'participations',loadComponent: () => import('./components/shared/participations/participations').then(m => m.Participations) },
 
       { path: 'events',        loadComponent: () => import('./components/shared/development/events/events').then(m => m.Events) },
-      { path: 'profile',       loadComponent: () => import('./components/core/profile/profile').then(m => m.Profile) }
+      { path: 'profile',       loadComponent: () => import('./components/core/profile/profile').then(m => m.Profile) },
+      { path: 'notifications', loadComponent: () => import('./components/shared/notifications/notifications').then(m => m.Notifications) },
     ]
   },
 

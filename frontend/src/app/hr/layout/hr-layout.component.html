@@ -16,6 +16,16 @@
         </div>
       </a>
 
+      <a routerLink="/hr/notifications" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-bell icon"></i>
+          <span>Notifications</span>
+        </div>
+        <span class="badge badge-red" *ngIf="(notificationService.unreadCount$ | async) as c">
+          <ng-container *ngIf="c > 0">{{ c }}</ng-container>
+        </span>
+      </a>
+
       <!-- Recrutement -->
       <div class="nav-group-label">Recrutement</div>
       <a routerLink="/hr/candidates" routerLinkActive="active" class="nav-item">
@@ -91,8 +101,34 @@
 
       <div class="topbar-right">
 
-        <div class="user-avatar" title="{{ currentUser?.firstName }} {{ currentUser?.lastName }}">
-          {{ userInitials }}
+        <!-- Notifications -->
+        <a class="notif-bell" routerLink="/hr/notifications" title="Notifications" aria-label="Notifications">
+          <i class="fa-solid fa-bell" aria-hidden="true"></i>
+          <span class="notif-badge" *ngIf="(notificationService.unreadCount$ | async) as c">
+            <ng-container *ngIf="c > 0">{{ c > 99 ? '99+' : c }}</ng-container>
+          </span>
+        </a>
+
+        <!-- Clair / Sombre -->
+        <button type="button"
+                class="theme-switch"
+                [class.is-dark]="themeService.isDarkMode"
+                (click)="themeService.toggle()"
+                role="switch"
+                [attr.aria-checked]="themeService.isDarkMode"
+                [attr.title]="themeService.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'"
+                [attr.aria-label]="themeService.isDarkMode ? 'Passer en mode clair' : 'Passer en mode sombre'">
+          <span class="theme-switch-track" aria-hidden="true">
+            <i class="fa-solid fa-sun theme-ico theme-ico-sun"></i>
+            <i class="fa-solid fa-moon theme-ico theme-ico-moon"></i>
+            <span class="theme-switch-knob"></span>
+          </span>
+        </button>
+
+        <div class="user-avatar" [attr.title]="currentUser?.firstName + ' ' + currentUser?.lastName">
+          <img *ngIf="(avatarService.avatar$ | async) || currentUser?.profileImage as photo"
+               [src]="photo" alt="" class="user-avatar-img">
+          <span *ngIf="!((avatarService.avatar$ | async) || currentUser?.profileImage)">{{ userInitials }}</span>
         </div>
       </div>
     </header>

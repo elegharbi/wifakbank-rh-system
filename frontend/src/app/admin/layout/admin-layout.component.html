@@ -38,6 +38,13 @@
 
 
 
+      <a routerLink="/admin/notifications" routerLinkActive="active" class="nav-item">
+        <div class="nav-content">
+          <i class="fa-solid fa-bell icon"></i>
+          <span>Notifications</span>
+        </div>
+      </a>
+
       <div class="nav-divider"></div>
 
       <a routerLink="/admin/profile" routerLinkActive="active" class="nav-item">
@@ -72,6 +79,14 @@
       </div>
 
       <div class="topbar-right">
+
+        <!-- Notifications -->
+        <a class="notif-bell" routerLink="/admin/notifications" title="Notifications" aria-label="Notifications">
+          <i class="fa-solid fa-bell" aria-hidden="true"></i>
+          <span class="notif-badge" *ngIf="(notificationService.unreadCount$ | async) as c">
+          <ng-container *ngIf="c > 0">{{ c > 99 ? '99+' : c }}</ng-container>
+          </span>
+        </a>
 
         <!-- Clair / Sombre -->
         <button type="button"

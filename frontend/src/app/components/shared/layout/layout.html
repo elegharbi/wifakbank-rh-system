@@ -9,6 +9,14 @@
     <!-- Navbar Controls -->
     <div class="navbar-controls">
 
+      <!-- Notifications -->
+      <a class="notif-bell" routerLink="/notifications" title="Notifications" aria-label="Notifications">
+        <i class="fa-solid fa-bell" aria-hidden="true"></i>
+        <span class="notif-badge" *ngIf="(notificationService.unreadCount$ | async) as c">
+          <ng-container *ngIf="c > 0">{{ c > 99 ? '99+' : c }}</ng-container>
+        </span>
+      </a>
+
       <!-- Clair / Sombre -->
       <button type="button"
               class="theme-switch"

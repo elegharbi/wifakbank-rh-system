@@ -21,6 +21,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Connexion, inscription, mot de passe oublié
                 .requestMatchers("/api/auth/**").permitAll()
+                // Formulaire de contact : un candidat n'a pas encore de compte.
+                // Seul l'envoi est ouvert ; la lecture reste réservée aux RH.
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/contact").permitAll()
                 // Toute autre API exige un jeton valide
                 .requestMatchers("/api/**").authenticated()
                 // Le reste sert l'application Angular (HTML, JS, CSS, images).

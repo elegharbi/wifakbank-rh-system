@@ -204,6 +204,10 @@
       <p class="section-desc">L'équipe RH vous répond sous 48 heures ouvrables.</p>
     </div>
 
+    <p class="contact-error" *ngIf="contactError" role="alert">
+      <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{ contactError }}
+    </p>
+
     <div *ngIf="contactSubmitted" class="success-message">
       <i class="fa-solid fa-circle-check"></i>
       <span>Merci de nous avoir contactés. Nous vous répondrons bientôt.</span>

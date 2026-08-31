@@ -25,5 +25,28 @@ public class Participation {
 
     private LocalDateTime registrationDate;
 
+    /**
+     * PENDING, APPROVED ou REJECTED.
+     *
+     * Les inscriptions créées avant l'ajout de ce champ n'ont pas de valeur :
+     * getStatus() les considère comme approuvées pour ne rien casser.
+     */
+    @Column(length = 20)
+    private String status;
 
+    /** Valeur par défaut à la création. */
+    @PrePersist
+    void onCreate() {
+        if (status == null) {
+            status = "PENDING";
+        }
+        if (registrationDate == null) {
+            registrationDate = LocalDateTime.now();
+        }
+    }
+
+    /** Jamais null : les anciennes lignes sont traitées comme acceptées. */
+    public String getStatus() {
+        return status == null ? "APPROVED" : status;
+    }
 }

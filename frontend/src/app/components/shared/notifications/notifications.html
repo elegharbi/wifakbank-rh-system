@@ -1,0 +1,113 @@
+<div class="nt">
+
+  <header class="nt-head wf-rise">
+    <img src="icon-512.png?v=2" alt="" class="nt-mark" aria-hidden="true">
+    <p class="nt-eyebrow">Wifak Bank · Suivi des demandes</p>
+    <h1 class="nt-title">Notifications</h1>
+    <p class="nt-sub">Les demandes reçues et les décisions prises, au même endroit.</p>
+
+    <div class="nt-stats" *ngIf="!loading">
+      <div class="nt-stat">
+        <span class="nt-stat-num">{{ unreadTotal }}</span>
+        <span class="nt-stat-lbl">{{ unreadTotal > 1 ? 'non lues' : 'non lue' }}</span>
+      </div>
+      <span class="nt-stat-sep" aria-hidden="true"></span>
+      <div class="nt-stat">
+        <span class="nt-stat-num">{{ pendingTotal }}</span>
+        <span class="nt-stat-lbl">{{ pendingTotal > 1 ? 'demandes à traiter' : 'demande à traiter' }}</span>
+      </div>
+    </div>
+  </header>
+
+  <p class="nt-feedback" [class.is-err]="feedbackError" *ngIf="feedback" role="status">
+    <i class="fa-solid" [class.fa-circle-check]="!feedbackError" [class.fa-triangle-exclamation]="feedbackError" aria-hidden="true"></i>
+    {{ feedback }}
+  </p>
+
+  <!-- Filtres -->
+  <div class="nt-bar" *ngIf="!loading && all.length > 0">
+    <div class="nt-filters" role="group" aria-label="Filtrer les notifications">
+      <button type="button" class="nt-chip" [class.active]="filter === 'all'" (click)="setFilter('all')">
+        Toutes <span class="nt-count">{{ all.length }}</span>
+      </button>
+      <button type="button" class="nt-chip" [class.active]="filter === 'unread'" (click)="setFilter('unread')">
+        Non lues <span class="nt-count">{{ unreadTotal }}</span>
+      </button>
+      <button type="button" class="nt-chip" [class.active]="filter === 'requests'" (click)="setFilter('requests')">
+        À traiter <span class="nt-count">{{ pendingTotal }}</span>
+      </button>
+    </div>
+
+    <button type="button" class="nt-readall" (click)="markAllRead()" *ngIf="unreadTotal > 0">
+      <i class="fa-solid fa-check-double" aria-hidden="true"></i> Tout marquer comme lu
+    </button>
+  </div>
+
+  <!-- Chargement -->
+  <div class="nt-loading" *ngIf="loading">
+    <span class="nt-ring" aria-hidden="true"></span>
+    <p>Chargement de vos notifications…</p>
+  </div>
+
+  <!-- Liste -->
+  <ul class="nt-list" *ngIf="!loading && visible.length > 0">
+    <li *ngFor="let n of visible; trackBy: trackById"
+        class="nt-item"
+        [class.is-unread]="!n.read"
+        [attr.data-tone]="tone(n)">
+
+      <span class="nt-icon" [attr.data-tone]="tone(n)" aria-hidden="true">
+        <i class="fa-solid" [ngClass]="icon(n)"></i>
+      </span>
+
+      <div class="nt-body">
+        <div class="nt-row">
+          <h2 class="nt-item-title">{{ n.title }}</h2>
+          <span class="nt-time">{{ ago(n.createdAt) }}</span>
+        </div>
+
+        <p class="nt-msg">{{ n.message }}</p>
+
+        <p class="nt-actor" *ngIf="n.actor">
+          <i class="fa-solid fa-user" aria-hidden="true"></i>
+          {{ n.actor.firstName }} {{ n.actor.lastName }}
+          <span class="nt-actor-mail" *ngIf="n.actor.email">· {{ n.actor.email }}</span>
+        </p>
+
+        <!-- Décision du RH -->
+        <div class="nt-actions" *ngIf="n.actionable">
+          <button type="button" class="nt-btn nt-btn-ok"
+                  [disabled]="busyId !== null"
+                  (click)="decide(n, 'APPROVED')">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+            {{ busyId === n.id ? 'Traitement…' : 'Accepter' }}
+          </button>
+          <button type="button" class="nt-btn nt-btn-ko"
+                  [disabled]="busyId !== null"
+                  (click)="decide(n, 'REJECTED')">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i> Refuser
+          </button>
+        </div>
+
+        <!-- Simple consultation -->
+        <button type="button" class="nt-open" *ngIf="!n.actionable && n.link" (click)="open(n)">
+          Ouvrir <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <button type="button" class="nt-dot" *ngIf="!n.read"
+              (click)="open(n)"
+              aria-label="Marquer comme lue" title="Marquer comme lue"></button>
+    </li>
+  </ul>
+
+  <!-- Vide -->
+  <div class="nt-empty" *ngIf="!loading && visible.length === 0">
+    <i class="fa-regular fa-bell" aria-hidden="true"></i>
+    <p>{{ all.length === 0 ? 'Aucune notification pour le moment.' : 'Rien dans ce filtre.' }}</p>
+    <p class="nt-empty-hint">
+      Les demandes d'inscription et les réponses des RH apparaîtront ici.
+    </p>
+  </div>
+
+</div>

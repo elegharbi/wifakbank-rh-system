@@ -7,6 +7,7 @@ import { UserService, User } from '../../../services/user';
 import { TranslationService } from '../../../services/translation';
 import { AuthService } from '../../../services/auth.service';
 import { AvatarService } from '../../../services/avatar.service';
+import { NotificationService } from '../../../services/notification.service';
 
 import { AdminSidebar } from '../../admin/admin-sidebar/admin-sidebar';
 import { HrSidebar } from '../../hr/hr-sidebar/hr-sidebar';
@@ -37,6 +38,7 @@ export class Layout implements OnInit, OnDestroy {
   translation = inject(TranslationService);
   authService = inject(AuthService);
   avatarService = inject(AvatarService);
+  notificationService = inject(NotificationService);
 
   isDropdownOpen = false;
   isSettingsDropdownOpen = false;
@@ -46,6 +48,7 @@ export class Layout implements OnInit, OnDestroy {
   // Role is driven by the reactive stream — updated on login/logout/reload
   currentRole: string | null = null;
   private roleSub!: Subscription;
+  private notifTimer: any = null;
 
   ngOnInit() {
     // Subscribe to user changes
@@ -60,6 +63,12 @@ export class Layout implements OnInit, OnDestroy {
 
     this.loadUser();
 
+    // Compteur de la cloche : rafraichi a l'ouverture puis toutes les 60 s.
+    if (this.authService.isLoggedIn()) {
+      this.notificationService.refreshCount();
+      this.notifTimer = setInterval(() => this.notificationService.refreshCount(), 60000);
+    }
+
     const savedTheme = localStorage.getItem('theme');
     const savedLang = localStorage.getItem('lang') as 'fr' | 'ar' | null;
     // Aucun choix enregistre : on suit le reglage du systeme.
@@ -72,6 +81,7 @@ export class Layout implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.notifTimer) { clearInterval(this.notifTimer); }
     this.roleSub?.unsubscribe();
   }
 

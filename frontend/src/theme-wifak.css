@@ -998,3 +998,61 @@ body.dark-mode .auth-mark { opacity: .14; }
 @media (prefers-reduced-motion: reduce) {
   .auth-grid, .auth-orb, .auth-shape, .auth-mark { animation: none; }
 }
+
+/* =====================================================================
+   CLOCHE DE NOTIFICATIONS
+   ===================================================================== */
+
+.notif-bell {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--wf-ink-soft);
+  font-size: 1.02rem;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.notif-bell:hover {
+  background: var(--wf-inset);
+  color: var(--wf-blue);
+  transform: translateY(-1px);
+}
+
+.notif-bell:focus-visible { outline: 2px solid var(--wf-blue); outline-offset: 2px; }
+
+/* pastille : le nombre de notifications non lues */
+.notif-badge:not(:empty) {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: linear-gradient(150deg, var(--wf-red-lit), var(--wf-red));
+  border: 2px solid var(--wf-surface);
+  color: #fff;
+  font-size: .64rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 3px 8px rgba(214,43,36,.4);
+  animation: notif-pop .3s cubic-bezier(.2,1.5,.4,1);
+}
+
+@keyframes notif-pop {
+  from { transform: scale(.4); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notif-bell { transition: none; }
+  .notif-bell:hover { transform: none; }
+  .notif-badge:not(:empty) { animation: none; }
+}

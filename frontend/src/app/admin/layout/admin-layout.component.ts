@@ -7,6 +7,7 @@ import { UserService, User } from '../../services/user';
 import { AdminService } from '../../services/admin';
 import { ThemeService } from '../../services/theme.service';
 import { AvatarService } from '../../services/avatar.service';
+import { NotificationService } from '../../services/notification.service';
 import { Chatbot } from '../../components/shared/chatbot/chatbot';
 
 @Component({
@@ -23,6 +24,7 @@ export class AdminLayoutComponent implements OnInit {
   private adminService = inject(AdminService);
   themeService = inject(ThemeService);
   avatarService = inject(AvatarService);
+  notificationService = inject(NotificationService);
 
   pageTitle = 'Tableau de bord';
   search = '';
@@ -34,6 +36,8 @@ export class AdminLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.avatarService.reload();
+    this.notificationService.refreshCount();
+    setInterval(() => this.notificationService.refreshCount(), 60000);
     this.loadCurrentUser();
     this.loadStats();
     this.router.events.subscribe((event) => {

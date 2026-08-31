@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
+import { AvatarService } from '../../services/avatar.service';
+import { NotificationService } from '../../services/notification.service';
 import { UserService, User } from '../../services/user';
 import { LeaveService } from '../../services/leave';
 import { CandidateService } from '../../services/candidate.service';
@@ -19,6 +22,9 @@ export class HrLayoutComponent implements OnInit {
   private router = inject(Router);
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  themeService = inject(ThemeService);
+  avatarService = inject(AvatarService);
+  notificationService = inject(NotificationService);
   private leaveService = inject(LeaveService);
   private candidateService = inject(CandidateService);
 
@@ -29,6 +35,9 @@ export class HrLayoutComponent implements OnInit {
   pendingCandidates = 0;
 
   ngOnInit() {
+    this.avatarService.reload();
+    this.notificationService.refreshCount();
+    setInterval(() => this.notificationService.refreshCount(), 60000);
     this.loadCurrentUser();
     this.loadStats();
     this.router.events.subscribe((event) => {

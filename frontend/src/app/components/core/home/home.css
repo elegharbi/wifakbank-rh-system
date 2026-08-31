@@ -1605,3 +1605,18 @@
 @media (prefers-reduced-motion: reduce) {
   .contact-form input, .contact-form textarea { transition: none; }
 }
+
+/* Erreur d'envoi du formulaire de contact */
+.contact-error {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--wf-note-err-bg);
+  border: 1px solid var(--wf-note-err-bd);
+  color: var(--wf-note-err-fg);
+  font-size: .87rem;
+  font-weight: 500;
+}

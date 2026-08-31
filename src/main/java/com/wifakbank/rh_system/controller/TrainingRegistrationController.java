@@ -6,7 +6,9 @@ import com.wifakbank.rh_system.TrainingRegistration;
 import com.wifakbank.rh_system.repository.UserRepository;
 import com.wifakbank.rh_system.repository.TrainingRepository;
 import com.wifakbank.rh_system.repository.TrainingRegistrationRepository;
+import com.wifakbank.rh_system.NotificationType;
 import com.wifakbank.rh_system.service.EmailService;
+import com.wifakbank.rh_system.service.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,15 +28,18 @@ public class TrainingRegistrationController {
     private final TrainingRepository trainingRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final NotificationService notificationService;
 
     public TrainingRegistrationController(TrainingRegistrationRepository registrationRepository,
                                           TrainingRepository trainingRepository,
                                           UserRepository userRepository,
-                                          EmailService emailService) {
+                                          EmailService emailService,
+                                          NotificationService notificationService) {
         this.registrationRepository = registrationRepository;
         this.trainingRepository = trainingRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/register/{trainingId}")
@@ -77,7 +82,26 @@ public class TrainingRegistrationController {
             System.err.println("Erreur email inscription formation : " + e.getMessage());
         }
 
+        // Le RH doit voir la demande dans son espace Notifications.
+        String who = displayName(user);
+        notificationService.notifyHr(
+                user,
+                NotificationType.TRAINING_REQUEST,
+                "Demande d'inscription à une formation",
+                who + " demande à participer à la formation « " + training.getTitle() + " ».",
+                "/hr/trainings",
+                "TRAINING_REGISTRATION",
+                saved.getId(),
+                true);
+
         return ResponseEntity.ok(saved);
+    }
+
+    private String displayName(User u) {
+        String first = u.getFirstName() != null ? u.getFirstName() : "";
+        String last = u.getLastName() != null ? u.getLastName() : "";
+        String full = (first + " " + last).trim();
+        return full.isEmpty() ? u.getUsername() : full;
     }
 
     @GetMapping("/my")
@@ -104,8 +128,33 @@ public class TrainingRegistrationController {
         }
 
         TrainingRegistration registration = regOpt.get();
+
+        // Une demande déjà tranchée ne se rejuge pas.
+        if (!"PENDING".equalsIgnoreCase(registration.getStatus())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Cette demande a déjà été traitée (" + registration.getStatus() + ")"));
+        }
+
         registration.setStatus(newStatus);
         TrainingRegistration saved = registrationRepository.save(registration);
+
+        // L'employé est prévenu de la décision.
+        boolean approved = "APPROVED".equals(newStatus);
+        Training t = registration.getTraining();
+        notificationService.notifyUser(
+                registration.getUser(),
+                null,
+                approved ? NotificationType.TRAINING_APPROVED : NotificationType.TRAINING_REJECTED,
+                approved ? "Inscription acceptée" : "Inscription refusée",
+                "Votre demande pour la formation « " + t.getTitle() + " » a été "
+                        + (approved ? "acceptée." : "refusée."),
+                "/employee-trainings",
+                "TRAINING_REGISTRATION",
+                saved.getId(),
+                false);
+
+        // La demande n'attend plus de décision côté RH.
+        notificationService.closeRequest("TRAINING_REGISTRATION", saved.getId());
 
         // Send email notification
         try {
