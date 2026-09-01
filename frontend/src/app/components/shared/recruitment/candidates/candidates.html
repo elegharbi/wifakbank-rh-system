@@ -1,99 +1,183 @@
-<div class="candidates-container">
-  <div class="header-card card shadow-lg">
-    <h2>{{ t('trackCandidates') }}</h2>
-    <p class="subtitle">{{ t('trackCandidatesDesc') }}</p>
-    
-    <div class="candidate-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>{{ t('fullName') }}</label>
-          <input type="text" [(ngModel)]="newCandidate.fullName" placeholder="Ex: Jean Dupont">
-        </div>
-        <div class="form-group">
-          <label>{{ t('targetJob') }}</label>
-          <select [(ngModel)]="selectedJobId">
-            <option [ngValue]="null">{{ t('chooseJob') }}</option>
-            <option *ngFor="let job of jobs" [value]="job.id">{{ job.title }}</option>
-          </select>
-        </div>
+<div class="cd">
+
+  <!-- ===== Bandeau ===== -->
+  <header class="cd-head wf-rise">
+    <img src="icon-512.png?v=2" alt="" class="cd-mark" aria-hidden="true">
+    <p class="cd-eyebrow">Wifak Bank · Recrutement</p>
+    <h1 class="cd-title">Candidatures</h1>
+    <p class="cd-sub">Les profils déposés depuis le formulaire public, avec leur CV.</p>
+
+    <div class="cd-stats" *ngIf="!loading">
+      <div class="cd-stat">
+        <span class="cd-stat-num">{{ candidates.length }}</span>
+        <span class="cd-stat-lbl">{{ candidates.length > 1 ? 'candidatures' : 'candidature' }}</span>
       </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label>{{ t('email') }}</label>
-          <input type="email" [(ngModel)]="newCandidate.email" placeholder="email@exemple.com">
+      <span class="cd-stat-sep" aria-hidden="true"></span>
+      <div class="cd-stat">
+        <span class="cd-stat-num">{{ countBy('APPLIED') }}</span>
+        <span class="cd-stat-lbl">à étudier</span>
+      </div>
+      <span class="cd-stat-sep" aria-hidden="true"></span>
+      <div class="cd-stat">
+        <span class="cd-stat-num">{{ countBy('SELECTED') }}</span>
+        <span class="cd-stat-lbl">retenues</span>
+      </div>
+    </div>
+  </header>
+
+  <p class="cd-alert" [class.is-err]="error" *ngIf="message" role="status">
+    <i class="fa-solid" [class.fa-circle-check]="!error" [class.fa-triangle-exclamation]="error" aria-hidden="true"></i>
+    {{ message }}
+  </p>
+
+  <!-- ===== Filtres ===== -->
+  <div class="cd-bar" *ngIf="!loading && candidates.length > 0">
+    <div class="cd-search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" [(ngModel)]="search" name="search"
+             placeholder="Rechercher un nom, un email, un poste…"
+             aria-label="Rechercher une candidature">
+    </div>
+
+    <div class="cd-filters" role="group" aria-label="Filtrer par statut">
+      <button type="button" class="cd-chip" [class.active]="statusFilter === 'ALL'" (click)="statusFilter = 'ALL'">
+        Toutes <span class="cd-count">{{ countBy('ALL') }}</span>
+      </button>
+      <button type="button" class="cd-chip" *ngFor="let s of STATUSES"
+              [class.active]="statusFilter === s.key" (click)="statusFilter = s.key">
+        {{ s.label }} <span class="cd-count">{{ countBy(s.key) }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Chargement ===== -->
+  <div class="cd-loading" *ngIf="loading">
+    <span class="cd-ring" aria-hidden="true"></span>
+    <p>Chargement des candidatures…</p>
+  </div>
+
+  <!-- ===== Liste ===== -->
+  <div class="cd-grid" *ngIf="!loading && visible.length > 0">
+    <article class="cd-card" *ngFor="let c of visible; trackBy: trackById">
+      <div class="cd-card-top">
+        <span class="cd-avatar" aria-hidden="true">{{ initials(c.fullName) }}</span>
+        <div class="cd-ident">
+          <h2 class="cd-name">{{ c.fullName }}</h2>
+          <p class="cd-post">{{ c.desiredPosition || c.jobPosition || 'Candidature spontanée' }}</p>
         </div>
-        <div class="form-group">
-          <label>{{ t('phone') }}</label>
-          <input type="tel" [(ngModel)]="newCandidate.phone" placeholder="+216 12 345 678">
-        </div>
+        <span class="cd-status" [attr.data-s]="c.status || 'APPLIED'">{{ statusLabel(c.status) }}</span>
       </div>
 
+      <dl class="cd-facts">
+        <div class="cd-fact">
+          <dt>Email</dt>
+          <dd>{{ c.email }}</dd>
+        </div>
+        <div class="cd-fact" *ngIf="c.phone">
+          <dt>Téléphone</dt>
+          <dd>{{ c.phone }}</dd>
+        </div>
+        <div class="cd-fact" *ngIf="c.educationLevel">
+          <dt>Niveau</dt>
+          <dd>{{ c.educationLevel }}</dd>
+        </div>
+        <div class="cd-fact" *ngIf="c.speciality">
+          <dt>Spécialité</dt>
+          <dd>{{ c.speciality }}</dd>
+        </div>
+      </dl>
 
-      <div class="form-actions">
-        <button class="btn-primary" (click)="addCandidate()" [disabled]="!newCandidate.fullName || !selectedJobId">
-          <i class="fa-solid fa-user-plus"></i> {{ t('saveCandidate') }}
+      <div class="cd-card-foot">
+        <span class="cd-when" *ngIf="c.createdAt">Reçue {{ ago(c.createdAt) }}</span>
+        <div class="cd-card-actions">
+          <a class="cd-cv" *ngIf="c.hasCv" [href]="cvUrl(c)" target="_blank" rel="noopener">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> CV
+          </a>
+          <button type="button" class="cd-open" (click)="open(c)">
+            Voir la fiche <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- ===== Vide ===== -->
+  <div class="cd-empty" *ngIf="!loading && visible.length === 0">
+    <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+    <p>{{ candidates.length === 0 ? 'Aucune candidature reçue pour le moment.' : 'Aucune candidature dans ce filtre.' }}</p>
+    <p class="cd-empty-hint">
+      Les profils déposés depuis la page « Créer un compte candidat » apparaissent ici.
+    </p>
+  </div>
+
+  <!-- ===== Fiche détaillée ===== -->
+  <div class="cd-backdrop" *ngIf="selected" (click)="close()">
+    <aside class="cd-panel" role="dialog" aria-modal="true"
+           [attr.aria-label]="'Fiche de ' + selected.fullName"
+           (click)="$event.stopPropagation()">
+
+      <header class="cd-panel-head">
+        <span class="cd-avatar cd-avatar-lg" aria-hidden="true">{{ initials(selected.fullName) }}</span>
+        <div>
+          <h2 class="cd-panel-name">{{ selected.fullName }}</h2>
+          <p class="cd-panel-post">{{ selected.desiredPosition || selected.jobPosition || 'Candidature spontanée' }}</p>
+        </div>
+        <button type="button" class="cd-close" (click)="close()" aria-label="Fermer la fiche">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
+      </header>
+
+      <div class="cd-panel-body">
+        <section class="cd-block">
+          <h3 class="cd-block-title">Coordonnées</h3>
+          <dl class="cd-detail">
+            <div><dt>Email</dt><dd>{{ selected.email }}</dd></div>
+            <div><dt>Téléphone</dt><dd>{{ selected.phone || '—' }}</dd></div>
+            <div><dt>Adresse</dt><dd>{{ selected.address || '—' }}</dd></div>
+            <div><dt>Date de naissance</dt><dd>{{ selected.birthDate || '—' }}</dd></div>
+          </dl>
+        </section>
+
+        <section class="cd-block">
+          <h3 class="cd-block-title">Profil</h3>
+          <dl class="cd-detail">
+            <div><dt>Niveau d'étude</dt><dd>{{ selected.educationLevel || '—' }}</dd></div>
+            <div><dt>Spécialité</dt><dd>{{ selected.speciality || '—' }}</dd></div>
+            <div><dt>Poste souhaité</dt><dd>{{ selected.desiredPosition || '—' }}</dd></div>
+            <div><dt>Reçue le</dt><dd>{{ ago(selected.createdAt) }}</dd></div>
+          </dl>
+        </section>
+
+        <section class="cd-block" *ngIf="selected.motivationLetter">
+          <h3 class="cd-block-title">Lettre de motivation</h3>
+          <p class="cd-letter">{{ selected.motivationLetter }}</p>
+        </section>
+
+        <section class="cd-block">
+          <h3 class="cd-block-title">Curriculum vitae</h3>
+          <a class="cd-cv-big" *ngIf="selected.hasCv" [href]="cvUrl(selected)" target="_blank" rel="noopener">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+            <span>
+              <strong>{{ selected.cvFileName || 'Curriculum vitae' }}</strong>
+              <small>Ouvrir dans un nouvel onglet</small>
+            </span>
+          </a>
+          <p class="cd-nocv" *ngIf="!selected.hasCv">Aucun CV joint à cette candidature.</p>
+        </section>
+
+        <section class="cd-block">
+          <h3 class="cd-block-title">Décision</h3>
+          <div class="cd-decide">
+            <button type="button" class="cd-dbtn" *ngFor="let s of STATUSES"
+                    [class.active]="(selected.status || 'APPLIED') === s.key"
+                    [attr.data-s]="s.key"
+                    (click)="setStatus(selected, s.key)">
+              {{ s.label }}
+            </button>
+          </div>
+        </section>
       </div>
-    </div>
+    </aside>
   </div>
 
-  <div class="card candidates-card shadow-sm">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>{{ t('candidate') }}</th>
-          <th>{{ t('position') }}</th>
-          <th>{{ t('contact') }}</th>
-          <th>{{ t('status') }}</th>
-          <th>{{ t('actions') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let cand of candidates">
-          <tr>
-            <td>
-              <div class="cand-name">
-                <i class="fa-solid fa-circle-user"></i>
-                {{ cand.fullName }}
-              </div>
-            </td>
-            <td><span class="job-tag">{{ cand.jobPosition?.title || t('notSpecified') }}</span></td>
-            <td>
-              <div class="text-sm">{{ cand.email }}</div>
-              <div class="text-sm text-muted">{{ cand.phone || t('notProvided') }}</div>
-            </td>
-            <td><span class="status-pill" [class]="cand.status.toLowerCase()">{{ cand.status }}</span></td>
-            <td>
-              <a [routerLink]="['/viewer/cv', cand.id || 1]" target="_blank" class="btn-icon" title="Voir CV"><i class="fa-solid fa-file-pdf"></i></a>
-              <button (click)="startEvaluation(cand)" class="btn-icon text-green" title="Évaluer"><i class="fa-solid fa-star-half-stroke"></i></button>
-            </td>
-          </tr>
-          
-          <!-- Modal d'évaluation (simplifié pour la démo) -->
-          <tr *ngIf="evaluatingCandId === cand.id">
-            <td colspan="5" class="eval-row-bg">
-              <div class="eval-box shadow">
-                <h4><i class="fa-solid fa-pen-to-square"></i> {{ t('evaluate') }}</h4>
-                <div class="eval-fields">
-                  <div class="f-group">
-                    <label>{{ t('score') }} (0-100)</label>
-                    <input type="number" [(ngModel)]="evalScore" min="0" max="100">
-                  </div>
-                <div class="f-btns">
-                  <button class="btn-save" (click)="saveEvaluation()">Valider</button>
-                  <button class="btn-cancel" (click)="evaluatingCandId = null">Annuler</button>
-                </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-    
-    <div *ngIf="candidates.length === 0" class="no-data-simple">
-      <p>{{ t('noCandidates') }}</p>
-    </div>
-  </div>
 </div>

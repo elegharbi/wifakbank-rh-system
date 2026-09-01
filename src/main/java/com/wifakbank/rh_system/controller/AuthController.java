@@ -5,6 +5,10 @@ import com.wifakbank.rh_system.LoginRequest;
 import com.wifakbank.rh_system.SignupRequest;
 import com.wifakbank.rh_system.User;
 import com.wifakbank.rh_system.repository.UserRepository;
+import com.wifakbank.rh_system.repository.CandidateRepository;
+import com.wifakbank.rh_system.Candidate;
+import com.wifakbank.rh_system.NotificationType;
+import com.wifakbank.rh_system.service.NotificationService;
 import com.wifakbank.rh_system.repository.DepartmentRepository;
 import com.wifakbank.rh_system.service.EmailService;
 import com.wifakbank.rh_system.service.PasswordEncoderService;
@@ -32,13 +36,17 @@ public class AuthController {
     private final EmailService emailService;
     private final PasswordEncoderService passwordEncoderService;
     private final JwtUtil jwtUtil;
+    private final CandidateRepository candidateRepository;
+    private final NotificationService notificationService;
 
-    public AuthController(UserRepository userRepository, DepartmentRepository departmentRepository, EmailService emailService, PasswordEncoderService passwordEncoderService, JwtUtil jwtUtil) {
+    public AuthController(UserRepository userRepository, DepartmentRepository departmentRepository, EmailService emailService, PasswordEncoderService passwordEncoderService, JwtUtil jwtUtil, CandidateRepository candidateRepository, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.emailService = emailService;
         this.passwordEncoderService = passwordEncoderService;
         this.jwtUtil = jwtUtil;
+        this.candidateRepository = candidateRepository;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/login")
@@ -125,6 +133,51 @@ public class AuthController {
         user.setPhone(request.getPhone());
         user.setRole(Role.CANDIDATE);
         userRepository.save(user);
+
+        // La candidature elle-même : sans cela, tout ce que le candidat a
+        // saisi (adresse, diplôme, spécialité, poste visé, CV, lettre)
+        // était perdu et le RH ne voyait aucune candidature.
+        Candidate candidate = new Candidate();
+        candidate.setFullName((user.getFirstName() + " " + user.getLastName()).trim());
+        candidate.setEmail(user.getEmail());
+        candidate.setPhone(user.getPhone());
+        candidate.setStatus("APPLIED");
+        candidate.setUser(user);
+        candidate.setAddress(request.getAddress());
+        candidate.setBirthDate(request.getBirthDate());
+        candidate.setEducationLevel(request.getEducationLevel());
+        candidate.setSpeciality(request.getSpeciality());
+        candidate.setDesiredPosition(request.getDesiredPosition());
+        candidate.setMotivationLetter(request.getMotivationLetter());
+        candidate.setCvFileName(request.getCvFileName());
+        candidate.setCvContentType(request.getCvContentType());
+
+        if (request.getCvBase64() != null && !request.getCvBase64().isBlank()) {
+            try {
+                String raw = request.getCvBase64();
+                int comma = raw.indexOf(',');           // en-tête « data:...;base64, »
+                if (comma >= 0) raw = raw.substring(comma + 1);
+                candidate.setCvData(java.util.Base64.getDecoder().decode(raw));
+            } catch (Exception e) {
+                System.err.println("CV illisible, candidature conservée sans pièce jointe : " + e.getMessage());
+            }
+        }
+
+        Candidate savedCandidate = candidateRepository.save(candidate);
+
+        // Le RH est prévenu de la nouvelle candidature.
+        notificationService.notifyHr(
+                user,
+                NotificationType.CONTACT_REQUEST,
+                "Nouvelle candidature reçue",
+                candidate.getFullName() + " a déposé une candidature"
+                        + (candidate.getDesiredPosition() != null && !candidate.getDesiredPosition().isBlank()
+                            ? " pour le poste de " + candidate.getDesiredPosition() : "") + ".",
+                "/hr/candidates",
+                "CANDIDATE",
+                savedCandidate.getId(),
+                false);
+
         String subject = "Bienvenue chez Wifak Bank - Inscription réussie";
         String message = "Bonjour " + user.getFirstName() + " " + user.getLastName() + ",\n\n" +
                 "Votre inscription sur le portail RH de Wifak Bank a été effectuée avec succès.\n" +

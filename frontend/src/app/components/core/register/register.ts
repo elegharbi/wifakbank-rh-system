@@ -107,15 +107,54 @@ export class Register {
     // Generate username from first and last name
     const username = (this.candidature.prenom.toLowerCase() + this.candidature.nom.toLowerCase()).replace(/\s+/g, '');
 
-    const registerData = {
+    // Tout ce que le candidat a saisi part au serveur : ces champs
+    // etaient collectes puis abandonnes, et le RH ne voyait rien.
+    const registerData: any = {
       username: username,
       firstName: this.candidature.prenom,
       lastName: this.candidature.nom,
       email: this.candidature.email,
       password: this.candidature.password,
-      phone: this.candidature.telephone
+      phone: this.candidature.telephone,
+      address: this.candidature.adresse,
+      birthDate: this.candidature.dateNaissance,
+      educationLevel: this.candidature.niveauEtude,
+      speciality: this.candidature.specialite,
+      desiredPosition: this.candidature.poste,
+      motivationLetter: this.candidature.lettreMotivation,
+      cvFileName: this.candidature.cvFileName
     };
 
+    // Le CV part avec la candidature, encode en base64.
+    if (this.cvFile) {
+      this.readFileAsBase64(this.cvFile).then(
+        (base64) => {
+          registerData.cvBase64 = base64;
+          registerData.cvContentType = this.cvFile!.type || 'application/pdf';
+          this.sendRegistration(registerData);
+        },
+        () => {
+          // Un CV illisible ne doit pas bloquer la candidature.
+          this.sendRegistration(registerData);
+        }
+      );
+      return;
+    }
+
+    this.sendRegistration(registerData);
+  }
+
+  /** Lit le fichier et renvoie son contenu encode en base64. */
+  private readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject();
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private sendRegistration(registerData: any) {
     this.authService.registerCandidate(registerData).subscribe({
       next: () => {
         this.isSubmitting = false;
