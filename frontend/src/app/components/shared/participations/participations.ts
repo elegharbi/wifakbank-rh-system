@@ -85,4 +85,13 @@ export class Participations implements OnInit {
     const full = `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim();
     return full || u.name || u.username || 'Collaborateur';
   }
+
+  /** Initiales pour la pastille d'identite. */
+  initials(name: string): string {
+    if (!name) return 'C';
+    const parts = name.trim().split(/\s+/);
+    const a = parts[0]?.charAt(0) ?? '';
+    const b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+    return (a + b).toUpperCase() || 'C';
+  }
 }

@@ -1,57 +1,290 @@
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 32px;
-  background: var(--wf-inset);
-  padding: 20px;
-  border-radius: 8px;
-}
+/* ==========================================================
+   POINTS & PARTICIPATION — même facture que les autres pages
+   ========================================================== */
 
-.form-row {
-  display: flex;
-  gap: 16px;
-}
-
-select {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid var(--wf-line);
-  border-radius: 6px;
-  font-size: 14px;
-  background-color: white;
-  cursor: pointer;
-}
-
-select:focus {
-  outline: none;
-  border-color: var(--wf-blue);
-}
-
-.table-container {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th {
-  text-align: left;
-  padding: 12px;
-  background: var(--wf-inset);
-  color: var(--wf-ink-soft);
-  font-weight: 600;
-  border-bottom: 2px solid var(--wf-line);
-}
-
-td {
-  padding: 12px;
-  border-bottom: 1px solid var(--wf-line);
+.pa {
+  max-width: 1240px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
   color: var(--wf-ink);
 }
 
-tr:hover {
-  background-color: var(--wf-inset);
+/* ---------------- Bandeau ---------------- */
+
+.pa-head {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 34px 32px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #123E73 0%, #0B5CA8 48%, #1E77C4 100%);
+  box-shadow: var(--wf-lift-3);
+  isolation: isolate;
+}
+
+.pa-mark {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  width: 112px;
+  translate: 0 -50%;
+  z-index: -1;
+  opacity: .9;
+  filter: drop-shadow(0 14px 26px rgba(0,0,0,.34));
+  animation: pa-float 7s ease-in-out infinite;
+}
+
+@keyframes pa-float {
+  0%,100% { transform: translateY(0) rotate(-1.5deg); }
+  50%     { transform: translateY(-12px) rotate(1.5deg); }
+}
+
+.pa-eyebrow {
+  margin: 0 0 10px;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+
+.pa-title {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: clamp(1.6rem, 3vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+
+.pa-sub {
+  margin: 12px 0 0;
+  max-width: 54ch;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,.75);
+}
+
+.pa-stats {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+
+.pa-stat { display: flex; align-items: baseline; gap: 8px; }
+
+.pa-stat-num {
+  font-family: var(--wf-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.pa-stat-lbl { font-size: .76rem; color: rgba(255,255,255,.62); }
+.pa-stat-sep { width: 1px; height: 22px; background: rgba(255,255,255,.2); }
+
+/* ---------------- Panneaux ---------------- */
+
+.pa-panel {
+  margin-top: 20px;
+  padding: 26px 28px 28px;
+  border-radius: 20px;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-1);
+}
+
+.pa-panel-head { margin-bottom: 20px; }
+
+.pa-panel-title {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--wf-ink);
+}
+
+.pa-panel-desc {
+  margin: 6px 0 0;
+  font-size: .83rem;
+  line-height: 1.5;
+  color: var(--wf-ink-soft);
+}
+
+/* ---------------- Formulaire ---------------- */
+
+.pa-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.pa-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+.pa-field label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--wf-ink-soft);
+}
+
+.pa-field select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--wf-line);
+  border-radius: 11px;
+  background: var(--wf-inset);
+  color: var(--wf-ink);
+  font-family: inherit;
+  font-size: .875rem;
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.pa-field select:focus {
+  outline: none;
+  background: var(--wf-surface);
+  border-color: var(--wf-blue);
+  box-shadow: 0 0 0 3px rgba(11,92,168,.14);
+}
+
+.pa-actions { display: flex; }
+
+.pa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(150deg, var(--wf-blue-lit), var(--wf-blue));
+  color: #fff;
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 8px 18px rgba(11,92,168,.3);
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+
+.pa-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 14px 26px rgba(11,92,168,.4);
+}
+
+.pa-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ---------------- Tableau ---------------- */
+
+.pa-table-wrap { overflow-x: auto; margin: 0 -28px -28px; }
+
+.pa-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .865rem;
+  min-width: 560px;
+}
+
+.pa-table thead th {
+  padding: 12px 28px;
+  background: var(--wf-inset);
+  color: var(--wf-ink-faint);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.pa-th-end, .pa-td-end { text-align: right; }
+
+.pa-table tbody tr {
+  border-top: 1px solid var(--wf-line);
+  transition: background .18s ease;
+}
+
+.pa-table tbody tr:hover { background: var(--wf-inset); }
+
+.pa-table td {
+  padding: 13px 28px;
+  color: var(--wf-ink);
+  vertical-align: middle;
+}
+
+.pa-date { color: var(--wf-ink-faint); white-space: nowrap; }
+
+/* identité */
+.pa-person { display: flex; align-items: center; gap: 11px; min-width: 0; }
+
+.pa-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--wf-flame);
+  color: #fff;
+  font-family: var(--wf-display);
+  font-size: .72rem;
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 4px 10px rgba(11,92,168,.28);
+}
+
+.pa-person-name { font-weight: 600; }
+
+.pa-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--wf-red-pale);
+  border-radius: 10px;
+  background: var(--wf-surface);
+  color: var(--wf-red);
+  font-family: inherit;
+  font-size: .79rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+
+.pa-cancel:hover { background: var(--wf-red); border-color: var(--wf-red); color: #fff; }
+
+/* ---------------- Vide ---------------- */
+
+.pa-empty {
+  margin-top: 20px;
+  padding: 60px 24px;
+  text-align: center;
+  border-radius: 20px;
+  background: var(--wf-surface);
+  border: 1px dashed var(--wf-line);
+}
+
+.pa-empty i { font-size: 2.2rem; color: var(--wf-ink-faint); }
+.pa-empty p { margin: 14px 0 0; font-size: .92rem; color: var(--wf-ink-soft); }
+.pa-empty-hint { font-size: .8rem !important; color: var(--wf-ink-faint) !important; }
+
+/* ---------------- Adaptatif ---------------- */
+
+@media (max-width: 700px) {
+  .pa-head { padding: 24px 20px 26px; border-radius: 20px; }
+  .pa-mark { display: none; }
+  .pa-stats { flex-wrap: wrap; gap: 14px; }
+  .pa-panel { padding: 20px 18px 22px; }
+  .pa-table-wrap { margin: 0 -18px -22px; }
+  .pa-table thead th, .pa-table td { padding-left: 18px; padding-right: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pa-mark { animation: none; }
+  .pa-btn, .pa-cancel, .pa-field select { transition: none; }
+  .pa-btn:hover:not(:disabled) { transform: none; }
 }

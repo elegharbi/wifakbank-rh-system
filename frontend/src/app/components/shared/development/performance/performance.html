@@ -1,58 +1,287 @@
-<div class="performance-container">
-  <div class="header-card card shadow-lg">
-    <h2>Évaluations de Performance</h2>
-    <p class="subtitle">Évaluez et suivez la progression de vos collaborateurs Wifak Bank.</p>
-    
-    <div class="evaluation-form grid">
-      <div class="form-group">
-        <label>Collaborateur</label>
-        <select [(ngModel)]="selectedEmployeeId">
-          <option [ngValue]="null">Choisir un employé...</option>
-          <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Score (1-5)</label>
-        <div class="rating-input">
-          <input type="range" min="1" max="5" [(ngModel)]="newEvaluation.score">
-          <span class="score-display">{{ newEvaluation.score }} / 5</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Commentaires</label>
-        <input type="text" [(ngModel)]="newEvaluation.feedback" placeholder="Observations générales...">
-      </div>
-      <button class="btn-primary" (click)="addEvaluation()" [disabled]="!selectedEmployeeId">
-        <i class="fa-solid fa-star-half-stroke"></i> Évaluer
-      </button>
-    </div>
-  </div>
+    <div class="performance-container">
 
-  <div class="evaluations-list">
-    <div *ngFor="let ev of evaluations" class="card eval-card shadow">
-      <div class="eval-header">
-        <div class="emp-avatar">
-          {{ ev.employee?.name ? ev.employee.name[0] : 'E' }}
-        </div>
-        <div class="emp-info">
-          <h4>{{ ev.employee?.name || 'Employé Supprimé' }}</h4>
-          <span class="eval-date">{{ ev.evaluationDate | date:'dd MMM yyyy' }}</span>
-        </div>
-        <div class="score-box" [attr.data-score]="ev.score">
-          {{ ev.score }}
-        </div>
-      </div>
-      <div class="eval-body">
-        <div class="feedback-text">
-          <i class="fa-solid fa-quote-left"></i>
-          <p>{{ ev.feedback || 'Aucun commentaire détaillé pour cette évaluation.' }}</p>
-        </div>
-      </div>
-    </div>
-    
-    <div *ngIf="evaluations.length === 0" class="no-data card">
-      <p>Aucune évaluation réalisée cette année.</p>
-    </div>
-  </div>
-</div>
+      <!-- Bandeau, comme les autres pages -->
+      <header class="pf-head wf-rise">
+        <img src="icon-512.png?v=2" alt="" class="pf-mark" aria-hidden="true">
+        <p class="pf-eyebrow">Wifak Bank · Engagement et performance</p>
+        <h1 class="pf-title">{{ performanceTitle }}</h1>
+        <p class="pf-sub">Attribuez des points aux collaborateurs et évaluez les candidats.</p>
 
+        <div class="pf-stats" *ngIf="canEvaluate">
+          <div class="pf-stat">
+            <span class="pf-stat-num">{{ allUsers.length }}</span>
+            <span class="pf-stat-lbl">{{ allUsers.length > 1 ? 'collaborateurs' : 'collaborateur' }}</span>
+          </div>
+          <span class="pf-stat-sep" aria-hidden="true"></span>
+          <div class="pf-stat">
+            <span class="pf-stat-num">{{ leaderboard.length }}</span>
+            <span class="pf-stat-lbl">au classement</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="perf-grid">
+        <div class="main-content">
+          
+          <!-- Section Évaluation RH -->
+          <div class="card eval-form-card" *ngIf="canEvaluate">
+            <div class="eval-header-row">
+               <h3><i class="fa-solid fa-star-half-stroke"></i> Évaluer un profil</h3>
+               <div class="type-toggle">
+                  <button [class.active]="evalType === 'EMPLOYEE'" (click)="setEvalType('EMPLOYEE')">Employé</button>
+                  <button [class.active]="evalType === 'CANDIDATE'" (click)="setEvalType('CANDIDATE')">Candidat</button>
+               </div>
+            </div>
+
+            <div class="eval-grid">
+              <div class="form-group" *ngIf="evalType === 'EMPLOYEE'">
+                <label>Département</label>
+                <select class="form-control" [(ngModel)]="selectedDepartmentId" (change)="onDepartmentChange()">
+                  <option [ngValue]="null">Tous les départements</option>
+                  <option *ngFor="let dept of departments" [ngValue]="dept.id">{{ dept.name }}</option>
+                </select>
+              </div>
+
+              <div class="form-group" *ngIf="evalType === 'EMPLOYEE'">
+                <label>{{ t('selectEmployee') }}</label>
+                <select class="form-control" [(ngModel)]="typedName">
+                  <option value="">Choisir un employé...</option>
+                  <option *ngFor="let u of filteredUsers" [value]="u.firstName + ' ' + (u.lastName || '')">
+                    {{ u.firstName }} {{ u.lastName }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group" *ngIf="evalType === 'CANDIDATE'">
+                <label>Sélectionner le candidat</label>
+                <input type="text" [(ngModel)]="typedName" 
+                       placeholder="Chercher un candidat..."
+                       class="form-control" list="candidateList">
+                <datalist id="candidateList">
+                  <option *ngFor="let c of allCandidates" [value]="c.fullName"></option>
+                </datalist>
+              </div>
+
+              <div class="form-group">
+                <label>{{ evalType === 'EMPLOYEE' ? t('pointsToGive') : 'Note Entretien (0-100)' }}</label>
+                <input type="number" [(ngModel)]="evalData.value" class="form-control" [placeholder]="evalType === 'EMPLOYEE' ? 'ex: 50' : 'ex: 85'">
+              </div>
+              
+              <button class="btn-eval" (click)="submitEvaluation()" [disabled]="!typedName">
+                <i class="fa-solid fa-check-circle"></i> Valider l'évaluation
+              </button>
+            </div>
+          </div>
+
+          <!-- Tableau Annuaire des employés (demandé par l'utilisateur) -->
+          <div class="card table-card" *ngIf="canEvaluate && allUsers.length > 0">
+            <h3><i class="fa-solid fa-users"></i> Annuaire des Collaborateurs</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employé</th>
+                    <th>Département</th>
+                    <th>Score Performance</th>
+                    <th style="text-align: center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let u of filteredUsers">
+                    <td>
+                      <div class="user-info">
+                        <div class="avatar-mini">{{ u.firstName ? u.firstName[0] : 'U' }}</div>
+                        <span>{{ u.firstName }} {{ u.lastName }}</span>
+                      </div>
+                    </td>
+                    <td><span class="status-badge normal">{{ u.department?.name || 'Non assigné' }}</span></td>
+                    <td class="score-cell">{{ u.performanceScore || 1000 }} pts</td>
+                    <td style="text-align: center;">
+                       <button class="btn-eval" style="padding: 5px 10px; height: auto; font-size: 0.8rem;" (click)="selectForEvaluation(u)">
+                         Évaluer
+                       </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section Dashboard Personnel pour les employés -->
+          <div class="employee-dashboard-sec" *ngIf="!canEvaluate && matchedEmployee">
+             <!-- Card 1: Score & Progression -->
+             <div class="card premium-stats-card">
+                <div class="stats-main-row">
+                   <div class="score-display">
+                      <span class="score-num">{{ matchedEmployee.performanceScore || 1000 }}</span>
+                      <span class="score-label">Points d'Engagement</span>
+                   </div>
+                   <div class="tier-info">
+                      <span class="tier-badge" [ngClass]="getTierClass(matchedEmployee.performanceScore || 1000)">
+                        <i class="fa-solid fa-trophy"></i> {{ getTierName(matchedEmployee.performanceScore || 1000) }}
+                      </span>
+                      <span class="rank-display" *ngIf="myRank">
+                        Rang : <strong>#{{ myRank }}</strong> dans la banque
+                      </span>
+                   </div>
+                </div>
+                
+                <div class="progress-section">
+                   <div class="progress-labels">
+                      <span>Niveau Suivant : {{ getNextTierName(matchedEmployee.performanceScore || 1000) }}</span>
+                      <span>{{ matchedEmployee.performanceScore || 1000 }} / {{ getNextTierThreshold(matchedEmployee.performanceScore || 1000) }} Pts</span>
+                   </div>
+                   <div class="custom-progress-bar">
+                      <div class="progress-fill" [style.width.%]="getPercentToNextTier(matchedEmployee.performanceScore || 1000)"></div>
+                   </div>
+                   <p class="progress-tip" *ngIf="getNextTierThreshold(matchedEmployee.performanceScore || 1000) > (matchedEmployee.performanceScore || 1000)">
+                      Plus que {{ getNextTierThreshold(matchedEmployee.performanceScore || 1000) - (matchedEmployee.performanceScore || 1000) }} points pour atteindre le niveau suivant !
+                   </p>
+                </div>
+             </div>
+
+             <!-- Card 2: Mes Badges de Performance -->
+             <div class="card badges-card">
+                <h3><i class="fa-solid fa-ribbon"></i> Mes Badges d'Honneur</h3>
+                <p class="section-desc">Gagnez des points pour débloquer de nouveaux badges d'engagement.</p>
+                
+                <div class="badges-grid">
+                   <div class="badge-item" [class.unlocked]="(matchedEmployee.performanceScore || 1000) >= 0">
+                      <div class="badge-icon"><i class="fa-solid fa-seedling"></i></div>
+                      <div class="badge-details">
+                         <h4>Novice Wifak</h4>
+                         <p>Attribué à tous les collaborateurs</p>
+                      </div>
+                      <span class="badge-status"><i class="fa-solid fa-circle-check"></i></span>
+                   </div>
+
+                   <div class="badge-item" [class.unlocked]="(matchedEmployee.performanceScore || 1000) >= 1100">
+                      <div class="badge-icon"><i class="fa-solid fa-star"></i></div>
+                      <div class="badge-details">
+                         <h4>Collaborateur Actif</h4>
+                         <p>Atteindre 1100 Pts d'engagement</p>
+                      </div>
+                      <span class="badge-status">
+                         <i class="fa-solid" [class.fa-circle-check]="(matchedEmployee.performanceScore || 1000) >= 1100" [class.fa-lock]="(matchedEmployee.performanceScore || 1000) < 1100"></i>
+                      </span>
+                   </div>
+
+                   <div class="badge-item" [class.unlocked]="(matchedEmployee.performanceScore || 1000) >= 1300">
+                      <div class="badge-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                      <div class="badge-details">
+                         <h4>Wifak Pro</h4>
+                         <p>Atteindre 1300 Pts d'engagement</p>
+                      </div>
+                      <span class="badge-status">
+                         <i class="fa-solid" [class.fa-circle-check]="(matchedEmployee.performanceScore || 1000) >= 1300" [class.fa-lock]="(matchedEmployee.performanceScore || 1000) < 1300"></i>
+                      </span>
+                   </div>
+
+                   <div class="badge-item" [class.unlocked]="(matchedEmployee.performanceScore || 1000) >= 1500">
+                      <div class="badge-icon"><i class="fa-solid fa-gem"></i></div>
+                      <div class="badge-details">
+                         <h4>Wifak Élite</h4>
+                         <p>Atteindre 1500 Pts d'engagement</p>
+                      </div>
+                      <span class="badge-status">
+                         <i class="fa-solid" [class.fa-circle-check]="(matchedEmployee.performanceScore || 1000) >= 1500" [class.fa-lock]="(matchedEmployee.performanceScore || 1000) < 1500"></i>
+                      </span>
+                   </div>
+                </div>
+             </div>
+
+             <!-- Card 3: Historique de mes Points -->
+             <div class="card table-card">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> Historique de mes Points</h3>
+                <div class="table-responsive" *ngIf="myLogs.length > 0">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Activité / Motif</th>
+                        <th style="text-align: right;">Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let log of myLogs">
+                        <td>{{ log.date | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ log.reason }}</td>
+                        <td style="text-align: right; font-weight: 800;" [style.color]="log.pointsChanged > 0 ? '#166534' : '#991b1b'">
+                          {{ log.pointsChanged > 0 ? '+' : '' }}{{ log.pointsChanged }} pts
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="empty-logs" *ngIf="myLogs.length === 0">
+                  Aucun historique de points pour le moment. Participez à des événements ou des formations pour gagner des points !
+                </div>
+             </div>
+          </div>
+
+          <!-- Tableau des Évaluations Récentes (S'affiche après validation pour RH) -->
+          <div class="card table-card" *ngIf="canEvaluate && evaluationHistory.length > 0">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Journal des Évaluations</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Profil Évalué</th>
+                    <th>Type</th>
+                    <th>Score / Points</th>
+                    <th>Heure</th>
+                    <th style="text-align: center;">Actions & Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ev of evaluationHistory; let i = index">
+                    <td>
+                      <div class="user-info">
+                        <div class="avatar-mini" [class.cand-bg]="ev.type === 'CANDIDATE'">{{ ev.name ? ev.name[0] : 'U' }}</div>
+                        <span>{{ ev.name }}</span>
+                      </div>
+                    </td>
+                    <td><span class="status-badge normal">{{ ev.type }}</span></td>
+                    <td class="score-cell">{{ ev.score }} {{ ev.type === 'Employé' ? 'pts' : '/ 100' }}</td>
+                    <td>{{ ev.date | date:'HH:mm:ss' }}</td>
+                    <td style="text-align: center;">
+                       <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                          <button (click)="deleteFromHistory(i)" class="btn-icon-del" title="Supprimer">
+                            <i class="fa-solid fa-trash-can"></i>
+                          </button>
+                          <span class="status-badge high"><i class="fa-solid fa-check"></i> Enregistré</span>
+                       </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sidebar-info">
+          <!-- Card 1: Barème des points -->
+          <div class="card rules-card">
+            <h3><i class="fa-solid fa-circle-info"></i> Barème des points</h3>
+            <ul class="rules-list">
+              <li><span class="badge pos">+15</span> Participation à un événement</li>
+              <li><span class="badge pos">+50</span> Validation d'une formation</li>
+              <li><span class="badge pos">+5</span> Interaction Chatbot RH</li>
+              <li><span class="badge neg">-100</span> Absence non justifiée</li>
+            </ul>
+          </div>
+
+          <!-- Card 2: Leaderboard Top Performers -->
+          <div class="card leaderboard-sidebar-card">
+            <h3><i class="fa-solid fa-ranking-star"></i> Top Performers</h3>
+            <div class="leaderboard-list">
+              <div class="leaderboard-item" *ngFor="let emp of leaderboard | slice:0:5; let idx = index">
+                <div class="rank-badge" [ngClass]="'rank-' + (idx + 1)">{{ idx + 1 }}</div>
+                <div class="emp-name">{{ emp.name }}</div>
+                <div class="emp-score">{{ emp.performanceScore || 1000 }} pts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -85,4 +85,26 @@ export class Trainings implements OnInit {
       });
     }
   }
+
+  /** Nombre de formations pour un format donne. */
+  countByType(type: string): number {
+    if (type === 'PRESENTIEL') {
+      // Le presentiel est le format par defaut des anciennes entrees.
+      return this.trainings.filter(t => !t.trainingType || t.trainingType === 'PRESENTIEL').length;
+    }
+    return this.trainings.filter(t => t.trainingType === type).length;
+  }
+
+  /** Libelle lisible du statut. */
+  statusLabel(status: string | undefined | null): string {
+    switch ((status || 'PLANNED').toUpperCase()) {
+      case 'COMPLETED':
+      case 'TERMINEE':  return 'Terminée';
+      case 'CANCELLED':
+      case 'ANNULEE':   return 'Annulée';
+      case 'ONGOING':
+      case 'EN_COURS':  return 'En cours';
+      default:          return 'Planifiée';
+    }
+  }
 }
