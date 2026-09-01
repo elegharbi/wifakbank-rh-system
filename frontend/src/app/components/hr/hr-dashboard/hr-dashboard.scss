@@ -429,3 +429,33 @@ body.dark-mode {
   .stat-card:hover .stat-icon, .quick-action-btn:hover i { transform: none; }
   .btn-icon:hover { transform: none; }
 }
+
+/* Une source de données n'a pas répondu : on le dit, plutôt que
+   d'afficher des zéros silencieux. */
+.hr-load-error {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 18px;
+  padding: 13px 17px;
+  border-radius: 14px;
+  background: var(--wf-note-err-bg);
+  border: 1px solid var(--wf-note-err-bd);
+  color: var(--wf-note-err-fg);
+  font-size: .87rem;
+}
+
+.hr-load-error button {
+  margin-left: auto;
+  padding: 7px 14px;
+  border: 1px solid currentColor;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hr-load-error button:hover { background: rgba(214,43,36,.12); }

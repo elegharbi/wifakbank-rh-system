@@ -1,5 +1,12 @@
 <div class="hr-dashboard-wrapper">
 
+  <p class="hr-load-error" *ngIf="loadError" role="alert">
+    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+    {{ loadError }}
+    <button type="button" (click)="loadData()">Réessayer</button>
+  </p>
+
+
   <!-- KPI Stats Cards -->
   <div class="stats-grid">
     <!-- Candidatures en attente -->

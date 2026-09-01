@@ -17,26 +17,30 @@ export interface Employee {
 })
 export class EmployeeService {
   private http = inject(HttpClient);
-  private apiUrl = '/api/employees';
+  // Le contrôleur est monté sur /api/employee (singulier) et ne fournit
+  // pas de liste : « les employés » sont les utilisateurs. L'ancienne
+  // adresse /api/employees n'a jamais existé, d'où les erreurs 500.
+  private apiUrl = '/api/employee';
+  private usersUrl = '/api/users';
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.apiUrl);
+    return this.http.get<Employee[]>(`${this.usersUrl}/all`);
   }
 
   getDepartmentStats(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/stats/by-department`);
+    return this.http.get<any[]>(`${this.usersUrl}/stats/by-department`);
   }
 
   getEmployee(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiUrl}/${id}`);
+    return this.http.get<Employee>(`${this.usersUrl}/${id}`);
   }
 
   createEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiUrl, employee);
+    return this.http.post<Employee>(this.usersUrl, employee);
   }
 
   deleteEmployee(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.usersUrl}/${id}`);
   }
 
   getDashboardStats(): Observable<any> {
