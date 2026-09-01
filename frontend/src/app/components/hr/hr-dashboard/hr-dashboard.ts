@@ -30,6 +30,9 @@ export class HrDashboard implements OnInit {
   recentCandidates: Candidate[] = [];
   recentTrainings: Training[] = [];
 
+  /** Valeurs affichees : montent progressivement jusqu'au chiffre reel. */
+  shown = { employees: 0, leaves: 0, candidates: 0, trainings: 0 };
+
   ngOnInit() {
     this.loadData();
   }
@@ -60,6 +63,7 @@ export class HrDashboard implements OnInit {
         this.recentTrainings = res.trainings.slice(Math.max(res.trainings.length - 4, 0)).reverse();
 
         this.loading = false;
+        this.runCounters();
       },
       error: (err) => {
         console.error('Error loading HR dashboard data', err);
@@ -68,9 +72,28 @@ export class HrDashboard implements OnInit {
     });
   }
 
+  /**
+   * Nom du demandeur.
+   *
+   * La demande porte un `user` : les champs `employee`, `nom` et `prenom`
+   * n'existent pas côté serveur, d'où le « undefined undefined » affiché.
+   */
+  employeeName(leave: Leave): string {
+    const u: any = (leave as any).user ?? (leave as any).employee ?? null;
+    if (!u) return 'Collaborateur';
+    const full = `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim();
+    return full || u.name || u.username || 'Collaborateur';
+  }
+
   getInitials(leave: Leave): string {
-    const nom = (leave as any).nom ?? (leave.employee as any)?.name ?? '';
-    return nom.trim().charAt(0).toUpperCase() || 'E';
+    const u: any = (leave as any).user ?? (leave as any).employee ?? null;
+    if (u) {
+      const a = (u.firstName ?? '').trim().charAt(0);
+      const b = (u.lastName ?? '').trim().charAt(0);
+      const pair = (a + b).toUpperCase();
+      if (pair) return pair;
+    }
+    return this.employeeName(leave).trim().charAt(0).toUpperCase() || 'E';
   }
 
   approveLeave(id: number | undefined) {
@@ -81,5 +104,35 @@ export class HrDashboard implements OnInit {
   rejectLeave(id: number | undefined) {
     if (!id) return;
     this.leaveService.reject(id).subscribe(() => this.loadData());
+  }
+
+  /** Compte de 0 jusqu'a la valeur, en respectant "animations reduites". */
+  private runCounters() {
+    const targets = {
+      employees: this.totalEmployees,
+      leaves: this.pendingLeavesCount,
+      candidates: this.pendingCandidatesCount,
+      trainings: this.totalTrainings
+    };
+
+    const reduced = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) { this.shown = { ...targets }; return; }
+
+    const DURATION = 900;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / DURATION);
+      const eased = 1 - Math.pow(1 - t, 3);
+      this.shown = {
+        employees: Math.round(targets.employees * eased),
+        leaves: Math.round(targets.leaves * eased),
+        candidates: Math.round(targets.candidates * eased),
+        trainings: Math.round(targets.trainings * eased)
+      };
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   }
 }

@@ -31,7 +31,7 @@
 
 .score-display {
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--wf-blue);
   min-width: 50px;
 }
 
@@ -58,7 +58,7 @@
 .emp-avatar {
   width: 45px;
   height: 45px;
-  background: var(--primary-color);
+  background: var(--wf-blue);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -86,7 +86,7 @@
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  background: #f1f5f9;
+  background: var(--wf-inset);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,7 +101,7 @@
 .score-box[data-score="1"] { background: #fef2f2; color: #dc2626; }
 
 .eval-body {
-  background: #f8fafc;
+  background: var(--wf-inset);
   padding: 16px;
   border-radius: 12px;
 }

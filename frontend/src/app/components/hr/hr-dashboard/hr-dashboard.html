@@ -5,7 +5,7 @@
     <!-- Candidatures en attente -->
     <div class="stat-card candidates-card">
       <div class="stat-content">
-        <div class="stat-value">{{ pendingCandidatesCount }}</div>
+        <div class="stat-value">{{ shown.candidates }}</div>
         <div class="stat-label">Candidatures en attente</div>
         <a routerLink="/hr/candidates" class="stat-link">Voir tout <i class="fa-solid fa-arrow-right"></i></a>
       </div>
@@ -17,7 +17,7 @@
     <!-- Congés à valider -->
     <div class="stat-card leaves-card">
       <div class="stat-content">
-        <div class="stat-value">{{ pendingLeavesCount }}</div>
+        <div class="stat-value">{{ shown.leaves }}</div>
         <div class="stat-label">Congés à valider</div>
         <a routerLink="/hr/leaves" class="stat-link">Gérer <i class="fa-solid fa-arrow-right"></i></a>
       </div>
@@ -29,7 +29,7 @@
     <!-- Formations actives -->
     <div class="stat-card trainings-card">
       <div class="stat-content">
-        <div class="stat-value">{{ totalTrainings }}</div>
+        <div class="stat-value">{{ shown.trainings }}</div>
         <div class="stat-label">Formations actives</div>
         <a routerLink="/hr/trainings" class="stat-link">Gérer <i class="fa-solid fa-arrow-right"></i></a>
       </div>
@@ -41,7 +41,7 @@
     <!-- Total employés -->
     <div class="stat-card employees-card">
       <div class="stat-content">
-        <div class="stat-value">{{ totalEmployees }}</div>
+        <div class="stat-value">{{ shown.employees }}</div>
         <div class="stat-label">Total Employés</div>
         <a routerLink="/hr/performance" class="stat-link">Évaluer <i class="fa-solid fa-arrow-right"></i></a>
       </div>
@@ -75,7 +75,7 @@
               <td>
                 <div class="user-cell">
                   <div class="user-avatar-sm">{{ getInitials(leave) }}</div>
-                  <span>{{ leave.employee?.name || leave.nom + ' ' + leave.prenom }}</span>
+                  <span>{{ employeeName(leave) }}</span>
                 </div>
               </td>
               <td>{{ leave.startDate | date:'dd/MM/yy' }} → {{ leave.endDate | date:'dd/MM/yy' }}</td>

@@ -29,18 +29,18 @@
 .form-group select {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--wf-line);
   border-radius: 8px;
   font-size: 14px;
-  background: #fff;
-  color: var(--text-main);
+  background: var(--wf-surface);
+  color: var(--wf-ink);
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
 .form-group select:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--wf-blue);
 }
 
 .training-grid {
@@ -88,7 +88,7 @@
 
 .training-header h3 {
   font-size: 18px;
-  color: var(--text-main);
+  color: var(--wf-ink);
 }
 
 .status-badge {
@@ -99,19 +99,19 @@
   border-radius: 4px;
 }
 
-.status-badge.planned { background: #FFF5F5; color: #E21E26; }
+.status-badge.planned { background: #FFF5F5; color: var(--wf-red); }
 .status-badge.in_progress { background: #fef9c3; color: #854d0e; }
 .status-badge.completed { background: #dcfce7; color: #166534; }
 
 .org-name {
   font-size: 13px;
-  color: var(--primary-color);
+  color: var(--wf-blue);
   font-weight: 600;
 }
 
 .training-desc {
   font-size: 14px;
-  color: #64748b;
+  color: var(--wf-ink-soft);
   line-height: 1.5;
 }
 
@@ -151,8 +151,8 @@
   gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
-  background: var(--primary-color, #E21E26);
+  color: var(--wf-surface);
+  background: var(--primary-color, var(--wf-red));
   padding: 5px 14px;
   border-radius: 6px;
   text-decoration: none;
@@ -197,7 +197,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--wf-inset);
 }
 
 .duration {

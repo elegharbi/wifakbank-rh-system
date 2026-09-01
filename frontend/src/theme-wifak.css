@@ -1056,3 +1056,386 @@ body.dark-mode .auth-mark { opacity: .14; }
   .notif-bell:hover { transform: none; }
   .notif-badge:not(:empty) { animation: none; }
 }
+
+/* =====================================================================
+   PAGES DE GESTION (RH et administration)
+   Ces écrans partagent des classes génériques (.card, .header-card,
+   .btn-primary, tableaux, formulaires). Une seule feuille les aligne
+   sur la charte, plutôt que de dupliquer les mêmes règles cinq fois.
+   ===================================================================== */
+
+.hr-layout .content-area,
+.admin-layout .content-area {
+  padding: 26px 32px 60px;
+}
+
+/* ---------------- Cartes ---------------- */
+
+.hr-layout .card:not([class*="-card"]),
+.admin-layout .card:not([class*="-card"]) {
+  padding: 26px 28px;
+  border-radius: 22px;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-1);
+  color: var(--wf-ink);
+  animation: wf-rise .45s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+/* le bandeau d'en-tête reprend le bleu de marque */
+.hr-layout .header-card,
+.admin-layout .header-card {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-radius: 22px;
+  border: none;
+  background: linear-gradient(135deg, #123E73 0%, #0B5CA8 48%, #1E77C4 100%);
+  box-shadow: var(--wf-lift-3);
+  color: #fff;
+  animation: wf-rise .45s cubic-bezier(.16,1,.3,1) backwards;
+}
+
+/* Sur le bandeau bleu, les libelles et champs doivent rester lisibles. */
+.hr-layout .header-card label,
+.admin-layout .header-card label { color: rgba(255,255,255,.82); }
+
+.hr-layout .header-card input,
+.hr-layout .header-card select,
+.hr-layout .header-card textarea,
+.admin-layout .header-card input,
+.admin-layout .header-card select,
+.admin-layout .header-card textarea {
+  background: rgba(255,255,255,.94);
+  border-color: rgba(255,255,255,.3);
+  color: var(--wf-ink);
+}
+
+.hr-layout .header-card input:focus,
+.hr-layout .header-card select:focus,
+.admin-layout .header-card input:focus,
+.admin-layout .header-card select:focus {
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.28);
+}
+
+/* le bouton principal doit ressortir sur le bleu */
+.hr-layout .header-card .btn-primary,
+.admin-layout .header-card .btn-primary {
+  background: linear-gradient(150deg, var(--wf-red-lit), var(--wf-red));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 8px 18px rgba(214,43,36,.36);
+}
+
+.hr-layout .header-card .btn-primary:hover:not(:disabled),
+.admin-layout .header-card .btn-primary:hover:not(:disabled) {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 14px 26px rgba(214,43,36,.46);
+}
+
+.hr-layout .header-card h1,
+.hr-layout .header-card h2,
+.admin-layout .header-card h1,
+.admin-layout .header-card h2 {
+  margin: 0;
+  font-family: var(--wf-display);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: #fff;
+}
+
+.hr-layout .header-card p,
+.admin-layout .header-card p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, .76);
+}
+
+/* ---------------- Titres ---------------- */
+
+.hr-layout .page-title,
+.admin-layout .page-title,
+.hr-layout .card > h2:first-child,
+.admin-layout .card > h2:first-child {
+  margin: 0 0 20px;
+  font-family: var(--wf-display);
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--wf-ink);
+}
+
+/* ---------------- Grilles ---------------- */
+
+.hr-layout .grid:not(.training-form),
+.admin-layout .grid:not(.training-form) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+/* ---------------- Formulaires ---------------- */
+
+.hr-layout .form-container,
+.admin-layout .form-container {
+  padding: 22px;
+  margin-bottom: 26px;
+  border-radius: 18px;
+  background: var(--wf-inset);
+  border: 1px solid var(--wf-line);
+}
+
+.hr-layout .form-row,
+.admin-layout .form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.hr-layout .form-group,
+.admin-layout .form-group,
+.hr-layout .f-group,
+.admin-layout .f-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 14px;
+  min-width: 0;
+}
+
+.hr-layout label,
+.admin-layout label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--wf-ink-soft);
+}
+
+.hr-layout input:not([type="checkbox"]):not([type="radio"]),
+.hr-layout select,
+.hr-layout textarea,
+.admin-layout input:not([type="checkbox"]):not([type="radio"]),
+.admin-layout select,
+.admin-layout textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--wf-line);
+  border-radius: 11px;
+  background: var(--wf-surface);
+  color: var(--wf-ink);
+  font-family: inherit;
+  font-size: .875rem;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.hr-layout input::placeholder,
+.hr-layout textarea::placeholder,
+.admin-layout input::placeholder,
+.admin-layout textarea::placeholder { color: var(--wf-ink-faint); }
+
+.hr-layout input:focus,
+.hr-layout select:focus,
+.hr-layout textarea:focus,
+.admin-layout input:focus,
+.admin-layout select:focus,
+.admin-layout textarea:focus {
+  outline: none;
+  border-color: var(--wf-blue);
+  box-shadow: 0 0 0 3px rgba(11, 92, 168, .14);
+}
+
+/* ---------------- Boutons ---------------- */
+
+.hr-layout .btn-primary,
+.admin-layout .btn-primary,
+.hr-layout .btn-save,
+.admin-layout .btn-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(150deg, var(--wf-blue-lit), var(--wf-blue));
+  color: #fff;
+  font-family: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 8px 18px rgba(11, 92, 168, .3);
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+
+.hr-layout .btn-primary:hover:not(:disabled),
+.admin-layout .btn-primary:hover:not(:disabled),
+.hr-layout .btn-save:hover:not(:disabled),
+.admin-layout .btn-save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 14px 26px rgba(11, 92, 168, .4);
+}
+
+.hr-layout .btn-primary:disabled,
+.admin-layout .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.hr-layout .btn-secondary,
+.hr-layout .btn-outline,
+.hr-layout .btn-cancel,
+.admin-layout .btn-secondary,
+.admin-layout .btn-outline,
+.admin-layout .btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: 1px solid var(--wf-line);
+  border-radius: 12px;
+  background: var(--wf-surface);
+  color: var(--wf-ink-soft);
+  font-family: inherit;
+  font-size: .855rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.hr-layout .btn-secondary:hover,
+.hr-layout .btn-outline:hover,
+.hr-layout .btn-cancel:hover,
+.admin-layout .btn-secondary:hover,
+.admin-layout .btn-outline:hover,
+.admin-layout .btn-cancel:hover {
+  background: var(--wf-inset);
+  color: var(--wf-ink);
+  border-color: var(--wf-blue);
+}
+
+.hr-layout .btn-danger,
+.hr-layout .btn-del,
+.admin-layout .btn-danger,
+.admin-layout .btn-del {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--wf-red-pale);
+  border-radius: 11px;
+  background: var(--wf-surface);
+  color: var(--wf-red);
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.hr-layout .btn-danger:hover,
+.hr-layout .btn-del:hover,
+.admin-layout .btn-danger:hover,
+.admin-layout .btn-del:hover {
+  background: var(--wf-red);
+  border-color: var(--wf-red);
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(214, 43, 36, .28);
+}
+
+.hr-layout .btn-sm,
+.admin-layout .btn-sm { padding: 8px 14px; font-size: .8rem; }
+
+/* ---------------- Tableaux ---------------- */
+
+.hr-layout .table-container,
+.admin-layout .table-container { overflow-x: auto; border-radius: 14px; }
+
+.hr-layout table,
+.admin-layout table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .865rem;
+}
+
+.hr-layout th,
+.admin-layout th {
+  padding: 13px 16px;
+  background: var(--wf-inset);
+  color: var(--wf-ink-faint);
+  font-size: .67rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--wf-line);
+}
+
+.hr-layout td,
+.admin-layout td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--wf-line);
+  color: var(--wf-ink);
+  vertical-align: middle;
+}
+
+.hr-layout tbody tr,
+.admin-layout tbody tr { transition: background .18s ease; }
+
+.hr-layout tbody tr:hover,
+.admin-layout tbody tr:hover { background: var(--wf-inset); }
+
+/* ---------------- Pastilles et méta ---------------- */
+
+.hr-layout .meta-badge,
+.admin-layout .meta-badge,
+.hr-layout .duration,
+.admin-layout .duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--wf-blue-pale);
+  color: var(--wf-blue);
+  font-size: .73rem;
+  font-weight: 600;
+}
+
+/* pastille d'identité dans les listes */
+.hr-layout .emp-avatar,
+.admin-layout .emp-avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--wf-flame);
+  color: #fff;
+  font-family: var(--wf-display);
+  font-weight: 700;
+  font-size: .82rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 5px 12px rgba(11, 92, 168, .28);
+}
+
+/* ---------------- Vide ---------------- */
+
+.hr-layout .empty-state,
+.admin-layout .empty-state {
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--wf-ink-faint);
+  font-size: .9rem;
+}
+
+@media (max-width: 760px) {
+  .hr-layout .content-area,
+  .admin-layout .content-area { padding: 18px 16px 46px; }
+  .hr-layout .card,
+  .admin-layout .card { padding: 20px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hr-layout .card, .admin-layout .card,
+  .hr-layout .header-card, .admin-layout .header-card { animation: none; }
+  .hr-layout .btn-primary:hover:not(:disabled),
+  .admin-layout .btn-primary:hover:not(:disabled) { transform: none; }
+}

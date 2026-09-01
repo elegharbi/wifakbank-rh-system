@@ -30,12 +30,12 @@
 .form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--wf-ink);
 }
 
 .form-group input, .form-group select {
   padding: 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--wf-line);
   border-radius: 8px;
   font-size: 14px;
 }
@@ -46,11 +46,11 @@
 }
 
 .drop-zone {
-  border: 2px dashed #94a3b8;
+  border: 2px dashed var(--wf-ink-faint);
   border-radius: 12px;
   padding: 30px;
   text-align: center;
-  background: #f8fafc;
+  background: var(--wf-inset);
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 120px;
@@ -61,23 +61,23 @@
 }
 
 .drop-zone.drag-over {
-  border-color: var(--primary-color);
+  border-color: var(--wf-blue);
   background: #f0fdf4;
 }
 
 .drop-zone:hover {
-  border-color: var(--primary-color);
+  border-color: var(--wf-blue);
 }
 
 .cloud-icon {
   font-size: 36px;
-  color: var(--primary-color);
+  color: var(--wf-blue);
   margin-bottom: 12px;
 }
 
 .drop-content p {
   margin: 0 0 5px;
-  color: var(--text-main);
+  color: var(--wf-ink);
   font-size: 15px;
 }
 
@@ -93,7 +93,7 @@
   background: white;
   padding: 12px 20px;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--wf-line);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
@@ -104,13 +104,13 @@
 
 .file-name {
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--wf-ink);
 }
 
 .btn-remove-file {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--wf-ink-faint);
   cursor: pointer;
   padding: 4px;
 }
@@ -138,15 +138,15 @@
 .table th {
   text-align: left;
   padding: 16px 24px;
-  background: #f8fafc;
+  background: var(--wf-inset);
   color: var(--text-muted);
   font-weight: 600;
-  border-bottom: 2px solid #f1f5f9;
+  border-bottom: 2px solid var(--wf-inset);
 }
 
 .table td {
   padding: 16px 24px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--wf-inset);
   vertical-align: middle;
 }
 
@@ -155,17 +155,17 @@
   align-items: center;
   gap: 12px;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--wf-ink);
 }
 
 .cand-name i {
   font-size: 24px;
-  color: var(--primary-color);
+  color: var(--wf-blue);
 }
 
 .job-tag {
   background: #FFF5F5;
-  color: #E21E26;
+  color: var(--wf-red);
   padding: 4px 10px;
   border-radius: 4px;
   font-size: 13px;
@@ -181,7 +181,7 @@
 }
 
 .status-pill.applied { background: #dcfce7; color: #166534; }
-.status-pill.interviewed { background: #FFF5F5; color: #E21E26; }
+.status-pill.interviewed { background: #FFF5F5; color: var(--wf-red); }
 .status-pill.selected { background: #fef9c3; color: #854d0e; }
 
 .btn-icon {
@@ -190,12 +190,12 @@
   font-size: 18px;
   padding: 8px;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--wf-ink-faint);
   transition: color 0.2s;
 }
 
 .btn-icon:hover {
-  color: var(--primary-color);
+  color: var(--wf-blue);
 }
 
 .text-green:hover {

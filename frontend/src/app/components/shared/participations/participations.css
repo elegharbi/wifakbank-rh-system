@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 16px;
   margin-bottom: 32px;
-  background: #f9f9f9;
+  background: var(--wf-inset);
   padding: 20px;
   border-radius: 8px;
 }
@@ -16,7 +16,7 @@
 select {
   flex: 1;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--wf-line);
   border-radius: 6px;
   font-size: 14px;
   background-color: white;
@@ -25,7 +25,7 @@ select {
 
 select:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--wf-blue);
 }
 
 .table-container {
@@ -40,18 +40,18 @@ table {
 th {
   text-align: left;
   padding: 12px;
-  background: #f4f6f8;
-  color: #555;
+  background: var(--wf-inset);
+  color: var(--wf-ink-soft);
   font-weight: 600;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid var(--wf-line);
 }
 
 td {
   padding: 12px;
-  border-bottom: 1px solid #f0f0f0;
-  color: #444;
+  border-bottom: 1px solid var(--wf-line);
+  color: var(--wf-ink);
 }
 
 tr:hover {
-  background-color: #fcfcfc;
+  background-color: var(--wf-inset);
 }

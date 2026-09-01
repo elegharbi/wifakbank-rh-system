@@ -27,13 +27,13 @@
   gap: 10px;
   margin: 0;
 }
-.la-title i { color: #E21E26; }
+.la-title i { color: var(--wf-red); }
 .la-sub { color: #6b7280; font-size: 14px; margin: 4px 0 0; }
 
 .la-refresh-btn {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 18px;
-  background: #FFF5F5; color: #E21E26;
+  background: #FFF5F5; color: var(--wf-red);
   border: 1px solid #fca5a5;
   border-radius: 8px; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: all 0.2s;
@@ -66,14 +66,14 @@
   display: flex; align-items: center; gap: 8px;
   padding: 10px 18px;
   background: #f9fafb; color: #6b7280;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--wf-line);
   border-radius: 8px; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: all 0.2s;
 }
 .la-filter-btn:hover { background: #f3f4f6; }
 .la-filter-btn.active {
-  background: #E21E26; color: #fff;
-  border-color: #E21E26;
+  background: var(--wf-red); color: var(--wf-surface);
+  border-color: var(--wf-red);
 }
 
 .la-badge {
@@ -94,8 +94,8 @@
 
 /* Tableau */
 .la-table-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -108,8 +108,8 @@
 }
 
 .la-table thead tr {
-  background: #f8fafc;
-  border-bottom: 2px solid #e5e7eb;
+  background: var(--wf-inset);
+  border-bottom: 2px solid var(--wf-line);
 }
 
 .la-table th {
@@ -141,7 +141,7 @@
 .la-avatar {
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #E21E26, #f04048);
+  background: linear-gradient(135deg, var(--wf-red), #f04048);
   color: white;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 700;
@@ -152,7 +152,7 @@
 .la-emp-id { font-size: 12px; color: #9ca3af; }
 
 .la-type-tag {
-  background: #FFF5F5; color: #E21E26;
+  background: #FFF5F5; color: var(--wf-red);
   padding: 4px 10px; border-radius: 6px;
   font-size: 12px; font-weight: 600;
   white-space: nowrap;
@@ -221,10 +221,10 @@
 
 .la-btn-delete {
   background: #f3f4f6; color: #9ca3af;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--wf-line);
   padding: 8px 10px;
 }
-.la-btn-delete:hover { background: #e5e7eb; color: #6b7280; }
+.la-btn-delete:hover { background: var(--wf-line); color: #6b7280; }
 
 .la-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 
