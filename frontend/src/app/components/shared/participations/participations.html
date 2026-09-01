@@ -5,7 +5,7 @@
     <div class="form-row">
       <select [(ngModel)]="newParticipation.employeeId" name="employeeId" required>
         <option value="" disabled selected>Sélectionner un employé</option>
-        <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+        <option *ngFor="let emp of employees" [value]="emp.id">{{ personName(emp) }}</option>
       </select>
       <select [(ngModel)]="newParticipation.eventId" name="eventId" required>
         <option value="" disabled selected>Sélectionner un événement</option>
@@ -31,7 +31,7 @@
       <tbody>
         <tr *ngFor="let p of participations">
           <td>#{{ p.id }}</td>
-          <td>{{ p.employee?.name }}</td>
+          <td>{{ employeeName(p) }}</td>
           <td>{{ p.event?.title }}</td>
           <td>{{ p.registrationDate | date:'short' }}</td>
           <td>

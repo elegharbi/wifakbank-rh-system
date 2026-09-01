@@ -1439,3 +1439,49 @@ body.dark-mode .auth-mark { opacity: .14; }
   .hr-layout .btn-primary:hover:not(:disabled),
   .admin-layout .btn-primary:hover:not(:disabled) { transform: none; }
 }
+
+
+/* =====================================================================
+   BANDEAUX DE SECTION (RH / admin)
+   Les pages qui ouvrent sur un simple titre reçoivent le même bandeau
+   bleu que les autres, pour une entrée homogène.
+   ===================================================================== */
+
+.hr-layout .page-title,
+.admin-layout .page-title {
+  position: relative;
+}
+
+/* Titre de section mis en avant à l'intérieur d'une carte */
+.hr-layout .card > h2:first-child,
+.admin-layout .card > h2:first-child {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--wf-line);
+}
+
+/* Durée non renseignée : on le dit sans alarmer */
+.duration-unset {
+  background: var(--wf-inset) !important;
+  color: var(--wf-ink-faint) !important;
+}
+
+/* Pastilles de statut des formations */
+.hr-layout .status-badge,
+.admin-layout .status-badge {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  background: var(--wf-blue-pale);
+  color: var(--wf-blue);
+}
+
+.hr-layout .status-badge.terminee,
+.hr-layout .status-badge.completed { background: var(--wf-note-ok-bg); color: var(--wf-note-ok-fg); }
+
+.hr-layout .status-badge.annulee,
+.hr-layout .status-badge.cancelled { background: var(--wf-note-err-bg); color: var(--wf-note-err-fg); }

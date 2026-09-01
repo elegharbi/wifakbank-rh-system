@@ -74,10 +74,12 @@
       <div class="training-body">
         <div class="training-header">
           <h3>{{ tr.title }}</h3>
-          <span class="status-badge" [class]="tr.status.toLowerCase()">{{ tr.status }}</span>
+          <span class="status-badge" [class]="(tr.status || 'planifiee').toLowerCase()">
+            {{ tr.status || 'Planifiée' }}
+          </span>
         </div>
 
-        <p class="org-name"><i class="fa-solid fa-building-columns"></i> {{ tr.organization }}</p>
+        <p class="org-name"><i class="fa-solid fa-building-columns"></i> {{ tr.organization || 'Interne' }}</p>
         <p class="training-desc">{{ tr.description || 'Formation certifiante pour le secteur bancaire.' }}</p>
 
         <!-- Type badge -->
@@ -106,7 +108,12 @@
         </p>
 
         <div class="training-footer">
-          <span class="duration"><i class="fa-solid fa-clock"></i> {{ tr.durationHours }} Heures</span>
+          <span class="duration" *ngIf="tr.durationHours">
+            <i class="fa-solid fa-clock"></i> {{ tr.durationHours }} h
+          </span>
+          <span class="duration duration-unset" *ngIf="!tr.durationHours">
+            <i class="fa-solid fa-clock"></i> Durée à définir
+          </span>
           <div class="actions">
             <button class="btn-sm btn-del" (click)="deleteTraining(tr.id)" title="Supprimer">
               <i class="fa-solid fa-trash-can"></i>

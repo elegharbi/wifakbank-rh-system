@@ -69,4 +69,20 @@ export class Participations implements OnInit {
       this.participationService.deleteParticipation(id).subscribe(() => this.loadData());
     }
   }
+
+  /**
+   * Nom de l'employe.
+   *
+   * L'inscription porte un `user` : le gabarit lisait `employee.name`,
+   * qui n'existe pas, d'ou une colonne vide.
+   */
+  employeeName(p: any): string {
+    return this.personName(p?.user ?? p?.employee);
+  }
+
+  personName(u: any): string {
+    if (!u) return 'Collaborateur';
+    const full = `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim();
+    return full || u.name || u.username || 'Collaborateur';
+  }
 }
