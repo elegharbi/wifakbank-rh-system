@@ -92,6 +92,19 @@ public class ParticipationController {
 
         Participation saved = participationService.saveParticipation(participation);
 
+        // L'employé est informé que sa demande est bien partie.
+        notificationService.notifyUser(
+                user,
+                null,
+                NotificationType.EVENT_SUBMITTED,
+                "Demande envoyée",
+                "Votre demande de participation à « " + event.getTitle()
+                        + " » est en cours de traitement par l'équipe RH.",
+                "/events",
+                "PARTICIPATION",
+                saved.getId(),
+                false);
+
         // Le RH voit la demande dans son espace Notifications.
         notificationService.notifyHr(
                 user,

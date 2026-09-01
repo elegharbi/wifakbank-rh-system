@@ -595,3 +595,70 @@
 :host-context(.dark-mode) .reset-modal h2 { color: var(--wf-ink); }
 :host-context(.dark-mode) .reset-modal p  { color: var(--wf-ink-soft); }
 :host-context(.dark-mode) .modal-close    { color: var(--wf-ink-faint); }
+
+/* ==========================================================
+   FENÊTRE « MOT DE PASSE OUBLIÉ »
+   Alignée sur la charte : jetons partagés, donc suit aussi
+   le mode sombre au lieu de rester figée en clair.
+   ========================================================== */
+
+.reset-modal {
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-line);
+  box-shadow: var(--wf-lift-3);
+}
+
+.modal-close {
+  color: var(--wf-ink-soft);
+  background: var(--wf-inset);
+}
+
+.modal-close:hover { color: var(--wf-red); background: var(--wf-red-pale); }
+
+.reset-kicker { color: var(--wf-blue); }
+.reset-modal > p { color: var(--wf-ink-soft); }
+.reset-modal label { color: var(--wf-ink-soft); }
+.reset-email-field i { color: var(--wf-ink-faint); }
+
+.reset-email-field input {
+  background: var(--wf-inset);
+  border-color: var(--wf-line);
+  color: var(--wf-ink);
+}
+
+.reset-email-field input::placeholder { color: var(--wf-ink-faint); }
+
+.reset-email-field input:focus {
+  background: var(--wf-surface);
+  border-color: var(--wf-blue);
+  box-shadow: 0 0 0 3px rgba(11,92,168,.14);
+  outline: none;
+}
+
+.reset-error {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 14px;
+  padding: 11px 14px;
+  border-radius: 11px;
+  background: var(--wf-note-err-bg);
+  border: 1px solid var(--wf-note-err-bd);
+  color: var(--wf-note-err-fg);
+  font-size: 13px;
+}
+
+.reset-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 16px 28px rgba(11,92,168,.38);
+}
+
+.reset-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.success-icon { color: #1E9A4C; }
+.reset-success h2 { color: var(--wf-ink); }
+.reset-success p { color: var(--wf-ink-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reset-submit:hover:not(:disabled) { transform: none; }
+}

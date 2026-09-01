@@ -61,6 +61,8 @@ export class Notifications implements OnInit {
       case 'TRAINING_REQUEST':  return 'fa-graduation-cap';
       case 'EVENT_REQUEST':     return 'fa-calendar-plus';
       case 'CONTACT_REQUEST':   return 'fa-envelope-open-text';
+      case 'TRAINING_SUBMITTED':
+      case 'EVENT_SUBMITTED':   return 'fa-hourglass-half';
       case 'TRAINING_APPROVED':
       case 'EVENT_APPROVED':    return 'fa-circle-check';
       case 'TRAINING_REJECTED':
@@ -73,6 +75,7 @@ export class Notifications implements OnInit {
   tone(n: AppNotification): string {
     if (n.type.endsWith('_APPROVED')) return 'ok';
     if (n.type.endsWith('_REJECTED')) return 'ko';
+    if (n.type.endsWith('_SUBMITTED')) return 'wait';
     if (n.actionable) return 'todo';
     return 'info';
   }

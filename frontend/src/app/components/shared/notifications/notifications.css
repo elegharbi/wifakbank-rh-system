@@ -398,3 +398,11 @@
   .nt-item, .nt-chip, .nt-btn, .nt-open i { transition: none; }
   .nt-item:hover, .nt-chip:hover, .nt-btn:hover:not(:disabled) { transform: none; }
 }
+
+/* Demande déposée, en cours de traitement */
+.nt-icon[data-tone="wait"] {
+  background: linear-gradient(150deg, #F5C061, #D9962A);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 7px 15px rgba(217,150,42,.3);
+}
+
+.nt-item[data-tone="wait"].is-unread::before { background: #D9962A; }

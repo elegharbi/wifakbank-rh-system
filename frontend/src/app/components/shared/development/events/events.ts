@@ -60,6 +60,25 @@ export class Events implements OnInit {
     return this.myParticipations.some(p => p.event && p.event.id === eventId);
   }
 
+  /**
+   * Statut de la demande : PENDING, APPROVED ou REJECTED.
+   *
+   * Renvoie null si l'utilisateur n'a rien demandé. Une inscription
+   * enregistrée avant l'ajout du statut est considérée approuvée.
+   */
+  participationStatus(eventId: number | undefined): string | null {
+    if (!eventId) return null;
+    const p = this.myParticipations.find(x => x.event && x.event.id === eventId);
+    if (!p) return null;
+    return p.status || 'APPROVED';
+  }
+
+  /** Une demande refusée peut être redéposée. */
+  canRequest(eventId: number | undefined): boolean {
+    const s = this.participationStatus(eventId);
+    return s === null || s === 'REJECTED';
+  }
+
   /** Identifiant de l'inscription de l'utilisateur pour cet evenement. */
   private participationIdFor(eventId: number): number | null {
     const p = this.myParticipations.find(x => x.event && x.event.id === eventId);
@@ -94,7 +113,7 @@ export class Events implements OnInit {
     if (action.kind === 'join') {
       this.participationService.registerForEvent(action.id).subscribe({
         next: () => {
-          this.message = "Votre inscription est confirmée.";
+          this.message = "Demande envoyée. L'équipe RH doit la valider ; vous serez notifié.";
           this.error = false;
           this.loadMyParticipations();
         },
@@ -115,7 +134,7 @@ export class Events implements OnInit {
       }
       this.participationService.deleteParticipation(participationId).subscribe({
         next: () => {
-          this.message = "Votre inscription a été annulée.";
+          this.message = "Votre demande a été retirée.";
           this.error = false;
           this.loadMyParticipations();
         },

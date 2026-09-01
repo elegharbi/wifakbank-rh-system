@@ -399,3 +399,57 @@ body.dark-mode .ev-joined { color: #86EFAC; }
   .ev-card, .ev-btn, .ev-icon-btn, .ev-field input { transition: none; }
   .ev-card:hover, .ev-btn-primary:hover, .ev-icon-btn:hover { transform: none; }
 }
+
+/* ==========================================================
+   ÉTAT DE LA DEMANDE
+   Trois situations distinctes plutôt qu'un simple « inscrit ».
+   ========================================================== */
+
+.ev-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: .82rem;
+  font-weight: 600;
+}
+
+/* en attente de la décision RH */
+.ev-state.is-pending {
+  background: rgba(240, 168, 43, .14);
+  border-color: rgba(240, 168, 43, .42);
+  color: #B4740D;
+}
+
+.ev-state.is-pending i { animation: ev-wait 2.4s ease-in-out infinite; }
+
+@keyframes ev-wait {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(180deg); }
+}
+
+/* acceptée */
+.ev-state.is-ok {
+  background: var(--wf-note-ok-bg);
+  border-color: var(--wf-note-ok-bd);
+  color: var(--wf-note-ok-fg);
+}
+
+/* refusée */
+.ev-state.is-ko {
+  background: var(--wf-note-err-bg);
+  border-color: var(--wf-note-err-bd);
+  color: var(--wf-note-err-fg);
+}
+
+body.dark-mode .ev-state.is-pending {
+  background: rgba(240, 168, 43, .18);
+  border-color: rgba(240, 168, 43, .4);
+  color: #F0C46A;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ev-state.is-pending i { animation: none; }
+}

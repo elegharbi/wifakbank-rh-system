@@ -82,6 +82,19 @@ public class TrainingRegistrationController {
             System.err.println("Erreur email inscription formation : " + e.getMessage());
         }
 
+        // L'employé est informé que sa demande est bien partie.
+        notificationService.notifyUser(
+                user,
+                null,
+                NotificationType.TRAINING_SUBMITTED,
+                "Demande envoyée",
+                "Votre demande pour la formation « " + training.getTitle()
+                        + " » est en cours de traitement par l'équipe RH.",
+                "/employee-trainings",
+                "TRAINING_REGISTRATION",
+                saved.getId(),
+                false);
+
         // Le RH doit voir la demande dans son espace Notifications.
         String who = displayName(user);
         notificationService.notifyHr(

@@ -10,6 +10,10 @@ public final class NotificationType {
     public static final String EVENT_REQUEST    = "EVENT_REQUEST";
     public static final String CONTACT_REQUEST  = "CONTACT_REQUEST";
 
+    // ---- Vers l'employé : accusé de dépôt ----
+    public static final String TRAINING_SUBMITTED = "TRAINING_SUBMITTED";
+    public static final String EVENT_SUBMITTED    = "EVENT_SUBMITTED";
+
     // ---- Vers l'employé : la décision du RH ----
     public static final String TRAINING_APPROVED = "TRAINING_APPROVED";
     public static final String TRAINING_REJECTED = "TRAINING_REJECTED";

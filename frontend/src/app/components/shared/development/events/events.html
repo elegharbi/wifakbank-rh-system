@@ -68,19 +68,40 @@
 
         <div class="ev-actions">
           <ng-container *ngIf="isEmployee">
-            <button *ngIf="!hasParticipated(ev.id)" class="ev-btn ev-btn-primary"
+            <!-- Aucune demande, ou demande refusée : on peut (re)postuler -->
+            <button *ngIf="canRequest(ev.id)" class="ev-btn ev-btn-primary"
                     (click)="askParticipate(ev.id, ev.title)">
-              <i class="fa-solid fa-hand-point-up" aria-hidden="true"></i> Participer
+              <i class="fa-solid fa-hand-point-up" aria-hidden="true"></i>
+              {{ participationStatus(ev.id) === 'REJECTED' ? 'Redemander' : 'Participer' }}
             </button>
 
-            <div class="ev-signed" *ngIf="hasParticipated(ev.id)">
-              <span class="ev-joined">
-                <i class="fa-solid fa-check" aria-hidden="true"></i> Vous êtes inscrit
+            <!-- En attente de la décision RH -->
+            <div class="ev-signed" *ngIf="participationStatus(ev.id) === 'PENDING'">
+              <span class="ev-state is-pending">
+                <i class="fa-solid fa-hourglass-half" aria-hidden="true"></i>
+                Demande en cours
               </span>
               <button type="button" class="ev-cancel" (click)="askCancelParticipation(ev.id, ev.title)">
                 Annuler
               </button>
             </div>
+
+            <!-- Acceptée -->
+            <div class="ev-signed" *ngIf="participationStatus(ev.id) === 'APPROVED'">
+              <span class="ev-state is-ok">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                Participation confirmée
+              </span>
+              <button type="button" class="ev-cancel" (click)="askCancelParticipation(ev.id, ev.title)">
+                Annuler
+              </button>
+            </div>
+
+            <!-- Refusée : le motif est visible, la demande peut être renouvelée -->
+            <span class="ev-state is-ko" *ngIf="participationStatus(ev.id) === 'REJECTED'">
+              <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>
+              Demande refusée
+            </span>
           </ng-container>
 
           <div class="ev-admin" *ngIf="isAdminOrRH">
